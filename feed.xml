@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>phatblat&#39;s reflog</title>
+    <description>a few SHAs from a journey through code
+</description>
+    <link>http://phatblat.com/</link>
+    <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 19 Dec 2015 14:24:02 -0700</pubDate>
+    <lastBuildDate>Sat, 19 Dec 2015 14:24:02 -0700</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Communicating Between an iOS App and a Watch Extension</title>
+        <description>&lt;p&gt;I’m building a WatchKit extension for an existing iOS app and have been experimenting with the “plumbing” between the two. Watch extensions are different animals than other iOS 8 extensions, but there is a lot of overlap in this area. Today I made a diagram to show the options of getting data to the iPhone app from the Watch and vice-versa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/apple_watch_communication.png&quot; alt=&quot;&#39;a flowchart diagram&#39;&quot; title=&quot;Communicating between an iOS App and a Watch Extension&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is simply a graphical representation of the summary presented in a &lt;a href=&quot;https://devforums.apple.com/thread/256667?tstart=0&quot;&gt;Developer Forums thread&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The real gem in this is that Darwin notifications (&lt;code&gt;CFNotificationCenterGetDarwinNotifyCenter&lt;/code&gt;) can be used to notify the other processes that there is new data available in the shared container. I haven’t worked with Darwin notifications before, but the big difference from NSNotifications is that you can’t pass any data along with it, just an identifier. Oh, and they are inter-process, which is essential for this type of communication.&lt;/p&gt;
+
+&lt;p&gt;Note that “write data to shared container” includes any API that writes out files - just point it inside the NSURL returned &lt;code&gt;-[NSFileManager containerURLForSecurityApplicationGroupIdentifier:]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;openparentapplicationreply&quot;&gt;openParentApplication:reply:&lt;/h2&gt;
+
+&lt;p&gt;Added in beta 3, this method and the corresponding &lt;code&gt;application:handleWatchKitExtensionRequest:reply:&lt;/code&gt; UIApplicationDelegate method provides a unique option for WatchKit extensions. It is the only way to explicitly wake up the containing iOS app from an Apple Watch if it is suspended or not running, but note that the iOS app is awoken &lt;em&gt;in the background&lt;/em&gt;. The &lt;code&gt;reply&lt;/code&gt; block allows the iOS app to return a small amount of data to the WatchKit extension, but care must be taken with it. You’ll get a warning if the logic on the iOS app side doesn’t call the reply block. Also, ensure that the previous call to &lt;code&gt;openParentApplication:reply:&lt;/code&gt; has finished before making another. I’ve had calls ignored because a previous one was in flight.&lt;/p&gt;
+
+&lt;h2 id=&quot;nsuserdefaults&quot;&gt;NSUserDefaults&lt;/h2&gt;
+
+&lt;p&gt;If you’re using NSUserDefaults, it’s just an API on top of a plist file. When you stand up an NSUserDefaults instance using &lt;code&gt;-initWithSuiteName:&lt;/code&gt; the data ends up in a file &lt;code&gt;&amp;lt;SHARED_CONTAINER&amp;gt;/Library/Preferences/&amp;lt;APP_ID&amp;gt;.plist&lt;/code&gt; (where SHARED_CONTAINER is something like &lt;code&gt;~/Library/Developer/CoreSimulator/Devices/1A8DF360-B0A6-4815-95F3-68A6AB0BCC78/data/Container/Data/Application/&lt;/code&gt;). That file will be written to every time you call &lt;code&gt;+synchronize&lt;/code&gt; or at “periodic intervals”.&lt;/p&gt;
+
+&lt;h2 id=&quot;other-tidbits&quot;&gt;Other Tidbits&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mutualmobile/MMWormhole&quot;&gt;MMWormhole&lt;/a&gt; is a very neat library which handles a lot of these details for you providing a simple API for passing messages between an iOS app and extensions.&lt;/p&gt;
+
+&lt;p&gt;Tom Harrington has some great &lt;a href=&quot;http://atomicbird.com/blog/ios-app-extension-tips&quot;&gt;extension development tips&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Remember to &lt;a href=&quot;https://developer.apple.com/library/ios/technotes/tn2408/_index.html&quot;&gt;stay away from the file coordination APIs&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Feb 2015 22:13:24 -0700</pubDate>
+        <link>http://phatblat.com/ios/watchkit/architecture/2015/02/04/communicating-between-an-ios-app-and-a-watch-extension.html</link>
+        <guid isPermaLink="true">http://phatblat.com/ios/watchkit/architecture/2015/02/04/communicating-between-an-ios-app-and-a-watch-extension.html</guid>
+        
+        
+        <category>ios</category>
+        
+        <category>watchkit</category>
+        
+        <category>architecture</category>
+        
+      </item>
+    
+      <item>
+        <title>Git Sparse Checkout</title>
+        <description>&lt;p&gt;Have you ever wanted to download just a subfolder of a git repo? Sure, you can clone the whole repo and then drill into that subfolder. However, if the point of just bringing down a subfolder is for easier distribution of just some of the files, the other files in the repo can be distracting (i.e. “which sub-sub-sub folder did she say to open?”).&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Git is a system designed to remember every change to the tracked files in a repository. Once a file goes in, it’s there for good since it becomes part of the log history (unless you slice and dice it with filter-branch, but that has side-effects). Since remembering your files and their content is a primary feature, git doesn’t currently have the ability to clone just a subfolder (which would save bandwidth). However, git does have the ability to checkout a subset of the repo, like a subfolder. This is what’s referred to as a “sparse checkout”.&lt;/p&gt;
+
+&lt;p&gt;The exercise here is to get a copy of just the images from my blog. Not terribly exciting, but I’ve devised a script which should be easy for you to adapt for this same purpose for any other repo.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-code&quot;&gt;The Code&lt;/h2&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;figcaption class=&quot;code-highlight-caption&quot;&gt;&lt;span class=&quot;code-highlight-caption-title&quot;&gt;sparse_checkout.sh&lt;/span&gt;&lt;a class=&quot;code-highlight-caption-link&quot; href=&quot;https://gist.github.com/a5caa3bb3a3784f03000&quot;&gt;link&lt;/a&gt;&lt;/figcaption&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;tmpdir=/tmp/phatblat-images
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;subdir=images/
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;remote_git=git://github.com/phatblat/phatblat.github.io.git
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;remote_https=https://github.com/phatblat/phatblat.github.io.git
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;mkdir $tmpdir
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;cd $tmpdir
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git init
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git remote add -f origin $remote_git || \
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;	git remote set-url origin $remote_https &amp;amp;&amp;amp; \
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;	git fetch origin
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git config core.sparseCheckout true
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;echo &quot;$subdir&quot; &amp;gt; .git/info/sparse-checkout
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git checkout master
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;open $subdir&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;I’m going to walk through this script with the lines a bit out of order; variables will be interspersed with the code that uses them. I generally build scripts with all the variables at the top to make it easy to see what can be tweaked, but having them inline makes the logic easier to follow.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;tmpdir=/tmp/phatblat-images
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;mkdir $tmpdir
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;cd $tmpdir
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git init&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;This sets up a fresh, empty repository in a temporary directory.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;remote_git=git://github.com/phatblat/phatblat.github.io.git
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git remote add -f origin $remote_git&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The &lt;strong&gt;-f&lt;/strong&gt; flag to the &lt;code&gt;git remote add&lt;/code&gt; command causes git to immediately fetch from the remote when it is added. This is where this approach is less than idea. All objects in the repo are fetched from the remote, even though only a subset of the files will be checked out. However, this keeps the repo functional as I’ll talk about at the end.&lt;/p&gt;
+
+&lt;h2 id=&quot;git-protocol&quot;&gt;Git Protocol&lt;/h2&gt;
+
+&lt;p&gt;The reason for the &lt;code&gt;git://&lt;/code&gt; protocol is because this is the &lt;a href=&quot;http://git-scm.com/book/en/Git-on-the-Server-The-Protocols#The-Git-Protocol&quot;&gt;fastest transfer protocol available&lt;/a&gt;. This is the best approach for fast, read-only access to a repo, but could fail from inside a corporate firewall.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;remote_https=https://github.com/phatblat/phatblat.github.io.git
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git remote add -f origin $remote_git || \
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;	git remote set-url origin $remote_https &amp;amp;&amp;amp; \
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;	git fetch origin&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the fetch fails due to the &lt;code&gt;git://&lt;/code&gt; protocol being blocked (port 9418), the indented commands will execute and change the origin remote’s url to one that uses https and try fetching again. There is a significant delay before the fetch fails. I haven’t figured out how to shorten the timeout that git uses.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git config core.sparseCheckout true
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;subdir=images/
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;echo &quot;$subdir&quot; &amp;gt; .git/info/sparse-checkout&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The new repo is configured to with sparse checkout enabled for only the “images” folder. No other folders will be checked out.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git checkout master&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The checkout is where the filtering happens. Here the &lt;code&gt;master&lt;/code&gt; branch is being checked out, but only the images folder is actually being copied into the work tree.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;subdir=images/
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;open $subdir&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;This &lt;a href=&quot;https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/open.1.html&quot;&gt;open&lt;/a&gt; command on OS X is very handy for opening a folder in the Finder.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-cases&quot;&gt;Use Cases&lt;/h2&gt;
+
+&lt;h3 id=&quot;designer-managed-images&quot;&gt;Designer-Managed Images&lt;/h3&gt;
+
+&lt;p&gt;Beyond effectively downloading a subfolder, this sparse checkout has other uses. The resulting local repo is a fully functional git repo. You can browse the history and create new commits. This makes it especially handy for designers to manage images without fear of accidentally changing any other files. By checking out only the images folder, finding the existing images is also easier due to less noise from files and folders unrelated to the designers tasks.&lt;/p&gt;
+
+&lt;h3 id=&quot;octopress-zen-mode&quot;&gt;Octopress Zen Mode&lt;/h3&gt;
+
+&lt;p&gt;The &lt;code&gt;sparse-checkout&lt;/code&gt; file uses the same syntax as &lt;code&gt;.gitignore&lt;/code&gt;. The following lines tell git to only checkout markdown files:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;*.md
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;*.markdown&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;After changing the &lt;code&gt;.git/info/sparse-checkout&lt;/code&gt; file, do a &lt;code&gt;checkout &amp;lt;branch&amp;gt;&lt;/code&gt; (&lt;code&gt;checkout source&lt;/code&gt; in the case of Octopress) in order to update the work tree with this new “view” of files.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/git-sparse-checkout-markdown.png&quot; alt=&quot;&#39;an image from OS X Terminal showing a tree of only markdown files&#39;&quot; title=&quot;Sparse checkout of only markdown files&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After getting this far into this feature of git, I may end up using it to help reduce the filesystem noise from Octopress. It always takes me a few minutes to remember where everything goes.&lt;/p&gt;
+
+&lt;h2 id=&quot;caveats&quot;&gt;Caveats&lt;/h2&gt;
+
+&lt;p&gt;Note that if you plan to use a repo with sparse checkout for creating new commits and pushing these back to a central remote, you’ll need to ditch the &lt;code&gt;git://&lt;/code&gt; protocol since it can only be used for read-only access. Either HTTPS or &lt;a href=&quot;https://help.github.com/articles/which-remote-url-should-i-use#cloning-with-ssh&quot;&gt;SSH&lt;/a&gt; style URLs can be used for pushing changes up. Also, if you’ve already cloned a repo using the &lt;code&gt;git://&lt;/code&gt; protocol, you don’t need to re-clone it to change this protocol. Just use the &lt;a href=&quot;https://help.github.com/articles/changing-a-remote-s-url&quot;&gt;&lt;code&gt;git remote set-url&lt;/code&gt;&lt;/a&gt; command to change the remote URL.&lt;/p&gt;
+
+&lt;p&gt;For more details around what you can do with it, check out the docs on &lt;a href=&quot;http://git-scm.com/docs/git-read-tree#_sparse_checkout&quot;&gt;sparse checkout&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 14 Sep 2014 17:30:57 -0600</pubDate>
+        <link>http://phatblat.com/git/tricks/2014/09/14/git-sparse-checkout.html</link>
+        <guid isPermaLink="true">http://phatblat.com/git/tricks/2014/09/14/git-sparse-checkout.html</guid>
+        
+        
+        <category>git</category>
+        
+        <category>tricks</category>
+        
+      </item>
+    
+      <item>
+        <title>Configuring a KST Particle: iBeacon from 360|iDev</title>
+        <description>&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_back.jpg&quot; width=&quot;150&quot; alt=&quot;&#39;an image of a Particle device showing a number on the back&#39;&quot; title=&quot;Particle iBeacon&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Everyone who attended this year’s [360&lt;/td&gt;
+      &lt;td&gt;iDev](http://360idev.com) in Denver was given a &lt;a href=&quot;https://kstechnologies.com/particle/&quot;&gt;Particle&lt;/a&gt; from KS Technologies. These are simple looking iBeacon devices that are fully configurable via KST’s &lt;a href=&quot;https://itunes.apple.com/us/app/particle-accelerator/id727105504?mt=8&quot;&gt;Particle Accelerator&lt;/a&gt; app. KST also posted about this &lt;a href=&quot;https://kstechnologies.com/free-360idev-ibeacon/&quot;&gt;awesome giveaway&lt;/a&gt; on their blog.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;tl;dr&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;The password scheme for the Particles given out at 360&lt;/td&gt;
+        &lt;td&gt;iDev is: &lt;strong&gt;360iDev123&lt;/strong&gt; — where &lt;em&gt;123&lt;/em&gt; is the number on the back.&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h1 id=&quot;battery-drain&quot;&gt;Battery Drain&lt;/h1&gt;
+
+&lt;p&gt;First off, whenever you’re not using your Particle, I suggest pulling the battery out or inserting something to prevent the flow of current. There’s no “off” switch and the device will continually broadcast its iBeacon signal dilligently every 100 milliseconds (default rate) until the battery runs out of juice (40 days, according to the &lt;a href=&quot;https://itunes.apple.com/us/app/particle-calculator/id909745776?mt=8&quot;&gt;Particle Calculator&lt;/a&gt; app). The CR2032 coin cell batteries are cheap and easy to find, but you might as well save yourself the trouble and prevent the battery from draining when you’re not using the device.&lt;/p&gt;
+
+&lt;h2 id=&quot;battery-removal&quot;&gt;Battery Removal&lt;/h2&gt;
+
+&lt;p&gt;Taking out the battery is easy. The case is best opened with a Chuck E. Cheese token, but in a pinch a quarter, lightning connector, flat-head screwdriver or even a keyring works too. Just insert in the slot on the top and twist until the shell pops. The plastic shell is easily scratched, but that only affects your opinion of the device - not the performance.&lt;/p&gt;
+
+&lt;p&gt;After you pop the top off, use a pen to push the coin battery down toward the less-round end.&lt;/p&gt;
+
+&lt;p&gt;When you put the battery back in, the positive (+) side goes up.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/particle_opening_slot.png&quot; width=&quot;200&quot; alt=&quot;&#39;an image of opening the Particle using a coin&#39;&quot; title=&quot;Particle shell opening slot&quot; /&gt;
+&lt;img src=&quot;/images/particle_battery.jpg&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle battery being removed&#39;&quot; title=&quot;Particle battery removal&quot; /&gt;
+&lt;img src=&quot;/images/particle_open.jpg&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle internals&#39;&quot; title=&quot;Particle open with battery out&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;config-prep&quot;&gt;Config Prep&lt;/h1&gt;
+
+&lt;p&gt;Before continuing, you’ll need the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;iOS device with 7.0+ and BLE
+    &lt;ul&gt;
+      &lt;li&gt;YES: iPhone 4s/5/5s/5c, iPad 3/4/mini/Air, iPod “tall” (touch 5th gen)&lt;/li&gt;
+      &lt;li&gt;NO: iPhone 4, iPad 2, iPod touch 4th gen&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the &lt;a href=&quot;https://itunes.apple.com/us/app/particle-accelerator/id727105504?mt=8&quot;&gt;Particle Accelerator&lt;/a&gt; app&lt;/li&gt;
+  &lt;li&gt;Bluetooth enabled&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;configuration&quot;&gt;Configuration&lt;/h1&gt;
+
+&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_accelerator_app.png&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle Accelerator app showing my device&#39;&quot; title=&quot;Particle Accelerator app&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Launch the Particle Accelerator app and tap the toggle switch in the upper right corner to enable scanning. Once your Particle appears, tap on it to bring up the configuration screen.&lt;/p&gt;
+
+&lt;h2 id=&quot;password&quot;&gt;Password&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;The password scheme for the Particles given out at 360&lt;/td&gt;
+      &lt;td&gt;iDev is: &lt;strong&gt;360iDev123&lt;/strong&gt; — where &lt;em&gt;123&lt;/em&gt; is the number on the back.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The number on the back of my Particle is 57, so the initial password to configure it was 360iDev57 (no leading zeros).&lt;/p&gt;
+
+&lt;p&gt;You can change the password once the current password is accepted. A blank password is allowed and does make it easier to use the app since you will be asked for the password each time you connect to the Particle. However, if you set a blank password, remember to either set a real password when you’re done or remove the battery. Anyone else with the Particle Accelerator app could muck with your new Particle if you forget.&lt;/p&gt;
+
+&lt;h2 id=&quot;uuid&quot;&gt;UUID&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: As of version 2.1.1, the Set UUID screen &lt;em&gt;always&lt;/em&gt; sets the UUID when you tap the “Done” button; there is no way to cancel, besides killing the app. So, only tap on the UUID on the configuration screen if you intend to change it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The UUID essentially defines a group of iBeacons. In the CoreLocation API, each &lt;code&gt;CLBeaconRegion&lt;/code&gt; is identified by the UUID, and there can be many iBeacons in each region. It is also possible to monitor for multiple beacon regions at the same time.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;The Particles given out at 360&lt;/td&gt;
+      &lt;td&gt;iDev all have their UUID set to &lt;strong&gt;7D65B622-4AA8-4560-914C-502BE940BC16&lt;/strong&gt;. You can change this if you want. One of the UUIDs used by the AirLocate app (see below) is already in the list (E2C56DB5-DFFB-48D2-B060-D0F5A71096E0), so you can simply select this if you’re wanting to test.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;You can also give your Particle a unique UUID. On your mac, the &lt;code&gt;uuidgen&lt;/code&gt; terminal command will generate a new UUID.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;$ uuidgen                                                                                            
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;30FDAAFB-C585-4DA5-81F9-2CA293EFCF93&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;major--minor-numbers&quot;&gt;Major &amp;amp; Minor Numbers&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Within a single &lt;code&gt;CLBeaconRegion&lt;/code&gt;, individual &lt;code&gt;CLBeacon&lt;/code&gt; instances are identified by unique combinations of the &lt;code&gt;major&lt;/code&gt; and &lt;code&gt;minor&lt;/code&gt; numbers. The Particles from 360&lt;/td&gt;
+      &lt;td&gt;iDev all have a &lt;code&gt;major&lt;/code&gt; value of 1 and unique &lt;code&gt;minor&lt;/code&gt; numbers that correspond to the number printed on the back of the shell.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;testing-your-particle&quot;&gt;Testing your Particle&lt;/h1&gt;
+
+&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_detector_app.png&quot; width=&quot;170&quot; alt=&quot;&#39;an image of the Particle Detector app showing my device&#39;&quot; title=&quot;Particle Detector app&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;particle-detector&quot;&gt;Particle Detector&lt;/h2&gt;
+
+&lt;p&gt;https://itunes.apple.com/us/app/particle-detector/id724226138?mt=8&lt;/p&gt;
+
+&lt;p&gt;This free app from KST shows you details about any Particles that are nearby. It can only monitor one region UUID at a time, so it’s easiest if you copy the UUID string from your browser and paste it into the filter screen. Then, make sure to select the UUID.&lt;/p&gt;
+
+&lt;h2 id=&quot;airlocate&quot;&gt;AirLocate&lt;/h2&gt;
+
+&lt;p&gt;https://developer.apple.com/LIBRARY/ios/samplecode/AirLocate/Introduction/Intro.html&lt;/p&gt;
+
+&lt;p&gt;This sample app was released at WWDC 2013 for testing iBeacons.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/roygbeacon.png&quot; width=&quot;170&quot; alt=&quot;&#39;an image of Roy G. Beacon app with a red background showing my device&#39;&quot; title=&quot;RoyGBeacon app&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;roygbeacon&quot;&gt;RoyGBeacon&lt;/h2&gt;
+
+&lt;p&gt;https://github.com/phatblat/RoyGBeacon&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;I created a simple app which changes the background color of the screen from gray to red depending on how close you are to an iBeacon. This app will work with any brand of iBeacon, but you may need to &lt;a href=&quot;https://github.com/phatblat/RoyGBeacon/blob/master/RoyGBeacon/RGBMainViewController.m#L41&quot;&gt;modify the source&lt;/a&gt; to add the UUID of your beacon (the AirLocate and 360&lt;/td&gt;
+      &lt;td&gt;iDev UUIDs are included).&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;btlexplorer&quot;&gt;BTLExplorer&lt;/h2&gt;
+
+&lt;p&gt;https://itunes.apple.com/us/app/btlexplorer/id532751145?mt=8&lt;/p&gt;
+
+&lt;p&gt;Another app from KST. This one is a general discovery app for any Bluetooth device. Useful for monitoring signal strength and determining whether there is a problem at the hardware level (usually battery).&lt;/p&gt;
+</description>
+        <pubDate>Fri, 29 Aug 2014 21:43:46 -0600</pubDate>
+        <link>http://phatblat.com/360idev/ibeacon/2014/08/29/configuring-a-kst-particle-ibeacon-from-360%7Cidev.html</link>
+        <guid isPermaLink="true">http://phatblat.com/360idev/ibeacon/2014/08/29/configuring-a-kst-particle-ibeacon-from-360%7Cidev.html</guid>
+        
+        
+        <category>360idev</category>
+        
+        <category>ibeacon</category>
+        
+      </item>
+    
+      <item>
+        <title>Speed up pod install</title>
+        <description>&lt;p&gt;If you use CocoaPods, you’re familiar with the &lt;code&gt;pod install&lt;/code&gt; command. Especially in the process of creating a pod, you end up running this command a lot. The annoying part is that there’s a delay before it starts returning much output. This is where the pod gem reaches out to check to see if the specs have changed at all.&lt;/p&gt;
+
+&lt;p&gt;Even when the pod version specifiers haven’t changed, CocoaPods reaches out to fetch any updates to the &lt;code&gt;master&lt;/code&gt; spec repo, along with any private spec repos that may be configured. During local development of a pod, this slows down the process unnecessarily as the only changes you care about are local to your hard drive.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;$ pod install --verbose
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Analyzing dependencies
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Updating spec repositories
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  $ /usr/local/bin/git rev-parse  &amp;gt;/dev/null 2&amp;gt;&amp;amp;1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  $ /usr/local/bin/git ls-remote
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  From https://github.com/CocoaPods/Specs.git
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  f83cbf438a0f80b7df76534ffa08efcb359ce982	HEAD
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  f83cbf438a0f80b7df76534ffa08efcb359ce982	refs/heads/master
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  fe7df26fe5545072c11abac241d73087a29e87d9	refs/pull/1/head
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  1748dab37fe08120775777a084e0fb9da10c4a63	refs/pull/1/merge
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  ...
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  5a7c7be28f0859865035c324e625c507cf858f4a  refs/pull/9998/head
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  7a19ff8bfbaf00a485ca2274a229205d715dcbf7  refs/pull/9999/head
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Updating spec repo `master`
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  $ /usr/local/bin/git pull --ff-only
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  ...yawn...&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;no-repo-update&quot;&gt;–no-repo-update&lt;/h2&gt;
+
+&lt;p&gt;The &lt;strong&gt;–no-repo-update&lt;/strong&gt; switch suppresses this spec repo update and speeds up the install command considerably.&lt;/p&gt;
+
+&lt;p&gt;Since that is way too much to type for such a common command to fly across my terminal, I like to wrap these up in a nice, short &lt;a href=&quot;https://github.com/phatblat/dotfiles/blob/master/.dotfiles/shell/alias.zsh#L31&quot;&gt;alias&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;alias pi=&#39;pod install --no-repo-update&#39;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;Another situation where suppressing this automatic spec repo update is helpful is when you have unreliable or no network connection. The spec repo update is going to fail anyway.&lt;/p&gt;
+
+&lt;p&gt;Now, you don’t want to use this alias every time you need to do a &lt;code&gt;pod install&lt;/code&gt; as your &lt;code&gt;master&lt;/code&gt; spec repo would get out of date and you could miss important updates. In general, I allow &lt;code&gt;pod install&lt;/code&gt; or &lt;code&gt;pod update&lt;/code&gt; to update my spec repos the first time I run them on any given day and suppress the repo update the rest of the day.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 30 Jul 2014 22:30:54 -0600</pubDate>
+        <link>http://phatblat.com/cocoapods/shell/2014/07/30/pod-install.html</link>
+        <guid isPermaLink="true">http://phatblat.com/cocoapods/shell/2014/07/30/pod-install.html</guid>
+        
+        
+        <category>cocoapods</category>
+        
+        <category>shell</category>
+        
+      </item>
+    
+      <item>
+        <title>Delta Service for Mobile Apps</title>
+        <description>&lt;p&gt;A typical RESTful API is simple and intuitive to consume, but requires a lot of service calls in order to download a large dataset. This can be a problem in mobile when an app simply doesn’t have the time or the bandwidth to wait for all the service calls to finish collecting the dataset.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;There are a few options to try to improve on this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a search service to return just the data that the client needs at the time&lt;/li&gt;
+  &lt;li&gt;Download the entire dataset with a single service call&lt;/li&gt;
+  &lt;li&gt;Pre-install the data on the client (mobile apps only)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;option-1---search&quot;&gt;Option #1 - Search&lt;/h3&gt;
+
+&lt;p&gt;The search option is the only option for extremely large datasets; you simply can’t download all the data from Google Maps onto a mobile device. With search, there is the risk that repeated searches will download some of the same content, wasting bandwidth. Also, every search needs a network connection and takes time to complete, introducing delays to the user experience. In some cases, such as identical search terms, caching can improve upon these issues.&lt;/p&gt;
+
+&lt;h3 id=&quot;option-2---one-shot&quot;&gt;Option #2 - One-shot&lt;/h3&gt;
+
+&lt;p&gt;Downloading the entire dataset in a single service call can be significantly faster than the many requests necessary to do so using a RESTful API. A typical RESTful API requires one request to get a list of resources and then n requests to fetch all the resources individually (n+1 requests). The gain with downloading the entire set at once is the removal of the request overhead (and startup delay) for n requests. Additionally, compressing larger response payloads has a bigger benefit than compressing small ones. However, this “download everything” option has the greatest impact on UX as the client has to download and process the entire payload before the user can benefit from the data.&lt;/p&gt;
+
+&lt;h3 id=&quot;option-3---pre-install&quot;&gt;Option #3 - Pre-install&lt;/h3&gt;
+
+&lt;p&gt;Pre-installing the data on the client has the biggest UX benefit: immediate availablility of the data. Note that this benefit is only realized after the mobile app has been downloaded and installed from the app store. The initial download takes longer since the app bundle is larger due to the included data. A big issue with packaging the data in the app is that you have to release an update to the app in order to get updated data into the hands of your users. This is a big delay as development, testing and Apple’s review all have to complete before the update is available. The upside to this delay is that during the entire release process users have a copy of the data and can continue using it, but it’s growing stale. Additionally, users have to actually install the update. There are always some users that don’t update their apps. Depending on how critical the data is, this can be a showstopper for some apps.
+Both RESTful and search APIs have the downside of requiring a network connection in order to get any data. Previously requested data can be served up from a cache, but that doesn’t help if the user is asking for data that hasn’t been cached. While the “download everything” and pre-installed data options require network connections to get the data into the app, once that is complete the network is no longer required. Thus, these latter options provide the best offline experience.&lt;/p&gt;
+
+&lt;p&gt;So, it would seem that we have to choose between the following experiences:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Delayed, on-demand data&lt;/li&gt;
+  &lt;li&gt;Can’t do anything for a while, but then it’s fast&lt;/li&gt;
+  &lt;li&gt;Slow app install, everything’s snappy, stale data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I propose a mix of all three in order to provide the ultimate experience.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;At a high level, here’s the idea: pre-install a snapshot of the dataset in the app at build time (Option #3). At some point after app launch, the app calls a “delta” API asking for all changes to the dataset since a given point in time (Option #1, search by time). The service responds with either an empty response, or with a payload which includes only the resources that have changed. Where the entire dataset download comes into play (Option #2) is that if there are ever issues with applying the delta, the client has an option to reset its data to a pristine state. Hopefully, this never happens, but if it does it’s better to temporarily degrade the UX rather than let the app continue using stale data forever.&lt;/p&gt;
+
+&lt;p&gt;Before I get any further into the details, I want to call out the pros and cons of this delta API approach.&lt;/p&gt;
+
+&lt;h3 id=&quot;pros&quot;&gt;Pros&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Data is immediately available after app install&lt;/li&gt;
+  &lt;li&gt;Data is available offline&lt;/li&gt;
+  &lt;li&gt;Data is updated every time the app is used (provided server is reachable)&lt;/li&gt;
+  &lt;li&gt;Server outage or maintenance has little to no impact on client&lt;/li&gt;
+  &lt;li&gt;Updates are smaller so less potential for user confusion due to looking at data which changes after the update&lt;/li&gt;
+  &lt;li&gt;Searching is fast&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cons&quot;&gt;Cons&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Longer app download times due to larger app binary&lt;/li&gt;
+  &lt;li&gt;Not for large datasets (~50MB+)&lt;/li&gt;
+  &lt;li&gt;Other than offline, benefits will not be that different from a simple RESTful or search API for small datasets (&amp;lt;100KB)&lt;/li&gt;
+  &lt;li&gt;Complex implementation, requiring coordination between server and client&lt;/li&gt;
+  &lt;li&gt;Server needs to track and record dates for data changes over time&lt;/li&gt;
+  &lt;li&gt;Extra build step to update the pre-installed data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;design&quot;&gt;Design&lt;/h2&gt;
+
+&lt;p&gt;Let’s start with the “download everything” call. This is just a service endpoint that a GET request invokes a response which contains the entire dataset in question.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Tue, 04 Feb 2014 16:30:30 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Tue, 04 Feb 2014 16:30:30 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 1&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;blue&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 2&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;yellow&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 3&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;red&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;21&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 4&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;22&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;green&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;23&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;24&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 5&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;25&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;gray&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;26&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;27&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 6&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;28&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;white&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;29&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;30&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;31&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;This service call will be used by the client whenever there is a problem applying a delta update. It also provides an interface for the build prep process to grab a current copy of the data to be included in the app bundle.&lt;/p&gt;
+
+&lt;p&gt;In order to stay as close to the principles of REST, the delta functionality comes into play when the client does a conditional GET and includes an If-Modified-Since header in the request.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Wed, 05 Feb 2014 19:08:16 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Thu, 06 Feb 2014 13:31:30 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Thu, 06 Feb 2014 13:31:30 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 2&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;yellow&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 6&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;white&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The records included in the response body are upserted into the client’s data; any that don’t exist are created, those that do are updated if any of the attributes have changed.&lt;/p&gt;
+
+&lt;p&gt;This takes care of creating and updating records, but what about removing records? The simplest approach I’ve been able to come up with is to include a “hidden” attribute with a value of true which instructs the client to stop displaying that record. This approach allows for bringing back records in the future.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Thu, 06 Feb 2014 13:31:30 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Fri, 07 Feb 2014 20:04:06 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Fri, 07 Feb 2014 20:04:06 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 1&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;blue&quot;,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;hidden&quot;: true
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The last example is when a client asks for changes, but nothing has changed. In this case the response will have a 304 status code and an empty body. This tells the client it is up-to-date.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Fri, 07 Feb 2014 20:04:06 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 304 Not Modified
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Sat, 08 Feb 2014 12:01:06 GMT
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Sat, 08 Feb 2014 12:01:06 GMT&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;date-handling&quot;&gt;Date Handling&lt;/h2&gt;
+
+&lt;p&gt;With the myriad of problems that can arise with interpreting dates, it is very important for the client to treat the value of the Last-Modified response header as an opaque string and return the exact same value in the If-Modified-Since request header of the next request to the service.&lt;/p&gt;
+
+&lt;p&gt;On the server side it’s also important to pay attention to the exact time that the “last modified” attribute gets set on the records. If there is any delay between when this value is set and that record is available to clients through the delta service, any clients calling in during this gap will miss changes. Say you decide to update records in a staging database and the “last modified” timestamp gets set there (Sat, 08 Feb 2014 17:00:00 GMT), meanwhile a client hits the service and receives a response with some changes (Last-Modified header Sat, 08 Feb 2014 17:15:00 GMT) then after the changes have been validated in the staging area they are moved out to the production database (Sat, 08 Feb 2014 18:00:00 GMT). At this point the “last modified” attributes on the recently changed records are an hour old. The client that last called in at 17:15 will ask for changes since 17:15 the next time, but those changes that were applied with a 17:00 timestamp will be skipped for that client. This leads to very strange stale data issues that are difficult to debug.&lt;/p&gt;
+
+&lt;p&gt;An alternative to using dates is to use an integer version number. This strays from REST and requires the server to keep track of these numeric versions. But, the server implementation could be as simple as a mapping of version numbers to dates which are then used to query against the “last modified” attribute of the records. Note that the point of version numbers would not be to support returning old version of the data. This is far more work as it requires storing snapshots of every version of every record, at least those versions that have changed. The point of this delta service is to quickly and efficiently update clients to the latest version of the data.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 20 Feb 2014 20:59:10 -0700</pubDate>
+        <link>http://phatblat.com/2014/02/20/delta-service.html</link>
+        <guid isPermaLink="true">http://phatblat.com/2014/02/20/delta-service.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
