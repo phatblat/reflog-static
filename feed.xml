@@ -6,9 +6,81 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 19 Dec 2015 14:36:49 -0700</pubDate>
-    <lastBuildDate>Sat, 19 Dec 2015 14:36:49 -0700</lastBuildDate>
+    <pubDate>Mon, 21 Dec 2015 20:26:32 -0700</pubDate>
+    <lastBuildDate>Mon, 21 Dec 2015 20:26:32 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Jekyll&#39;s Ferarri</title>
+        <description>&lt;p&gt;I’ve finally gotten around to converting this blog over to &lt;a href=&quot;http://octopress.org&quot;&gt;Octopress 3&lt;/a&gt;. The last hangup was the silliest issue. I was running the commands in the wrong directory.&lt;/p&gt;
+
+&lt;h1 id=&quot;octopress-2-vs-3&quot;&gt;Octopress 2 vs. 3&lt;/h1&gt;
+
+&lt;p&gt;Back at the start of 2014 when I originally set up this blog, it was actually a PITA it get v2 set up. A big part of this was due to the confusing way the markdown/sass source and generated HTML site was stored. The source was actually stored in a &lt;code&gt;source&lt;/code&gt; branch, disconnected from the &lt;code&gt;master&lt;/code&gt; branch in the same repo, the latter being where the generated site ended up. You’d have to make sure &lt;code&gt;source&lt;/code&gt; was checked out before running any of the &lt;code&gt;rake&lt;/code&gt; commands or else get really confusing errors.&lt;/p&gt;
+
+&lt;p&gt;To deploy, you’d run &lt;code&gt;rake generate &amp;amp;&amp;amp; rake deploy&lt;/code&gt; which generates the static content and deploys that according to the configuration. In my case, deploying to GitHub Pages would update the site, but I’d still have to switch to the master branch and pull to update that branch.&lt;/p&gt;
+
+&lt;h2 id=&quot;v3&quot;&gt;V3&lt;/h2&gt;
+
+&lt;p&gt;Much improved over a fancy &lt;a href=&quot;https://github.com/phatblat/phatblat.github.io.bak/blob/source/Rakefile&quot;&gt;Rakefile&lt;/a&gt;, Octopress 3 is a collection of gems.&lt;/p&gt;
+
+&lt;h3 id=&quot;cli&quot;&gt;CLI&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/octopress/octopress#octopress-cli-commands&quot;&gt;CLI commands&lt;/a&gt; are now more intuitive:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;octopress new post &quot;Jekyll&#39;s Ferarri&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;git commit -am &quot;Add &#39;Jekyll&#39;s Ferarri&#39; post&quot;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;octopress deploy&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;I could never remember the &lt;code&gt;rake new_post[&quot;title&quot;]&lt;/code&gt; syntax.&lt;/p&gt;
+
+&lt;h3 id=&quot;separate-repos&quot;&gt;Separate Repos&lt;/h3&gt;
+
+&lt;p&gt;Now, instead of creating your blog from a fork of the framework used to generate it, these two are now cleanly separated. The framework is installed and updated through rubygems while the blog source and generated content are stored in two separate git repos. At least, that’s how it’s arranged when you’re deploying to GitHub Pages.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Source: &lt;a href=&quot;https://github.com/phatblat/reflog&quot;&gt;phatblat/reflog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Content: &lt;a href=&quot;https://github.com/phatblat/phatblat.github.io&quot;&gt;phatblat/phatblat.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;migration&quot;&gt;Migration&lt;/h1&gt;
+
+&lt;p&gt;The migration process is actually fairly straight-forward and has been &lt;a href=&quot;http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3&quot;&gt;detailed very well&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/samwize&quot;&gt;@samwize&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The only point I had trouble with was previewing the site using &lt;code&gt;bundle exec jekyll serve&lt;/code&gt;. I got all kinds of &lt;a href=&quot;https://github.com/benbalter/wordpress-to-jekyll-exporter/issues/37&quot;&gt;build warnings&lt;/a&gt; about missing layouts. It certainly seemed like a path issue, but digging through the config and sass source I couldn’t find anything obviously wrong. Turns out the issue is that this Jekyll command &lt;em&gt;must be run from inside the &lt;a href=&quot;https://github.com/phatblat/reflog/tree/master/www&quot;&gt;&lt;strong&gt;www&lt;/strong&gt;&lt;/a&gt; directory&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;theme&quot;&gt;Theme&lt;/h1&gt;
+
+&lt;p&gt;Now that it’s live on Octopress 3, this site doesn’t look as nice. It’s just using a default Jekyll theme. There are a ton of themes out there for Octopress 2, but since 3 isn’t finished there aren’t a lot of people using it yet or making themes for it. Hopefully, it will be easy to adapt a Jekyll theme.&lt;/p&gt;
+
+&lt;p&gt;Oh well…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/shipit.png&quot; alt=&quot;SHIP IT!&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://octopress.org&quot;&gt;Octopress Official Site&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/octopress/octopress&quot;&gt;Octopress GitHub Repo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/octopress/octopress/issues/30&quot;&gt;v3 Release Concerns Discussion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://octopress.org/2015/01/15/octopress-3.0-is-coming&quot;&gt;v3 is Coming Announcement (2015-01-15)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3&quot;&gt;Migrating Octopress 2 to Octopress 3&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://decomplecting.org/blog/2015/05/16/hello-octopress-3-0&quot;&gt;Hello, Octopress 3.0!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lauris.github.io/blogging/2014/08/16/jekyll-vs-octopress&quot;&gt;Jekyll vs. Octopress&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 21 Dec 2015 17:37:11 -0700</pubDate>
+        <link>http://phatblat.com/octopress/jekyll/blogging/2015/12/21/jekylls-ferarri.html</link>
+        <guid isPermaLink="true">http://phatblat.com/octopress/jekyll/blogging/2015/12/21/jekylls-ferarri.html</guid>
+        
+        
+        <category>octopress</category>
+        
+        <category>jekyll</category>
+        
+        <category>blogging</category>
+        
+      </item>
     
       <item>
         <title>Communicating Between an iOS App and a Watch Extension</title>

@@ -7,12 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="a few SHAs from a journey through code
-">
+  <title>Jekyll's Ferarri</title>
+  <meta name="description" content="I’ve finally gotten around to converting this blog over to Octopress 3. The last hangup was the silliest issue. I was running the commands in the wrong direc...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatblat.com/about/">
+  <link rel="canonical" href="http://phatblat.com/octopress/jekyll/blogging/2015/12/21/jekylls-ferarri.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatblat.com/feed.xml" />
 </head>
 
@@ -61,23 +60,66 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title">Jekyll's Ferarri</h1>
+    <p class="post-meta">Dec 21, 2015</p>
   </header>
 
   <article class="post-content">
-    <p>Hello there. I’m <a href="https://twitter.com/phatblat">phatblat</a>, aka Ben Chatelain, and this is my reflog. You’ll find me as <code>phatblat</code> on all the things.</p>
+    <p>I’ve finally gotten around to converting this blog over to <a href="http://octopress.org">Octopress 3</a>. The last hangup was the silliest issue. I was running the commands in the wrong directory.</p>
 
-<p>By day I write iOS apps for <a href="http://kp.org">Kaiser Permanente</a>. The main project I’m working on now is the <a href="http://everybodywalk.org">Every Body Walk!</a> app for iPhone and Apple Watch. I have done a lot of work on the flagship Kaiser Permanente app, as well as dozens of internal enterprise apps. I maintain our internal CocoaPods private pod libraries and help out with CI.</p>
+<h1 id="octopress-2-vs-3">Octopress 2 vs. 3</h1>
 
-<p>By night I contribute to <a href="https://github.com/libgit2/objective-git">ObjectiveGit</a> and many other open source projects. I’ve been working on a <a href="http://octop.ad">git app for iOS</a> for several years now. Who knows if I’ll ever release it.</p>
+<p>Back at the start of 2014 when I originally set up this blog, it was actually a PITA it get v2 set up. A big part of this was due to the confusing way the markdown/sass source and generated HTML site was stored. The source was actually stored in a <code>source</code> branch, disconnected from the <code>master</code> branch in the same repo, the latter being where the generated site ended up. You’d have to make sure <code>source</code> was checked out before running any of the <code>rake</code> commands or else get really confusing errors.</p>
 
-<p>This blog is built using <a href="http://octopress.org">Octopress 3</a> and hosted on <a href="https://pages.github.com">GitHub Pages</a> with a custom domain. If you find errors, I’d love it if you could <a href="https://github.com/phatblat/reflog/issues/new">open an issue</a> or, better yet, just use the <a href="https://help.github.com/articles/editing-files-in-your-repository/">GitHub web editor</a> to fix it send me a PR.</p>
+<p>To deploy, you’d run <code>rake generate &amp;&amp; rake deploy</code> which generates the static content and deploys that according to the configuration. In my case, deploying to GitHub Pages would update the site, but I’d still have to switch to the master branch and pull to update that branch.</p>
 
-<p>Note that the source of this blog is in a different repo than the generated HTML content.</p>
+<h2 id="v3">V3</h2>
+
+<p>Much improved over a fancy <a href="https://github.com/phatblat/phatblat.github.io.bak/blob/source/Rakefile">Rakefile</a>, Octopress 3 is a collection of gems.</p>
+
+<h3 id="cli">CLI</h3>
+
+<p>The <a href="https://github.com/octopress/octopress#octopress-cli-commands">CLI commands</a> are now more intuitive:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">octopress new post "Jekyll's Ferarri"
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">git commit -am "Add 'Jekyll's Ferarri' post"
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">octopress deploy</div></div></pre></div></figure>
+
+<p>I could never remember the <code>rake new_post["title"]</code> syntax.</p>
+
+<h3 id="separate-repos">Separate Repos</h3>
+
+<p>Now, instead of creating your blog from a fork of the framework used to generate it, these two are now cleanly separated. The framework is installed and updated through rubygems while the blog source and generated content are stored in two separate git repos. At least, that’s how it’s arranged when you’re deploying to GitHub Pages.</p>
 
 <ul>
   <li>Source: <a href="https://github.com/phatblat/reflog">phatblat/reflog</a></li>
   <li>Content: <a href="https://github.com/phatblat/phatblat.github.io">phatblat/phatblat.github.io</a></li>
+</ul>
+
+<h1 id="migration">Migration</h1>
+
+<p>The migration process is actually fairly straight-forward and has been <a href="http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3">detailed very well</a> by <a href="https://twitter.com/samwize">@samwize</a>.</p>
+
+<p>The only point I had trouble with was previewing the site using <code>bundle exec jekyll serve</code>. I got all kinds of <a href="https://github.com/benbalter/wordpress-to-jekyll-exporter/issues/37">build warnings</a> about missing layouts. It certainly seemed like a path issue, but digging through the config and sass source I couldn’t find anything obviously wrong. Turns out the issue is that this Jekyll command <em>must be run from inside the <a href="https://github.com/phatblat/reflog/tree/master/www"><strong>www</strong></a> directory</em>.</p>
+
+<h1 id="theme">Theme</h1>
+
+<p>Now that it’s live on Octopress 3, this site doesn’t look as nice. It’s just using a default Jekyll theme. There are a ton of themes out there for Octopress 2, but since 3 isn’t finished there aren’t a lot of people using it yet or making themes for it. Hopefully, it will be easy to adapt a Jekyll theme.</p>
+
+<p>Oh well…</p>
+
+<p><img src="/images/shipit.png" alt="SHIP IT!" /></p>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="http://octopress.org">Octopress Official Site</a></li>
+  <li><a href="https://github.com/octopress/octopress">Octopress GitHub Repo</a></li>
+  <li><a href="https://github.com/octopress/octopress/issues/30">v3 Release Concerns Discussion</a></li>
+  <li><a href="http://octopress.org/2015/01/15/octopress-3.0-is-coming">v3 is Coming Announcement (2015-01-15)</a></li>
+  <li><a href="http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3">Migrating Octopress 2 to Octopress 3</a></li>
+  <li><a href="http://decomplecting.org/blog/2015/05/16/hello-octopress-3-0">Hello, Octopress 3.0!</a></li>
+  <li><a href="https://lauris.github.io/blogging/2014/08/16/jekyll-vs-octopress">Jekyll vs. Octopress</a></li>
 </ul>
 
   </article>
