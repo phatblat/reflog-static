@@ -6,9 +6,31 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Jan 2016 13:24:17 -0700</pubDate>
-    <lastBuildDate>Sun, 03 Jan 2016 13:24:17 -0700</lastBuildDate>
+    <pubDate>Sun, 03 Jan 2016 15:12:17 -0700</pubDate>
+    <lastBuildDate>Sun, 03 Jan 2016 15:12:17 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Radar: Apple Pencil Cannot Be Used for Any Screen Edge Swipe Gestures</title>
+        <description>&lt;h1 id=&quot;rdar23839606httpwwwopenradarme23839606&quot;&gt;&lt;a href=&quot;http://www.openradar.me/23839606&quot;&gt;rdar://23839606&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/meme-pencil.jpg&quot; alt=&quot;She asked if she could borrow my pencil, so I guess you could say things are getting pretty serious&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 03 Jan 2016 15:05:13 -0700</pubDate>
+        <link>http://phatblat.com/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
+        <guid isPermaLink="true">http://phatblat.com/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
+        
+        <category>radar,</category>
+        
+        <category>apple-pencil,</category>
+        
+        <category>ipad</category>
+        
+        
+        <category>radars</category>
+        
+      </item>
     
       <item>
         <title>iPad Pro Mini-Review</title>
@@ -599,167 +621,6 @@ Removing these from your account first greatly simplifies the cancellation proce
         <category>git</category>
         
         <category>tricks</category>
-        
-      </item>
-    
-      <item>
-        <title>Configuring a KST Particle: iBeacon from 360|iDev</title>
-        <description>&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_back.jpg&quot; width=&quot;150&quot; alt=&quot;&#39;an image of a Particle device showing a number on the back&#39;&quot; title=&quot;Particle iBeacon&quot; /&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Everyone who attended this year’s [360&lt;/td&gt;
-      &lt;td&gt;iDev](http://360idev.com) in Denver was given a &lt;a href=&quot;https://kstechnologies.com/particle/&quot;&gt;Particle&lt;/a&gt; from KS Technologies. These are simple looking iBeacon devices that are fully configurable via KST’s &lt;a href=&quot;https://itunes.apple.com/us/app/particle-accelerator/id727105504?mt=8&quot;&gt;Particle Accelerator&lt;/a&gt; app. KST also posted about this &lt;a href=&quot;https://kstechnologies.com/free-360idev-ibeacon/&quot;&gt;awesome giveaway&lt;/a&gt; on their blog.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;tldr&quot;&gt;tl;dr&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;The password scheme for the Particles given out at 360&lt;/td&gt;
-        &lt;td&gt;iDev is: &lt;strong&gt;360iDev123&lt;/strong&gt; — where &lt;em&gt;123&lt;/em&gt; is the number on the back.&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/blockquote&gt;
-
-&lt;!-- more --&gt;
-
-&lt;h1 id=&quot;battery-drain&quot;&gt;Battery Drain&lt;/h1&gt;
-
-&lt;p&gt;First off, whenever you’re not using your Particle, I suggest pulling the battery out or inserting something to prevent the flow of current. There’s no “off” switch and the device will continually broadcast its iBeacon signal dilligently every 100 milliseconds (default rate) until the battery runs out of juice (40 days, according to the &lt;a href=&quot;https://itunes.apple.com/us/app/particle-calculator/id909745776?mt=8&quot;&gt;Particle Calculator&lt;/a&gt; app). The CR2032 coin cell batteries are cheap and easy to find, but you might as well save yourself the trouble and prevent the battery from draining when you’re not using the device.&lt;/p&gt;
-
-&lt;h2 id=&quot;battery-removal&quot;&gt;Battery Removal&lt;/h2&gt;
-
-&lt;p&gt;Taking out the battery is easy. The case is best opened with a Chuck E. Cheese token, but in a pinch a quarter, lightning connector, flat-head screwdriver or even a keyring works too. Just insert in the slot on the top and twist until the shell pops. The plastic shell is easily scratched, but that only affects your opinion of the device - not the performance.&lt;/p&gt;
-
-&lt;p&gt;After you pop the top off, use a pen to push the coin battery down toward the less-round end.&lt;/p&gt;
-
-&lt;p&gt;When you put the battery back in, the positive (+) side goes up.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/particle_opening_slot.png&quot; width=&quot;200&quot; alt=&quot;&#39;an image of opening the Particle using a coin&#39;&quot; title=&quot;Particle shell opening slot&quot; /&gt;
-&lt;img src=&quot;/images/particle_battery.jpg&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle battery being removed&#39;&quot; title=&quot;Particle battery removal&quot; /&gt;
-&lt;img src=&quot;/images/particle_open.jpg&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle internals&#39;&quot; title=&quot;Particle open with battery out&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;config-prep&quot;&gt;Config Prep&lt;/h1&gt;
-
-&lt;p&gt;Before continuing, you’ll need the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;iOS device with 7.0+ and BLE
-    &lt;ul&gt;
-      &lt;li&gt;YES: iPhone 4s/5/5s/5c, iPad 3/4/mini/Air, iPod “tall” (touch 5th gen)&lt;/li&gt;
-      &lt;li&gt;NO: iPhone 4, iPad 2, iPod touch 4th gen&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;the &lt;a href=&quot;https://itunes.apple.com/us/app/particle-accelerator/id727105504?mt=8&quot;&gt;Particle Accelerator&lt;/a&gt; app&lt;/li&gt;
-  &lt;li&gt;Bluetooth enabled&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;configuration&quot;&gt;Configuration&lt;/h1&gt;
-
-&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_accelerator_app.png&quot; width=&quot;200&quot; alt=&quot;&#39;an image of the Particle Accelerator app showing my device&#39;&quot; title=&quot;Particle Accelerator app&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Launch the Particle Accelerator app and tap the toggle switch in the upper right corner to enable scanning. Once your Particle appears, tap on it to bring up the configuration screen.&lt;/p&gt;
-
-&lt;h2 id=&quot;password&quot;&gt;Password&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;The password scheme for the Particles given out at 360&lt;/td&gt;
-      &lt;td&gt;iDev is: &lt;strong&gt;360iDev123&lt;/strong&gt; — where &lt;em&gt;123&lt;/em&gt; is the number on the back.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The number on the back of my Particle is 57, so the initial password to configure it was 360iDev57 (no leading zeros).&lt;/p&gt;
-
-&lt;p&gt;You can change the password once the current password is accepted. A blank password is allowed and does make it easier to use the app since you will be asked for the password each time you connect to the Particle. However, if you set a blank password, remember to either set a real password when you’re done or remove the battery. Anyone else with the Particle Accelerator app could muck with your new Particle if you forget.&lt;/p&gt;
-
-&lt;h2 id=&quot;uuid&quot;&gt;UUID&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;NOTE: As of version 2.1.1, the Set UUID screen &lt;em&gt;always&lt;/em&gt; sets the UUID when you tap the “Done” button; there is no way to cancel, besides killing the app. So, only tap on the UUID on the configuration screen if you intend to change it.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The UUID essentially defines a group of iBeacons. In the CoreLocation API, each &lt;code&gt;CLBeaconRegion&lt;/code&gt; is identified by the UUID, and there can be many iBeacons in each region. It is also possible to monitor for multiple beacon regions at the same time.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;The Particles given out at 360&lt;/td&gt;
-      &lt;td&gt;iDev all have their UUID set to &lt;strong&gt;7D65B622-4AA8-4560-914C-502BE940BC16&lt;/strong&gt;. You can change this if you want. One of the UUIDs used by the AirLocate app (see below) is already in the list (E2C56DB5-DFFB-48D2-B060-D0F5A71096E0), so you can simply select this if you’re wanting to test.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;You can also give your Particle a unique UUID. On your mac, the &lt;code&gt;uuidgen&lt;/code&gt; terminal command will generate a new UUID.&lt;/p&gt;
-
-&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;$ uuidgen                                                                                            
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;30FDAAFB-C585-4DA5-81F9-2CA293EFCF93&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;major--minor-numbers&quot;&gt;Major &amp;amp; Minor Numbers&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Within a single &lt;code&gt;CLBeaconRegion&lt;/code&gt;, individual &lt;code&gt;CLBeacon&lt;/code&gt; instances are identified by unique combinations of the &lt;code&gt;major&lt;/code&gt; and &lt;code&gt;minor&lt;/code&gt; numbers. The Particles from 360&lt;/td&gt;
-      &lt;td&gt;iDev all have a &lt;code&gt;major&lt;/code&gt; value of 1 and unique &lt;code&gt;minor&lt;/code&gt; numbers that correspond to the number printed on the back of the shell.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h1 id=&quot;testing-your-particle&quot;&gt;Testing your Particle&lt;/h1&gt;
-
-&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/particle_detector_app.png&quot; width=&quot;170&quot; alt=&quot;&#39;an image of the Particle Detector app showing my device&#39;&quot; title=&quot;Particle Detector app&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;particle-detector&quot;&gt;Particle Detector&lt;/h2&gt;
-
-&lt;p&gt;https://itunes.apple.com/us/app/particle-detector/id724226138?mt=8&lt;/p&gt;
-
-&lt;p&gt;This free app from KST shows you details about any Particles that are nearby. It can only monitor one region UUID at a time, so it’s easiest if you copy the UUID string from your browser and paste it into the filter screen. Then, make sure to select the UUID.&lt;/p&gt;
-
-&lt;h2 id=&quot;airlocate&quot;&gt;AirLocate&lt;/h2&gt;
-
-&lt;p&gt;https://developer.apple.com/LIBRARY/ios/samplecode/AirLocate/Introduction/Intro.html&lt;/p&gt;
-
-&lt;p&gt;This sample app was released at WWDC 2013 for testing iBeacons.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/roygbeacon.png&quot; width=&quot;170&quot; alt=&quot;&#39;an image of Roy G. Beacon app with a red background showing my device&#39;&quot; title=&quot;RoyGBeacon app&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;roygbeacon&quot;&gt;RoyGBeacon&lt;/h2&gt;
-
-&lt;p&gt;https://github.com/phatblat/RoyGBeacon&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;I created a simple app which changes the background color of the screen from gray to red depending on how close you are to an iBeacon. This app will work with any brand of iBeacon, but you may need to &lt;a href=&quot;https://github.com/phatblat/RoyGBeacon/blob/master/RoyGBeacon/RGBMainViewController.m#L41&quot;&gt;modify the source&lt;/a&gt; to add the UUID of your beacon (the AirLocate and 360&lt;/td&gt;
-      &lt;td&gt;iDev UUIDs are included).&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;btlexplorer&quot;&gt;BTLExplorer&lt;/h2&gt;
-
-&lt;p&gt;https://itunes.apple.com/us/app/btlexplorer/id532751145?mt=8&lt;/p&gt;
-
-&lt;p&gt;Another app from KST. This one is a general discovery app for any Bluetooth device. Useful for monitoring signal strength and determining whether there is a problem at the hardware level (usually battery).&lt;/p&gt;
-</description>
-        <pubDate>Fri, 29 Aug 2014 21:43:46 -0600</pubDate>
-        <link>http://phatblat.com/360idev/ibeacon/2014/08/29/configuring-a-kst-particle-ibeacon-from-360%7Cidev.html</link>
-        <guid isPermaLink="true">http://phatblat.com/360idev/ibeacon/2014/08/29/configuring-a-kst-particle-ibeacon-from-360%7Cidev.html</guid>
-        
-        
-        <category>360idev</category>
-        
-        <category>ibeacon</category>
         
       </item>
     
