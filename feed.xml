@@ -6,9 +6,142 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Jan 2016 18:49:20 -0700</pubDate>
-    <lastBuildDate>Fri, 01 Jan 2016 18:49:20 -0700</lastBuildDate>
+    <pubDate>Sat, 02 Jan 2016 17:30:05 -0700</pubDate>
+    <lastBuildDate>Sat, 02 Jan 2016 17:30:05 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Close Your PayPal Account</title>
+        <description>&lt;h1 id=&quot;wtf&quot;&gt;WTF&lt;/h1&gt;
+
+&lt;p&gt;This post is appalling: &lt;a href=&quot;http://krebsonsecurity.com/2015/12/2016-reality-lazy-authentication-still-the-norm/&quot;&gt;2016 Reality: Lazy Authentication Still the Norm&lt;/a&gt;. The terrorist theme was just a distraction. The fact that his account was hacked a second time, after changing his password and after PayPal was made aware is just pathetic.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In my second call to PayPal, I insisted on speaking with a supervisor. That person was able to tell me that, as I suspected, my (very long and complex) password was never really compromised. The attacker had merely called in to PayPal’s customer support, pretended to be me and was able to reset my password by providing nothing more than the last four digits of my Social Security number and the last four numbers of an old credit card account.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I’m not willing to trust access to my money to a company this behind in security practices. I’m sure a lot of banks and utility companies are also vulnerable in the same fashion, but PayPal is a big target and one that I can limit my exposure right now by no longer doing business with them.&lt;/p&gt;
+
+&lt;h1 id=&quot;steps-to-close-your-paypal-account&quot;&gt;Steps to Close Your PayPal Account&lt;/h1&gt;
+
+&lt;p&gt;Here are the steps I went through to close my PayPal account on their full desktop website. I was not able to find a close account option in either their iOS app or mobile website. I removed my bank accounts through the mobile website first before moving to my Mac to finish out the cancellation.&lt;/p&gt;
+
+&lt;h2 id=&quot;login&quot;&gt;1. Login&lt;/h2&gt;
+
+&lt;p&gt;Make sure to use a computer or switch to the “desktop” version of PayPal’s website, if using a mobile device.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-00-login.png&quot; alt=&quot;PayPal login page&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;transfer-money-out-of-paypal-account&quot;&gt;2. Transfer Money Out of PayPal Account&lt;/h2&gt;
+
+&lt;p&gt;PayPal will send you a check if you have any money in your account when it is closed, but they charge a $1.50 fee for this service. It’s much simpler to just transfer any money out of your account first.&lt;/p&gt;
+
+&lt;h2 id=&quot;remove-bank-accounts-and-creditdebit-cards&quot;&gt;3. Remove Bank Accounts and Credit/Debit Cards&lt;/h2&gt;
+
+&lt;p&gt;Click on the “Wallet” tab in the top navigation bar to show any linked bank accounts and credit/debit cards.
+Removing these from your account first greatly simplifies the cancellation process as you will not be asked to confirm their account numbers.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-00-bankcredit.png&quot; alt=&quot;PayPal Wallet page&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is how it should look before you proceed.&lt;/p&gt;
+
+&lt;h2 id=&quot;profile&quot;&gt;4. Profile&lt;/h2&gt;
+
+&lt;p&gt;Click the gear icon on the far right of the top toolbar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-01-header.png&quot; alt=&quot;PayPal header showing Profile button (gear icon)&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;close-account-link&quot;&gt;5. Close Account Link&lt;/h2&gt;
+
+&lt;p&gt;On the Profile page, find the “Close your account” link near the bottom.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-02-profile.png&quot; alt=&quot;PayPal Profile page with &#39;Close account&#39; link&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-are-you-sure&quot;&gt;6a. Are you Sure?&lt;/h2&gt;
+
+&lt;p&gt;If you have a newer account with no money on it like one of mine, you might be lucky and get this single confirmation message.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-03b-areyousure.png&quot; alt=&quot;Confirmation message&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Click “Close Account” and you’re done.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;b-error&quot;&gt;6b. Error&lt;/h2&gt;
+
+&lt;p&gt;Two of my accounts were not so easy to close. I got this message every time I clicked the “Close your account” link.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-03b-error.png&quot; alt=&quot;Error message from clicking &#39;Close account&#39; link&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If this happens to you, click on the “customer service” link.&lt;/p&gt;
+
+&lt;h2 id=&quot;customer-service&quot;&gt;7. Customer Service&lt;/h2&gt;
+
+&lt;p&gt;Click the “Message Center” link.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-04-customerservice.png&quot; alt=&quot;Customer Service page&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;message-center&quot;&gt;8. Message Center&lt;/h2&gt;
+
+&lt;p&gt;Click the “Create New Message” button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-06-messagecenter.png&quot; alt=&quot;Message Center showing now messages and a create button&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;contact-form&quot;&gt;6. Contact Form&lt;/h2&gt;
+
+&lt;p&gt;Select the following topic and subtopic, then click the “Close Account” link.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;My Account&lt;/li&gt;
+  &lt;li&gt;Closing a PayPal account&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-06-contact.png&quot; alt=&quot;Request account close from &#39;Email Us&#39; contact form&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;first-confirmation&quot;&gt;7. First confirmation&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-07-confirm.png&quot; alt=&quot;First confirmation&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;reasons&quot;&gt;8. Reasons&lt;/h2&gt;
+
+&lt;p&gt;I refrained from comment, figuring the link to the above post was enough.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-08-reason.png&quot; alt=&quot;Reason for closing account&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;second-confirmation&quot;&gt;9. Second confirmation&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-09-confirm2.png&quot; alt=&quot;Second confirmation&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;third-confirmation&quot;&gt;10. Third confirmation&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-10-confirm3.png&quot; alt=&quot;Third confirmation&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;fourth-confirmation&quot;&gt;11. Fourth confirmation&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-11-confirm4.png&quot; alt=&quot;Fourth confirmation&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;done&quot;&gt;12. Done&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-12-email.png&quot; alt=&quot;Email confirming account closed&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;two-down-one-to-go&quot;&gt;Two Down, One To Go&lt;/h1&gt;
+
+&lt;p&gt;At this point, I’ve cancelled two of my PayPal accounts. I wasn’t able my close my work account because it has a recurring payment on it that I forgot about. I’ll need to contact the vendor to arrange a different billing arrangement first.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paypal-13-recurringpayment.png&quot; alt=&quot;Email confirming account closed&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 02 Jan 2016 15:42:37 -0700</pubDate>
+        <link>http://phatblat.com/2016/01/02/closed-paypal-account.html</link>
+        <guid isPermaLink="true">http://phatblat.com/2016/01/02/closed-paypal-account.html</guid>
+        
+        <category>security,</category>
+        
+        <category>paypal</category>
+        
+        
+      </item>
     
       <item>
         <title>Radar: Support 32GB of RAM in the Mac Mini</title>
@@ -591,174 +724,6 @@
         <category>cocoapods</category>
         
         <category>shell</category>
-        
-      </item>
-    
-      <item>
-        <title>Delta Service for Mobile Apps</title>
-        <description>&lt;p&gt;A typical RESTful API is simple and intuitive to consume, but requires a lot of service calls in order to download a large dataset. This can be a problem in mobile when an app simply doesn’t have the time or the bandwidth to wait for all the service calls to finish collecting the dataset.&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;p&gt;There are a few options to try to improve on this:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Create a search service to return just the data that the client needs at the time&lt;/li&gt;
-  &lt;li&gt;Download the entire dataset with a single service call&lt;/li&gt;
-  &lt;li&gt;Pre-install the data on the client (mobile apps only)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;option-1---search&quot;&gt;Option #1 - Search&lt;/h3&gt;
-
-&lt;p&gt;The search option is the only option for extremely large datasets; you simply can’t download all the data from Google Maps onto a mobile device. With search, there is the risk that repeated searches will download some of the same content, wasting bandwidth. Also, every search needs a network connection and takes time to complete, introducing delays to the user experience. In some cases, such as identical search terms, caching can improve upon these issues.&lt;/p&gt;
-
-&lt;h3 id=&quot;option-2---one-shot&quot;&gt;Option #2 - One-shot&lt;/h3&gt;
-
-&lt;p&gt;Downloading the entire dataset in a single service call can be significantly faster than the many requests necessary to do so using a RESTful API. A typical RESTful API requires one request to get a list of resources and then n requests to fetch all the resources individually (n+1 requests). The gain with downloading the entire set at once is the removal of the request overhead (and startup delay) for n requests. Additionally, compressing larger response payloads has a bigger benefit than compressing small ones. However, this “download everything” option has the greatest impact on UX as the client has to download and process the entire payload before the user can benefit from the data.&lt;/p&gt;
-
-&lt;h3 id=&quot;option-3---pre-install&quot;&gt;Option #3 - Pre-install&lt;/h3&gt;
-
-&lt;p&gt;Pre-installing the data on the client has the biggest UX benefit: immediate availablility of the data. Note that this benefit is only realized after the mobile app has been downloaded and installed from the app store. The initial download takes longer since the app bundle is larger due to the included data. A big issue with packaging the data in the app is that you have to release an update to the app in order to get updated data into the hands of your users. This is a big delay as development, testing and Apple’s review all have to complete before the update is available. The upside to this delay is that during the entire release process users have a copy of the data and can continue using it, but it’s growing stale. Additionally, users have to actually install the update. There are always some users that don’t update their apps. Depending on how critical the data is, this can be a showstopper for some apps.
-Both RESTful and search APIs have the downside of requiring a network connection in order to get any data. Previously requested data can be served up from a cache, but that doesn’t help if the user is asking for data that hasn’t been cached. While the “download everything” and pre-installed data options require network connections to get the data into the app, once that is complete the network is no longer required. Thus, these latter options provide the best offline experience.&lt;/p&gt;
-
-&lt;p&gt;So, it would seem that we have to choose between the following experiences:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Delayed, on-demand data&lt;/li&gt;
-  &lt;li&gt;Can’t do anything for a while, but then it’s fast&lt;/li&gt;
-  &lt;li&gt;Slow app install, everything’s snappy, stale data&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I propose a mix of all three in order to provide the ultimate experience.&lt;/p&gt;
-
-&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
-
-&lt;p&gt;At a high level, here’s the idea: pre-install a snapshot of the dataset in the app at build time (Option #3). At some point after app launch, the app calls a “delta” API asking for all changes to the dataset since a given point in time (Option #1, search by time). The service responds with either an empty response, or with a payload which includes only the resources that have changed. Where the entire dataset download comes into play (Option #2) is that if there are ever issues with applying the delta, the client has an option to reset its data to a pristine state. Hopefully, this never happens, but if it does it’s better to temporarily degrade the UX rather than let the app continue using stale data forever.&lt;/p&gt;
-
-&lt;p&gt;Before I get any further into the details, I want to call out the pros and cons of this delta API approach.&lt;/p&gt;
-
-&lt;h3 id=&quot;pros&quot;&gt;Pros&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Data is immediately available after app install&lt;/li&gt;
-  &lt;li&gt;Data is available offline&lt;/li&gt;
-  &lt;li&gt;Data is updated every time the app is used (provided server is reachable)&lt;/li&gt;
-  &lt;li&gt;Server outage or maintenance has little to no impact on client&lt;/li&gt;
-  &lt;li&gt;Updates are smaller so less potential for user confusion due to looking at data which changes after the update&lt;/li&gt;
-  &lt;li&gt;Searching is fast&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;cons&quot;&gt;Cons&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Longer app download times due to larger app binary&lt;/li&gt;
-  &lt;li&gt;Not for large datasets (~50MB+)&lt;/li&gt;
-  &lt;li&gt;Other than offline, benefits will not be that different from a simple RESTful or search API for small datasets (&amp;lt;100KB)&lt;/li&gt;
-  &lt;li&gt;Complex implementation, requiring coordination between server and client&lt;/li&gt;
-  &lt;li&gt;Server needs to track and record dates for data changes over time&lt;/li&gt;
-  &lt;li&gt;Extra build step to update the pre-installed data&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;design&quot;&gt;Design&lt;/h2&gt;
-
-&lt;p&gt;Let’s start with the “download everything” call. This is just a service endpoint that a GET request invokes a response which contains the entire dataset in question.&lt;/p&gt;
-
-&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Tue, 04 Feb 2014 16:30:30 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Tue, 04 Feb 2014 16:30:30 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 1&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;blue&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 2&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;yellow&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 3&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;red&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;21&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 4&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;22&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;green&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;23&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;24&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 5&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;25&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;gray&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;26&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;27&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 6&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;28&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;white&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;29&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;30&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;31&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
-
-&lt;p&gt;This service call will be used by the client whenever there is a problem applying a delta update. It also provides an interface for the build prep process to grab a current copy of the data to be included in the app bundle.&lt;/p&gt;
-
-&lt;p&gt;In order to stay as close to the principles of REST, the delta functionality comes into play when the client does a conditional GET and includes an If-Modified-Since header in the request.&lt;/p&gt;
-
-&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Wed, 05 Feb 2014 19:08:16 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Thu, 06 Feb 2014 13:31:30 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Thu, 06 Feb 2014 13:31:30 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 2&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;yellow&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;, &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 6&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;white&quot;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
-
-&lt;p&gt;The records included in the response body are upserted into the client’s data; any that don’t exist are created, those that do are updated if any of the attributes have changed.&lt;/p&gt;
-
-&lt;p&gt;This takes care of creating and updating records, but what about removing records? The simplest approach I’ve been able to come up with is to include a “hidden” attribute with a value of true which instructs the client to stop displaying that record. This approach allows for bringing back records in the future.&lt;/p&gt;
-
-&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Thu, 06 Feb 2014 13:31:30 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 200 OK
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Fri, 07 Feb 2014 20:04:06 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Fri, 07 Feb 2014 20:04:06 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Content-Type: application/json
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;widgets&quot;: [
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;name&quot;: &quot;Widget 1&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;color&quot;: &quot;blue&quot;,
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;hidden&quot;: true
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ]
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
-
-&lt;p&gt;The last example is when a client asks for changes, but nothing has changed. In this case the response will have a 304 status code and an empty body. This tells the client it is up-to-date.&lt;/p&gt;
-
-&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;GET /api/widgets
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Accept: */*
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;If-Modified-Since: Fri, 07 Feb 2014 20:04:06 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;HTTP/1.1 304 Not Modified
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Date: Sat, 08 Feb 2014 12:01:06 GMT
-&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Last-Modified: Sat, 08 Feb 2014 12:01:06 GMT&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;date-handling&quot;&gt;Date Handling&lt;/h2&gt;
-
-&lt;p&gt;With the myriad of problems that can arise with interpreting dates, it is very important for the client to treat the value of the Last-Modified response header as an opaque string and return the exact same value in the If-Modified-Since request header of the next request to the service.&lt;/p&gt;
-
-&lt;p&gt;On the server side it’s also important to pay attention to the exact time that the “last modified” attribute gets set on the records. If there is any delay between when this value is set and that record is available to clients through the delta service, any clients calling in during this gap will miss changes. Say you decide to update records in a staging database and the “last modified” timestamp gets set there (Sat, 08 Feb 2014 17:00:00 GMT), meanwhile a client hits the service and receives a response with some changes (Last-Modified header Sat, 08 Feb 2014 17:15:00 GMT) then after the changes have been validated in the staging area they are moved out to the production database (Sat, 08 Feb 2014 18:00:00 GMT). At this point the “last modified” attributes on the recently changed records are an hour old. The client that last called in at 17:15 will ask for changes since 17:15 the next time, but those changes that were applied with a 17:00 timestamp will be skipped for that client. This leads to very strange stale data issues that are difficult to debug.&lt;/p&gt;
-
-&lt;p&gt;An alternative to using dates is to use an integer version number. This strays from REST and requires the server to keep track of these numeric versions. But, the server implementation could be as simple as a mapping of version numbers to dates which are then used to query against the “last modified” attribute of the records. Note that the point of version numbers would not be to support returning old version of the data. This is far more work as it requires storing snapshots of every version of every record, at least those versions that have changed. The point of this delta service is to quickly and efficiently update clients to the latest version of the data.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 20 Feb 2014 20:59:10 -0700</pubDate>
-        <link>http://phatblat.com/2014/02/20/delta-service.html</link>
-        <guid isPermaLink="true">http://phatblat.com/2014/02/20/delta-service.html</guid>
-        
         
       </item>
     
