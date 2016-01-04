@@ -6,8 +6,8 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Jan 2016 15:12:17 -0700</pubDate>
-    <lastBuildDate>Sun, 03 Jan 2016 15:12:17 -0700</lastBuildDate>
+    <pubDate>Sun, 03 Jan 2016 20:45:05 -0700</pubDate>
+    <lastBuildDate>Sun, 03 Jan 2016 20:45:05 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -319,7 +319,7 @@ Removing these from your account first greatly simplifies the cancellation proce
 
 &lt;p&gt;In the upcoming months I’ll be posting on topics related to setting up a Mac server, since I’ll be going through it anyway.&lt;/p&gt;
 
-&lt;p&gt;A few years ago, I built the CI stack for iOS and Android apps at Kaiser Permanente. Once that became a full-time job, &lt;a href=&quot;https://twitter.com/CGRekt&quot;&gt;CGRekt&lt;/a&gt; took that over so I could focus on building iOS apps. Now, I’m mainly a user of CI, so I like to play around with it at home where I can break things without affecting others.&lt;/p&gt;
+&lt;p&gt;A few years ago, I built the CI stack for iOS and Android apps at Kaiser Permanente. Once that became a full-time job, &lt;a href=&quot;https://twitter.com/CGRekt&quot; class=&quot;user-mention&quot;&gt;@CGRekt&lt;/a&gt; took that over so I could focus on building iOS apps. Now, I’m mainly a user of CI, so I like to play around with it at home where I can break things without affecting others.&lt;/p&gt;
 
 &lt;p&gt;I’ve wanted to write about CI for iOS for years but it’s such a huge subject it’s hard to know where to start. If I post as I go through setting it up, I think it’ll be easier to write and consume.&lt;/p&gt;
 
@@ -443,7 +443,7 @@ Removing these from your account first greatly simplifies the cancellation proce
 
 &lt;h1 id=&quot;migration&quot;&gt;Migration&lt;/h1&gt;
 
-&lt;p&gt;The migration process is actually fairly straight-forward and has been &lt;a href=&quot;http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3&quot;&gt;detailed very well&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/samwize&quot;&gt;@samwize&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The migration process is actually fairly straight-forward and has been &lt;a href=&quot;http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3&quot;&gt;detailed very well&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/samwize&quot;&gt;&lt;a href=&quot;https://twitter.com/samwize&quot; class=&quot;user-mention&quot;&gt;@samwize&lt;/a&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The only point I had trouble with was previewing the site using &lt;code&gt;bundle exec jekyll serve&lt;/code&gt;. I got all kinds of &lt;a href=&quot;https://github.com/benbalter/wordpress-to-jekyll-exporter/issues/37&quot;&gt;build warnings&lt;/a&gt; about missing layouts. It certainly seemed like a path issue, but digging through the config and sass source I couldn’t find anything obviously wrong. Turns out the issue is that this Jekyll command &lt;em&gt;must be run from inside the &lt;a href=&quot;https://github.com/phatblat/reflog/tree/master/www&quot;&gt;&lt;strong&gt;www&lt;/strong&gt;&lt;/a&gt; directory&lt;/em&gt;.&lt;/p&gt;
 

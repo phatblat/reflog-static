@@ -101,7 +101,7 @@
 
 <h1 id="migration">Migration</h1>
 
-<p>The migration process is actually fairly straight-forward and has been <a href="http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3">detailed very well</a> by <a href="https://twitter.com/samwize">@samwize</a>.</p>
+<p>The migration process is actually fairly straight-forward and has been <a href="http://samwize.com/2015/09/30/migrating-octopress-2-to-octopress-3">detailed very well</a> by <a href="https://twitter.com/samwize"><a href="https://twitter.com/samwize" class="user-mention">@samwize</a></a>.</p>
 
 <p>The only point I had trouble with was previewing the site using <code>bundle exec jekyll serve</code>. I got all kinds of <a href="https://github.com/benbalter/wordpress-to-jekyll-exporter/issues/37">build warnings</a> about missing layouts. It certainly seemed like a path issue, but digging through the config and sass source I couldn’t find anything obviously wrong. Turns out the issue is that this Jekyll command <em>must be run from inside the <a href="https://github.com/phatblat/reflog/tree/master/www"><strong>www</strong></a> directory</em>.</p>
 
