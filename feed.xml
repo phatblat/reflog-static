@@ -6,8 +6,8 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 Jan 2016 13:10:11 -0700</pubDate>
-    <lastBuildDate>Tue, 05 Jan 2016 13:10:11 -0700</lastBuildDate>
+    <pubDate>Tue, 05 Jan 2016 13:11:04 -0700</pubDate>
+    <lastBuildDate>Tue, 05 Jan 2016 13:11:04 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -32,8 +32,9 @@
 
 &lt;h2 id=&quot;jekyll-twitter-plugin&quot;&gt;jekyll-twitter-plugin&lt;/h2&gt;
 
-&lt;p&gt;Based on the tweet-tag plugin, the &lt;a href=&quot;https://github.com/rob-murray/jekyll-twitter-plugin&quot;&gt;jekyll-twitter-plugin&lt;/a&gt; provides the same functionality but has been updated to work with the newer Twitter API preconditions (authentication keys) and also is a proper ruby gem for easier installation and updates.&lt;br /&gt;
-The syntax is very similar:&lt;/p&gt;
+&lt;p&gt;Based on the tweet-tag plugin, the &lt;a href=&quot;https://github.com/rob-murray/jekyll-twitter-plugin&quot;&gt;jekyll-twitter-plugin&lt;/a&gt; provides the same functionality but has been updated to work with the newer Twitter API preconditions (authentication keys) and also is a proper ruby gem for easier installation and updates.&lt;/p&gt;
+
+&lt;p&gt;The syntax is very similar:&lt;/p&gt;
 
 &lt;figure class=&quot;code-highlight-figure wrap&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;&amp;#x7b;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;oembed&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;//twitter.com/DepressedDarth/status/&lt;span class=&quot;mi&quot;&gt;683671063855759360&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%&amp;#x7d;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
 
