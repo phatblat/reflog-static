@@ -6,8 +6,8 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Jan 2016 19:50:58 -0700</pubDate>
-    <lastBuildDate>Sun, 10 Jan 2016 19:50:58 -0700</lastBuildDate>
+    <pubDate>Sun, 10 Jan 2016 20:02:12 -0700</pubDate>
+    <lastBuildDate>Sun, 10 Jan 2016 20:02:12 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -67,7 +67,7 @@
 
 &lt;p&gt;Because of the way these settings are stored, they are difficult to set using the &lt;code&gt;defaults&lt;/code&gt; command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.&lt;/p&gt;
 
-&lt;h2 id=&quot;reading-values-from-the-command-line-1&quot;&gt;Reading Values from the Command Line&lt;/h2&gt;
+&lt;h2 id=&quot;changing-values-from-the-command-line&quot;&gt;Changing Values from the Command Line&lt;/h2&gt;
 
 &lt;p&gt;A better approach for manipulating these values from the command line is to use the &lt;code&gt;pmset&lt;/code&gt; command. This utility can be used to read the current Energy Saver values (read them all with &lt;code&gt;pmset -g&lt;/code&gt;, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.&lt;/p&gt;
 
