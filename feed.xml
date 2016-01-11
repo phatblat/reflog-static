@@ -6,9 +6,123 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Jan 2016 11:49:22 -0700</pubDate>
-    <lastBuildDate>Thu, 07 Jan 2016 11:49:22 -0700</lastBuildDate>
+    <pubDate>Sun, 10 Jan 2016 19:50:58 -0700</pubDate>
+    <lastBuildDate>Sun, 10 Jan 2016 19:50:58 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Mac Server Setup: Step 1</title>
+        <description>&lt;p&gt;By default, Macs are designed to be user machines. While they are very easy to set up as servers, a few of the standard settings are not ideal for hosting services.&lt;/p&gt;
+
+&lt;p&gt;If you are planning on using a Mac as a server - that is, you expect it to be running services indefinitely - there are some settings you should check on &lt;em&gt;first&lt;/em&gt;, before you are remote and having issues.&lt;/p&gt;
+
+&lt;h2 id=&quot;energy-saver&quot;&gt;Energy Saver&lt;/h2&gt;
+
+&lt;p&gt;Launch System Preferences and navigate to the Energy Saver pane. Change these settings:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Computer Sleep: Never&lt;/li&gt;
+  &lt;li&gt;Display Sleep: Never&lt;/li&gt;
+  &lt;li&gt;disable “Put hard disks to sleep when possible”&lt;/li&gt;
+  &lt;li&gt;enable &lt;strong&gt;“Start up automatically after a power failure”&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/mac-server-setup-energysaver.jpg&quot; alt=&quot;&quot; title=&quot;Energy Saver system preferences pane&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a screenshot from my Mac mini which &lt;a href=&quot;https://twitter.com/macminicolo&quot; class=&quot;user-mention&quot;&gt;@macminicolo&lt;/a&gt; was kind enough to set up like this for me.&lt;/p&gt;
+
+&lt;h2 id=&quot;reading-values-from-the-command-line&quot;&gt;Reading Values from the Command Line&lt;/h2&gt;
+
+&lt;p&gt;The values behind the Energy Saver preferences pane appear to be stored in User Defaults and can be read with the following command:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The “Automatic Restart On Power Loss” key is the most important.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    ActivePowerProfiles =      &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &quot;AC Power&quot; = &quot;-1&quot;;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;#x7d;;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &quot;Custom Profile&quot; =     &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &quot;AC Power&quot; =         &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;AutoPowerOff Delay&quot; = 14400;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;AutoPowerOff Enabled&quot; = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Automatic Restart On Power Loss&quot; = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            DarkWakeBackgroundTasks = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Disk Sleep Timer&quot; = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Display Sleep Timer&quot; = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Hibernate File&quot; = &quot;/var/vm/sleepimage&quot;;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Hibernate Mode&quot; = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            PrioritizeNetworkReachabilityOverSleep = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Sleep On Power Button&quot; = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Standby Delay&quot; = 4200;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Standby Enabled&quot; = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;System Sleep Timer&quot; = 0;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            TTYSPreventSleep = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;21&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;            &quot;Wake On LAN&quot; = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;22&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;23&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        Defaults = 1;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;24&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;#x7d;;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;25&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;Because of the way these settings are stored, they are difficult to set using the &lt;code&gt;defaults&lt;/code&gt; command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.&lt;/p&gt;
+
+&lt;h2 id=&quot;reading-values-from-the-command-line-1&quot;&gt;Reading Values from the Command Line&lt;/h2&gt;
+
+&lt;p&gt;A better approach for manipulating these values from the command line is to use the &lt;code&gt;pmset&lt;/code&gt; command. This utility can be used to read the current Energy Saver values (read them all with &lt;code&gt;pmset -g&lt;/code&gt;, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;pmset -g
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Active Profiles:
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;AC Power                -1* Currently in use:
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; standby              1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; Sleep On Power Button 1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; womp                 1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; autorestart          1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; hibernatefile        /var/vm/sleepimage
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; powernap             0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; networkoversleep     0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; disksleep            0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; sleep                0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; autopoweroffdelay    14400
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; hibernatemode        0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; autopoweroff         1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; ttyskeepawake        1
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; displaysleep         0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; standbydelay         4200&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;TL;DR&lt;/h3&gt;
+
+&lt;p&gt;These are the values you will always want to change when setting up a Mac server:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;sudo pmset -c sleep 0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;sudo pmset -c displaysleep 0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;sudo pmset -c disksleep 0
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;sudo pmset -c autorestart 1&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.neglectedpotential.com/2012/12/mac-mini-servers-a-cautionary-tale/&quot;&gt;Mac mini Servers: A Cautionary Tale&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.tekrevue.com/tip/mac-start-up-automatically-after-a-power-failure&quot;&gt;How and Why to Tell Your Mac to Start Up Automatically After a Power Failure&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://support.apple.com/kb/PH21704?viewlocale=en_US&amp;amp;locale=en_US&quot;&gt;Energy Saver preferences&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/pmset.1.html&quot;&gt;pmset(1) Mac OS X Manual Page&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 10 Jan 2016 19:49:36 -0700</pubDate>
+        <link>http://phatblat.com/2016/01/10/mac-server-setup.html</link>
+        <guid isPermaLink="true">http://phatblat.com/2016/01/10/mac-server-setup.html</guid>
+        
+        <category>server,</category>
+        
+        <category>energy-saver,</category>
+        
+        <category>defaults,</category>
+        
+        <category>pmset</category>
+        
+        
+      </item>
     
       <item>
         <title>The Accident</title>
@@ -1473,58 +1587,6 @@ Removing these from your account first greatly simplifies the cancellation proce
         
         
         <category>radars</category>
-        
-      </item>
-    
-      <item>
-        <title>On Blogging</title>
-        <description>&lt;h2 id=&quot;original-intent&quot;&gt;Original Intent&lt;/h2&gt;
-
-&lt;p&gt;When I started this blog I had planned on writing lots of highly technical posts on focused topics within iOS development. Swift and iOS are the main topics I read on other people’s blogs and I build iOS apps all day. One of the thoughts in the back of my head was that I also wanted to be recognized as a leader in the iOS community and all those that I look up to have active blogs on the subject. I haven’t turned out to be much of a leader in the blogging space.&lt;/p&gt;
-
-&lt;p&gt;Highly technical posts can be difficult to write, especially when it comes to ensuring they are error-free. There’s also the chore of coming back to edit posts as they become out of date.&lt;/p&gt;
-
-&lt;p&gt;While I thought I was up for the challenge, I was not ready for the amount of time that writing can take, especially with interruptions or a lack of brain power left at the end of a day from spending it all on actually building apps.&lt;/p&gt;
-
-&lt;p&gt;In almost 2 years I’ve written 5 blog posts. I didn’t really have a goal for posting frequency, but this is certainly not as much as I wanted to be writing.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-approach&quot;&gt;New Approach&lt;/h2&gt;
-
-&lt;p&gt;It’s (almost) a new year and I’ve had some big changes (more on this &lt;a href=&quot;/2016/01/06/accident.html&quot;&gt;later&lt;/a&gt;) and I’ve just &lt;a href=&quot;/octopress/jekyll/blogging/2015/12/21/jekylls-ferarri.html&quot;&gt;rebooted this blog&lt;/a&gt;. Might as well rethink my approach.&lt;/p&gt;
-
-&lt;p&gt;The main thing that I &lt;em&gt;really&lt;/em&gt; want out of this blog is to get better at writing &lt;strong&gt;about&lt;/strong&gt; software. In order to do that, I need to get better at writing words. I write enough code; that’s covered. Once the words come together, it’s pretty easy to whip up some code to go with a post, especially with Xcode Playgrounds these days.&lt;/p&gt;
-
-&lt;h3 id=&quot;topics&quot;&gt;Topics&lt;/h3&gt;
-
-&lt;p&gt;So, at least for a while, I’m not going to try very hard or create some super intense Swift compiler-level technical posts. I’m not going to talk about iOS APIs for a while. I’m just going to write. I’m going to write whatever is on my mind and I’m not going to care who’s listening. There are plenty of cat GIFs out there on the internet if I start boring you. Oh, look! Here’s one:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/cat.gif&quot; alt=&quot;&quot; title=&quot;Cat GIF&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I want to write more often and lowering the bar on difficulty should help with this. Once I get my writing frequency up and post creation time down, then I’ll start working on some harder subjects.&lt;/p&gt;
-
-&lt;h2 id=&quot;strategy&quot;&gt;Strategy&lt;/h2&gt;
-
-&lt;p&gt;I came up with a few steps to help myself with writing quickly:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;write the highlights in tweet-sized bites&lt;/li&gt;
-  &lt;li&gt;add vital detail&lt;/li&gt;
-  &lt;li&gt;edit&lt;/li&gt;
-  &lt;li&gt;post&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I write plenty well in &lt;a href=&quot;https://twitter.com/phatblat&quot; title=&quot;My tweets&quot;&gt;140 character bites&lt;/a&gt;, so I just need to adapt my thinking to longer form.&lt;/p&gt;
-
-&lt;h2 id=&quot;wrap-up&quot;&gt;Wrap-up&lt;/h2&gt;
-
-&lt;p&gt;I’ve been active on Twitter for 8 years now so this shouldn’t be a huge challenge. I figured I’d just “pick it up” when it came to blogging but finding the time has proven to be harder than expected. Hopefully, getting my thought-to-post speed down will help get more of these ideas out of my head and onto the web.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 28 Dec 2015 22:34:31 -0700</pubDate>
-        <link>http://phatblat.com/blogging/2015/12/28/on-blogging.html</link>
-        <guid isPermaLink="true">http://phatblat.com/blogging/2015/12/28/on-blogging.html</guid>
-        
-        
-        <category>blogging</category>
         
       </item>
     
