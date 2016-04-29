@@ -102,12 +102,11 @@
 
 <p>This function can be called in a number of ways:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">let value = sum2(1)(2)(3) // 6
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">let sum3 = sum2(1)        // Int -&gt; Int -&gt; Int
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">sum3(2)(3)                // 6
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">let sum4 = sum2(1)        // Int -&gt; Int -&gt; Int
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">let sum5 = sum4(2)        // Int -&gt; Int
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">sum5(3)                   // 6</div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">let value = sum(1)(2)(3) // 6
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">let sumA = sum(1)         // Int -&gt; Int -&gt; Int
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">let sumAB = sumA(2)       // Int -&gt; Int
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">sumA(2)(3)                // 6
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">sumAB(3)                  // 6</div></div></pre></div></figure>
 
 <p>An equivalent <code>sum</code> function using the more verbose syntax looks like:</p>
 
