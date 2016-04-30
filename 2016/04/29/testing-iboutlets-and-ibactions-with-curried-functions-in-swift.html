@@ -141,11 +141,13 @@
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">var</span> <span class="nl">hasButtonOutlet</span><span class="p">:</span> <span class="n">String</span> <span class="o">-&gt;</span> <span class="bp">UIButton</span><span class="o">?</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">hasButtonOutlet</span> <span class="o">=</span> <span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>Calling the full function would look like this:</p>
+<p>The return type in the <code>hasButtonOutlet</code> declaration is the type used for validation inside the generic <code>outlet</code> function below.</p>
+
+<p>Calling the <code>outlet</code> full function would look like this:</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)(</span><span class="s">&quot;leftDoneButton&quot;</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.</p>
+<p>But, you might as well just have a plain, old multi-parameter function if you want all that. Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.</p>
 
 <p>Here is a condensed definition of the <code>outlet</code> curried function:</p>
 
