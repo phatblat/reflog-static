@@ -100,15 +100,17 @@
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return A + B + C
 </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">&#x7d;</div></div></pre></div></figure>
 
-<p>This function can be called in a number of ways:</p>
+<p>This <code>sum</code> function can be called in a number of ways:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">let value = sum(1)(2)(3) // 6
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">let sumA = sum(1)         // Int -&gt; Int -&gt; Int
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">let sumAB = sumA(2)       // Int -&gt; Int
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">sumA(2)(3)                // 6
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">sumAB(3)                  // 6</div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">let sumA = sum(1)     // Int -&gt; Int -&gt; Int
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">let sumAB = sumA(2)   // Int -&gt; Int
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">sum(1)(2)(3)          // 6
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">sumA(2)(3)            // 6
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">sumAB(3)              // 6</div></div></pre></div></figure>
 
-<p>An equivalent <code>sum</code> function using the more verbose syntax looks like:</p>
+<p>In this example, the <code>sumA</code> function has captured the value of the <code>A</code> parameter (1), whereas <code>sumAB</code> has captured the values of both the <code>A</code> and <code>B</code> parameters (1 and 2). When the final <code>C</code> parameter is passed to any of these functions the resulting <code>Int</code> value (6) is returned.</p>
+
+<p>An equivalent <code>sum</code> function using the more verbose curried function syntax shows that it is really a set of nested functions.</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int) -&gt; (Int) -&gt; (Int) -&gt; Int &#x7b;
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    return &#x7b; (B: Int) -&gt; (C: Int) -&gt; Int in
@@ -118,15 +120,15 @@
 </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">    &#x7d;
 </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">&#x7d;</div></div></pre></div></figure>
 
-<p>You can see how this more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which which transforms a 2-args func into its curried version. <sup id="fnref:curry-func"><a href="#fn:curry-func" class="footnote">1</a></sup></p>
+<p>This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which transforms a multi-parameter function into its curried version. <sup id="fnref:curry-func"><a href="#fn:curry-func" class="footnote">1</a></sup></p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func curry(f: (A,B)-&gt;C) -&gt; A-&gt;B-&gt;C</div></div></pre></div></figure>
 
-<p>The thoughtbot <a href="https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift">Curry library</a> has all the variations of the <code>curry</code> function up to 19 arguments.</p>
+<p>The thoughtbot <a href="https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift">Curry library</a> has all the variations of the <code>curry</code> function up to 19 parameters.</p>
 
 <h2 id="why-currying">Why Currying?</h2>
 
-<p>Currying helps to simplify these test functions so that the view controller doesn’t have to be passed in with each function call. There’s also the benefit of being able to give the returned function a very readable name.</p>
+<p>Currying helps to simplify these outlet and action test functions so that the view controller doesn’t have to be passed in every function call. Just like the <code>sumA</code> function holds onto the value of the first parameter, these test functions hold onto a reference to the view controller being tested. There’s also the benefit of being able to give the returned function a very readable name.</p>
 
 <h2 id="outlet-assertion">Outlet Assertion</h2>
 
@@ -134,18 +136,18 @@
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">hasButtonOutlet</span><span class="p">(</span><span class="s">&quot;leftDoneButton&quot;</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>So, what is that <code>hasButtonOutlet</code> magic? It’s a <a href="https://en.m.wikipedia.org/wiki/Partial_application">partially-applied</a> function  saved in a local variable. This is how it is created:</p>
+<p>So, what is that <code>hasButtonOutlet</code> magic? It’s a <a href="https://en.m.wikipedia.org/wiki/Partial_application">partially-applied</a> function saved in a local variable. This is how it is created:</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">var</span> <span class="nl">hasButtonOutlet</span><span class="p">:</span> <span class="n">String</span> <span class="o">-&gt;</span> <span class="bp">UIButton</span><span class="o">?</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">hasButtonOutlet</span> <span class="o">=</span> <span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>Calling the fully-applied function would look like this:</p>
+<p>Calling the full function would look like this:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)(</span><span class="s">&quot;leftDoneButton”)</span></div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)(</span><span class="s">&quot;leftDoneButton&quot;</span><span class="p">)</span></div></div></pre></div></figure>
 
 <p>Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.</p>
 
-<p>Here’s what a condensed definition of <code>outlet</code> looks like:</p>
+<p>Here is a condensed definition of the <code>outlet</code> curried function:</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">func</span> <span class="n">outlet</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nl">viewController</span><span class="p">:</span> <span class="bp">UIViewController</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="o">?</span> <span class="p">&#x7b;</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">&#x7b;</span> <span class="p">(</span><span class="nl">expectedOutlet</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="o">?</span> <span class="k">in</span>
@@ -169,12 +171,12 @@
 
 <p>One caveat is that they require an outlet on the thing sending the action. A lot of the time an outlet isn’t necessary for an action-sending UI element, but I haven’t found a way to get the actions from the view controller (yet).</p>
 
-<p>Here’s the setup for the partially-applied <code>receivesAction</code>:</p>
+<p>Here is the setup for the partially-applied <code>receivesAction</code>:</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">var</span> <span class="nl">receivesAction</span><span class="p">:</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Void</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">receivesAction</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>The implementation of the <code>action</code> function is more complex as getting to the action differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test"><a href="#fn:action-test" class="footnote">2</a></sup></p>
+<p>Implementation of the <code>action</code> function is more complex as getting to the IBAction differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test"><a href="#fn:action-test" class="footnote">2</a></sup></p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">func</span> <span class="n">action</span><span class="p">(</span><span class="nl">viewController</span><span class="p">:</span> <span class="bp">UIViewController</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Void</span> <span class="p">&#x7b;</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">&#x7b;</span> <span class="p">(</span><span class="nl">expectedAction</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="nl">expectedOutlet</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="k">in</span>
@@ -223,7 +225,7 @@
 
 <h2 id="deprecated-">Deprecated 😭</h2>
 
-<p>Shortly after <a href="https://twitter.com/allonsykraken" class="user-mention">@allonsykraken</a> posted <a href="http://krakendev.io/blog/hipster-swift">Hipster Swift</a>, I learned that the super-clean syntactic sugar version of curried functions is <a href="https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md">going away in Swift 3</a> and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.</p>
+<p>Shortly after <a href="https://twitter.com/allonsykraken" class="user-mention">@allonsykraken</a> posted <a href="http://krakendev.io/blog/hipster-swift">Hipster Swift</a>, I learned that the super-clean syntactic sugar version of curried functions is <a href="https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md">going away in Swift 3</a><sup id="fnref:swift3"><a href="#fn:swift3" class="footnote">4</a></sup> and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.</p>
 
 <p>Isn’t this:</p>
 
@@ -231,7 +233,7 @@
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
 </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
 
-<p>…so much cleaner than this? <sup id="fnref:curried-function-example"><a href="#fn:curried-function-example" class="footnote">4</a></sup></p>
+<p>…so much cleaner than this? <sup id="fnref:curried-function-example"><a href="#fn:curried-function-example" class="footnote">5</a></sup></p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">func</span> <span class="nf">fourChainedFunctions</span><span class="p">(</span><span class="nl">a</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">)))</span> <span class="p">&#x7b;</span>
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">&#x7b;</span> <span class="n">b</span> <span class="k">in</span>
@@ -244,7 +246,7 @@
 </div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span>
 </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">fourChainedFunctions</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span></div></div></pre></div></figure>
 
-<p>Versions of these outlet/action assertion functions using the older, cleaner  syntactic-sugary function currying can be reviewed on the <a href="https://github.com/phatblat/CurriedOutletFunctions/blob/deprecated-syntax/CurriedOutletFunctionsTests/SpecFunctions.swift#L47"><code>deprecated-syntax</code></a> tag of the example repo.</p>
+<p>Versions of these outlet/action assertion functions using the older, cleaner syntactic-sugary function currying can be reviewed on the <a href="https://github.com/phatblat/CurriedOutletFunctions/blob/deprecated-syntax/CurriedOutletFunctionsTests/SpecFunctions.swift#L47"><code>deprecated-syntax</code></a> tag of the example repo.</p>
 
 <p>Apple, you can take my sweet curry, but you’ll never take my Sriracha.</p>
 
@@ -258,13 +260,16 @@
 <div class="footnotes">
   <ol>
     <li id="fn:curry-func">
-      <p>As I’ve learned from <a href="https://twitter.com/aligatr" class="user-mention">@aligatr</a> <a href="#fnref:curry-func" class="reversefootnote">&#8617;</a></p>
+      <p>As I’ve learned from <a href="https://twitter.com/aligatr" class="user-mention">@aligatr</a> 🐊 <a href="#fnref:curry-func" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:action-test">
-      <p>This bit of UIKit magic is from <a href="https://twitter.com/qcoding" class="user-mention">@qcoding</a>’s <a href="http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction">post on Stack Overflow</a> for how to test IBActions. <a href="#fnref:action-test" class="reversefootnote">&#8617;</a></p>
+      <p>This bit of UIKit magic ✨ is from <a href="https://twitter.com/qcoding" class="user-mention">@qcoding</a>’s <a href="http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction">post on Stack Overflow</a> for how to test IBActions. <a href="#fnref:action-test" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:quick">
       <p>These tests are run using the <a href="https://github.com/Quick/Quick">Quick 😜 testing framework</a>. <a href="#fnref:quick" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:swift3">
+      <p>Note that function currying isn’t going away, only the nice shorthand (sweet 🍭) syntax is. <a href="#fnref:swift3" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:curried-function-example">
       <p>Borrowed with <img class="emoji" title=":heart:" alt=":heart:" src="https://assets.github.com/images/icons/emoji/unicode/2764.png" height="20" width="20" align="absmiddle" /> from the <strong>Almighty Kraken</strong> <a href="http://krakendev.io/blog/hipster-swift#currying">http://krakendev.io/blog/hipster-swift#currying</a> <a href="#fnref:curried-function-example" class="reversefootnote">&#8617;</a></p>
