@@ -7,14 +7,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Communicating Between an iOS App and a Watch Extension</title>
-  <meta name="description" content="I’m building a WatchKit extension for an existing iOS app and have been experimenting with the “plumbing” between the two. Watch extensions are different ani...">
+  <title>Outlets Pod</title>
+  <meta name="description" content="">
 
   <!-- Pinterest website verify -->
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatblat.com/ios/watchkit/architecture/2015/02/04/communicating-between-an-ios-app-and-a-watch-extension.html">
+  <link rel="canonical" href="http://phatblat.com/2016/05/03/outlets-pod.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatblat.com/feed.xml" />
 </head>
 
@@ -63,36 +63,29 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Communicating Between an iOS App and a Watch Extension</h1>
-    <p class="post-meta">Feb 4, 2015</p>
+    <h1 class="post-title">Outlets Pod</h1>
+    <p class="post-meta">May 3, 2016</p>
   </header>
 
   <article class="post-content">
-    <p>I’m building a WatchKit extension for an existing iOS app and have been experimenting with the “plumbing” between the two. Watch extensions are different animals than other iOS 8 extensions, but there is a lot of overlap in this area. Today I made a diagram to show the options of getting data to the iPhone app from the Watch and vice-versa.</p>
+    <style>
+.center-image
+{
+  margin: 0 auto;
+  display: block;
+}
+</style>
 
-<p><img src="/images/apple_watch_communication.png" alt="'a flowchart diagram'" title="Communicating between an iOS App and a Watch Extension" /></p>
+<p>Inspired by the great work that came out of writing <a href="/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html">Testing IBOutlets</a> (and the wonderful help I got through <a href="https://gist.github.com/phatblat/ee2c470970b906238e395c4fd48f4ad3">sharing</a> the <a href="https://github.com/phatblat/OutletActionAssertion">code</a>), I’ve created a micro-library which contains these testing functions to make it easy to include them in a project. <a href="https://github.com/phatblat/Outlets">Outlets</a> is live now on <a href="https://cocoapods.org/pods/Outlets">CocoaPods</a> and can also be built with Carthage, if that’s your poison.</p>
 
-<p>This is simply a graphical representation of the summary presented in a <a href="https://devforums.apple.com/thread/256667?tstart=0">Developer Forums thread</a>.</p>
+<p><a href="https://github.com/phatblat/Outlets"><img src="http://community.imgtec.com/wp-content/uploads/sites/2/2014/09/fork-me-on-github.png" alt="GitHub button" title="Fork me on GitHub button" class="center-image" /></a></p>
 
-<p>The real gem in this is that Darwin notifications (<code>CFNotificationCenterGetDarwinNotifyCenter</code>) can be used to notify the other processes that there is new data available in the shared container. I haven’t worked with Darwin notifications before, but the big difference from NSNotifications is that you can’t pass any data along with it, just an identifier. Oh, and they are inter-process, which is essential for this type of communication.</p>
+<p>For now, the library only works with iOS apps as these utility functions depend on UIKit. I’ll be looking into support for OS X, tvOS and watchOS (if we get <a href="https://openradar.appspot.com/21760513">XCTest support for it</a> in June <img class="emoji" title=":wink:" alt=":wink:" src="https://assets.github.com/images/icons/emoji/unicode/1f609.png" height="20" width="20" align="absmiddle" />).</p>
 
-<p>Note that “write data to shared container” includes any API that writes out files - just point it inside the NSURL returned <code>-[NSFileManager containerURLForSecurityApplicationGroupIdentifier:]</code>.</p>
+<p><img src="/images/outlets-logo.png" alt="Outlets logo" title="Outlets logo showing electrical sockets from various contries" /></p>
 
-<h2 id="openparentapplicationreply">openParentApplication:reply:</h2>
+<p>Why don’t you give it a good ol’ <code>pod try Outlets</code>?</p>
 
-<p>Added in beta 3, this method and the corresponding <code>application:handleWatchKitExtensionRequest:reply:</code> UIApplicationDelegate method provides a unique option for WatchKit extensions. It is the only way to explicitly wake up the containing iOS app from an Apple Watch if it is suspended or not running, but note that the iOS app is awoken <em>in the background</em>. The <code>reply</code> block allows the iOS app to return a small amount of data to the WatchKit extension, but care must be taken with it. You’ll get a warning if the logic on the iOS app side doesn’t call the reply block. Also, ensure that the previous call to <code>openParentApplication:reply:</code> has finished before making another. I’ve had calls ignored because a previous one was in flight.</p>
-
-<h2 id="nsuserdefaults">NSUserDefaults</h2>
-
-<p>If you’re using NSUserDefaults, it’s just an API on top of a plist file. When you stand up an NSUserDefaults instance using <code>-initWithSuiteName:</code> the data ends up in a file <code>&lt;SHARED_CONTAINER&gt;/Library/Preferences/&lt;APP_ID&gt;.plist</code> (where SHARED_CONTAINER is something like <code>~/Library/Developer/CoreSimulator/Devices/1A8DF360-B0A6-4815-95F3-68A6AB0BCC78/data/Container/Data/Application/</code>). That file will be written to every time you call <code>+synchronize</code> or at “periodic intervals”.</p>
-
-<h2 id="other-tidbits">Other Tidbits</h2>
-
-<p><a href="https://github.com/mutualmobile/MMWormhole">MMWormhole</a> is a very neat library which handles a lot of these details for you providing a simple API for passing messages between an iOS app and extensions.</p>
-
-<p>Tom Harrington has some great <a href="http://atomicbird.com/blog/ios-app-extension-tips">extension development tips</a>.</p>
-
-<p>Remember to <a href="https://developer.apple.com/library/ios/technotes/tn2408/_index.html">stay away from the file coordination APIs</a>.</p>
 
   </article>
 

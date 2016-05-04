@@ -6,9 +6,45 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Apr 2016 20:47:29 -0600</pubDate>
-    <lastBuildDate>Sat, 30 Apr 2016 20:47:29 -0600</lastBuildDate>
+    <pubDate>Tue, 03 May 2016 21:26:20 -0600</pubDate>
+    <lastBuildDate>Tue, 03 May 2016 21:26:20 -0600</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Outlets Pod</title>
+        <description>&lt;style&gt;
+.center-image
+{
+  margin: 0 auto;
+  display: block;
+}
+&lt;/style&gt;
+
+&lt;p&gt;Inspired by the great work that came out of writing &lt;a href=&quot;/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html&quot;&gt;Testing IBOutlets&lt;/a&gt; (and the wonderful help I got through &lt;a href=&quot;https://gist.github.com/phatblat/ee2c470970b906238e395c4fd48f4ad3&quot;&gt;sharing&lt;/a&gt; the &lt;a href=&quot;https://github.com/phatblat/OutletActionAssertion&quot;&gt;code&lt;/a&gt;), I’ve created a micro-library which contains these testing functions to make it easy to include them in a project. &lt;a href=&quot;https://github.com/phatblat/Outlets&quot;&gt;Outlets&lt;/a&gt; is live now on &lt;a href=&quot;https://cocoapods.org/pods/Outlets&quot;&gt;CocoaPods&lt;/a&gt; and can also be built with Carthage, if that’s your poison.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/phatblat/Outlets&quot;&gt;&lt;img src=&quot;http://community.imgtec.com/wp-content/uploads/sites/2/2014/09/fork-me-on-github.png&quot; alt=&quot;GitHub button&quot; title=&quot;Fork me on GitHub button&quot; class=&quot;center-image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For now, the library only works with iOS apps as these utility functions depend on UIKit. I’ll be looking into support for OS X, tvOS and watchOS (if we get &lt;a href=&quot;https://openradar.appspot.com/21760513&quot;&gt;XCTest support for it&lt;/a&gt; in June &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/outlets-logo.png&quot; alt=&quot;Outlets logo&quot; title=&quot;Outlets logo showing electrical sockets from various contries&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Why don’t you give it a good ol’ &lt;code&gt;pod try Outlets&lt;/code&gt;?&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 03 May 2016 21:06:22 -0600</pubDate>
+        <link>http://phatblat.com/2016/05/03/outlets-pod.html</link>
+        <guid isPermaLink="true">http://phatblat.com/2016/05/03/outlets-pod.html</guid>
+        
+        <category>swift,</category>
+        
+        <category>cocoapods,</category>
+        
+        <category>carthage,</category>
+        
+        <category>ios</category>
+        
+        
+      </item>
     
       <item>
         <title>Testing IBOutlets and IBActions With Curried Functions in Swift</title>
@@ -496,7 +532,7 @@
 
 &lt;figure class=&quot;code-highlight-figure wrap&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;&amp;#x7b;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;oembed&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;//twitter.com/DepressedDarth/status/&lt;span class=&quot;mi&quot;&gt;684318431227727872&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;align&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;center&amp;#39;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;220&amp;#39;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%&amp;#x7d;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;embed twitter&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot; width=&quot;350&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;When you have a really funny tweet but it&amp;#39;s too many characters &lt;a href=&quot;https://t.co/FJv89HI6Fo&quot;&gt;https://t.co/FJv89HI6Fo&lt;/a&gt;&lt;/p&gt;&amp;mdash; Darth Vader (@DepressedDarth) &lt;a href=&quot;https://twitter.com/DepressedDarth/status/684318431227727872&quot;&gt;January 5, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;div class=&quot;embed twitter&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;When you have a really funny tweet but it&amp;#39;s too many characters &lt;a href=&quot;https://t.co/FJv89HI6Fo&quot;&gt;https://t.co/FJv89HI6Fo&lt;/a&gt;&lt;/p&gt;&amp;mdash; Darth Vader (@DepressedDarth) &lt;a href=&quot;https://twitter.com/DepressedDarth/status/684318431227727872&quot;&gt;January 5, 2016&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;//platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;width&lt;/code&gt; parameter must be between 220 and 550 inclusive and seems to have no effect on the text-only rendering of the tweet.&lt;/p&gt;
@@ -638,7 +674,7 @@
 
 &lt;p&gt;Talked with my dad earlier today and was raving to him how much I love the new iPad Pro. I’ve used every iPad since the original but this is the first one that has the potential to replace a laptop IMHO, at least for casual users or casual use by pro users. Case in point: it’s pretty much all I’ve been using for the last week and a half while I’ve been laid up at home recovering from my &lt;a href=&quot;/2016/01/06/accident.html&quot;&gt;accident&lt;/a&gt;. The only things I’ve broken out my MacBook for are for Xcode, a second set of browser tabs for some Black Friday and Cyber Monday shopping and to do some general maintenance on my development tools.&lt;/p&gt;
 
-&lt;div class=&quot;embed twitter&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot; width=&quot;350&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;The iPro may be a REALLY BIG iPad, but it&amp;#39;s also a really light laptop, depending on how you look at it&lt;/p&gt;&amp;mdash; Ben Chatelain (@phatblat) &lt;a href=&quot;https://twitter.com/phatblat/status/674332881938833408&quot;&gt;December 8, 2015&lt;/a&gt;&lt;/blockquote&gt;
+&lt;div class=&quot;embed twitter&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;The iPro may be a REALLY BIG iPad, but it&amp;#39;s also a really light laptop, depending on how you look at it&lt;/p&gt;&amp;mdash; Ben Chatelain (@phatblat) &lt;a href=&quot;https://twitter.com/phatblat/status/674332881938833408&quot;&gt;December 8, 2015&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;//platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;&lt;/div&gt;
 
 &lt;p&gt;So, what’s so great about this? It’s “just” a bigger iPad, right? That’s exactly why!&lt;/p&gt;
@@ -862,74 +898,6 @@ Removing these from your account first greatly simplifies the cancellation proce
         
         
         <category>radars</category>
-        
-      </item>
-    
-      <item>
-        <title>Mac mini Server</title>
-        <description>&lt;h2 id=&quot;traveling-without-a-mac&quot;&gt;Traveling without a Mac&lt;/h2&gt;
-
-&lt;p&gt;My family and I traveled for Christmas this year and I managed to leave the MacBook behind, bringing only iPads and iPhones on the trip.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/ipad-sizes.jpg&quot; alt=&quot;&quot; title=&quot;iPhone 5s (left), iPad mini 2 (center), iPad Pro with Smart Keyboard (right)&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Wile on the road, there are two things that I wanted to do which I wasn’t able to on my iPad Pro:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Run octopress and jekyll to update this blog&lt;/li&gt;
-  &lt;li&gt;Run Xcode to play with some code&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I don’t foresee either of these being possible on iOS in the near future. #1 requires an app to be able to spawn processes, which isn’t currently possible. Apple’s answer to some of the multi-process use cases is &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/General/Conceptual/ExtensibilityPG/&quot;&gt;App Extensions&lt;/a&gt;, introduced in iOS 8, but that doesn’t allow for arbitrary terminal commands. While I’m certain we’ll see Xcode on iOS some day, #2 has similar limitations as Xcode on OS X spawns lots of processes when running builds.&lt;/p&gt;
-
-&lt;p&gt;I attempted to do #1 on a Linux server at my web hosting provider, but was quickly reminded why I normally use Macs.&lt;/p&gt;
-
-&lt;p&gt;It would be nice to access a Mac remotely for these purposes. For security reasons, I do not want to expose my home iMac to the Internet, so a dedicated box is preferred.&lt;/p&gt;
-
-&lt;p&gt;These issues are not critical, but they got me thinking that this “leave the Mac at home” approach isn’t going to work if I’m going to do any development. With &lt;a href=&quot;http://git2go.com&quot;&gt;Git2Go&lt;/a&gt; and &lt;a href=&quot;http://workingcopyapp.com&quot;&gt;Working Copy&lt;/a&gt;, I can commit changes directly to git, but I can’t compile or test them without a Mac. Taking an iPad Pro everywhere is mostly extra weight if I &lt;em&gt;also&lt;/em&gt; have to bring a MacBook; it defeats the purpose of bringing the iPro.&lt;/p&gt;
-
-&lt;h2 id=&quot;macminicolo&quot;&gt;Macminicolo&lt;/h2&gt;
-
-&lt;p&gt;I’ve been aware of &lt;a href=&quot;https://macminicolo.net&quot;&gt;Macminicolo&lt;/a&gt; for years mostly due to &lt;a href=&quot;https://bjango.com/ios/istat&quot;&gt;iStat&lt;/a&gt; for iOS, which appears to no longer be available in the App Store. They specialize in, well, colocation of Mac minis.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/mac-mini.png&quot; alt=&quot;&quot; title=&quot;Mac mini&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I finally settled on getting a mini and hosting it there, but was thinking I’d wait until the new mini models come out later in 2016. In typical Apple fashion, there is no announced release date, but looking at their &lt;a href=&quot;http://buyersguide.macrumors.com/#Mac_Mini&quot;&gt;release history&lt;/a&gt; for the mini, they are due for a new model now. Intel’s &lt;a href=&quot;http://www.macrumors.com/2015/09/02/intel-skylake-notebooks-desktops&quot;&gt;Skylake processors&lt;/a&gt; are out and most of the Mac lineup should receive updates in 2016 (perhaps not the Mac Pro).&lt;/p&gt;
-
-&lt;p&gt;However, Macminicolo just launched a &lt;a href=&quot;https://macminicolo.net/2016&quot;&gt;2016 Promo&lt;/a&gt; for a year of 2x Pro service and an upgraded Mac mini for a heavily discounted rate. That was enough to convince me and I went for it.&lt;/p&gt;
-
-&lt;h2 id=&quot;purpose&quot;&gt;Purpose&lt;/h2&gt;
-
-&lt;p&gt;What the heck am I going to do with this? I have a few things in mind:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Website hosting, relocating several sites from &lt;a href=&quot;http://www.dreamhost.com/r.cgi?41837&quot;&gt;DreamHost&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Relocate this reflog for server-side access log-based analytics instead of Google Analytics&lt;/li&gt;
-  &lt;li&gt;Minecraft servers (PC &amp;amp; PE)&lt;/li&gt;
-  &lt;li&gt;CI server&lt;/li&gt;
-  &lt;li&gt;Fastlane and xcodebuild access over SSH using &lt;a href=&quot;https://panic.com/prompt&quot;&gt;Prompt&lt;/a&gt; on iOS&lt;/li&gt;
-  &lt;li&gt;Xcode GUI over VNC using &lt;a href=&quot;http://edovia.com/screens&quot;&gt;Screens&lt;/a&gt; on iOS&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;upcoming&quot;&gt;Upcoming&lt;/h2&gt;
-
-&lt;p&gt;In the upcoming months I’ll be posting on topics related to setting up a Mac server, since I’ll be going through it anyway.&lt;/p&gt;
-
-&lt;p&gt;A few years ago, I built the CI stack for iOS and Android apps at Kaiser Permanente. Once that became a full-time job, &lt;a href=&quot;https://twitter.com/CGRekt&quot; class=&quot;user-mention&quot;&gt;@CGRekt&lt;/a&gt; took that over so I could focus on building iOS apps. Now, I’m mainly a user of CI, so I like to play around with it at home where I can break things without affecting others.&lt;/p&gt;
-
-&lt;p&gt;I’ve wanted to write about CI for iOS for years but it’s such a huge subject it’s hard to know where to start. If I post as I go through setting it up, I think it’ll be easier to write and consume.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 31 Dec 2015 15:08:32 -0700</pubDate>
-        <link>http://phatblat.com/2015/12/31/mac-mini-server.html</link>
-        <guid isPermaLink="true">http://phatblat.com/2015/12/31/mac-mini-server.html</guid>
-        
-        <category>mac,</category>
-        
-        <category>server,</category>
-        
-        <category>ipad</category>
-        
         
       </item>
     
