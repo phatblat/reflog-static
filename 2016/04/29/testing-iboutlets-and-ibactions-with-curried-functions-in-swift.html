@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-54d1fb71cd3237b6091726bb30f3f383.css' media='all' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/all-39626eefcbc6b99b2c296e0ba01c1b51.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -115,11 +115,11 @@
 <p>An equivalent <code>sum</code> function using the more verbose curried function syntax shows that it is really a set of nested functions.</p>
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int) -&gt; (Int) -&gt; (Int) -&gt; Int &#x7b;
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    return &#x7b; (B: Int) -&gt; (C: Int) -&gt; Int in
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">        return &#x7b; (C: Int) -&gt; Int in
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">            return A + B + C
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">        &#x7d;
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">    &#x7d;
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return &#x7b; (B: Int) -&gt; (C: Int) -&gt; Int in
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    return &#x7b; (C: Int) -&gt; Int in
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">      return A + B + C
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    &#x7d;
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  &#x7d;
 </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">&#x7d;</div></div></pre></div></figure>
 
 <p>This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which transforms a multi-parameter function into its curried version. <sup id="fnref:curry-func"><a href="#fn:curry-func" class="footnote">1</a></sup></p>
@@ -136,14 +136,28 @@
 
 <p>Just look at how beautiful this is!</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">hasButtonOutlet</span><span class="p">(</span><span class="s">&quot;leftDoneButton&quot;</span><span class="p">)</span></div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">it</span><span class="p">(</span><span class="s">&quot;has a leftButton outlet&quot;</span><span class="p">)</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">hasButtonOutlet</span><span class="p">(</span><span class="s">&quot;leftButton&quot;</span><span class="p">)</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<blockquote>
+  <p>This is a BDD-style test using the <a href="https://github.com/Quick/Quick">Quick</a> framework.</p>
+</blockquote>
 
 <p>So, what is that <code>hasButtonOutlet</code> magic? It’s a <a href="https://en.m.wikipedia.org/wiki/Partial_application">partially-applied</a> function saved in a local variable. This is how it is created:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">var</span> <span class="nl">hasButtonOutlet</span><span class="p">:</span> <span class="n">String</span> <span class="o">-&gt;</span> <span class="bp">UIButton</span><span class="o">?</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">hasButtonOutlet</span> <span class="o">=</span> <span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span></div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">class</span> <span class="nl">ViewControllerSpec</span><span class="p">:</span> <span class="n">QuickSpec</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="kr">override</span> <span class="k">func</span> <span class="n">spec</span><span class="p">()</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nl">viewController</span><span class="p">:</span> <span class="bp">UIViewController</span><span class="o">!</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nl">hasButtonOutlet</span><span class="p">:</span> <span class="p">(</span><span class="n">String</span> <span class="o">-&gt;</span> <span class="bp">UIButton</span><span class="o">?</span><span class="p">)</span><span class="o">!</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="n">describe</span><span class="p">(</span><span class="s">&quot;view controller&quot;</span><span class="p">)</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">beforeEach</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">viewController</span> <span class="o">=</span> <span class="p">...</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">hasButtonOutlet</span> <span class="o">=</span> <span class="n">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">&#x7d;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">...</span></div></div></pre></div></figure>
 
-<p>The return type in the <code>hasButtonOutlet</code> declaration is the type used for validation inside the generic <code>outlet</code> function below.</p>
+<p>The return type in the <code>hasButtonOutlet</code> declaration (<code>UIButton</code> in the above example) is the type used for validation inside the generic <code>outlet</code> function below.</p>
 
 <p>Calling the <code>outlet</code> full function would look like this:</p>
 
@@ -171,14 +185,23 @@
 
 <p>The action assertion functions are similarly simple.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">receivesAction</span><span class="p">(</span><span class="s">&quot;didTapDone&quot;</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="s">&quot;leftDoneButton&quot;</span><span class="p">)</span></div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">it</span><span class="p">(</span><span class="s">&quot;receives a didTapLeftButton: action from leftButton&quot;</span><span class="p">)</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">receivesAction</span><span class="p">(</span><span class="s">&quot;didTapLeftButton:&quot;</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="s">&quot;leftButton&quot;</span><span class="p">)</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
 
 <p>One caveat is that they require an outlet on the thing sending the action. A lot of the time an outlet isn’t necessary for an action-sending UI element, but I haven’t found a way to get the actions from the view controller (yet).</p>
 
 <p>Here is the setup for the partially-applied <code>receivesAction</code>:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">var</span> <span class="nl">receivesAction</span><span class="p">:</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Void</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">receivesAction</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span></div></div></pre></div></figure>
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">class</span> <span class="nl">ViewControllerSpec</span><span class="p">:</span> <span class="n">QuickSpec</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kr">override</span> <span class="k">func</span> <span class="n">spec</span><span class="p">()</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nl">receivesAction</span><span class="p">:</span> <span class="p">((</span><span class="n">String</span><span class="p">,</span> <span class="nl">from</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Void</span><span class="p">)</span><span class="o">!</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="n">describe</span><span class="p">(</span><span class="s">&quot;view controller&quot;</span><span class="p">)</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">beforeEach</span> <span class="p">&#x7b;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">viewController</span> <span class="o">=</span> <span class="p">...</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">receivesAction</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">&#x7d;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">...</span></div></div></pre></div></figure>
 
 <p>Implementation of the <code>action</code> function is more complex as getting to the IBAction differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test"><a href="#fn:action-test" class="footnote">2</a></sup></p>
 
