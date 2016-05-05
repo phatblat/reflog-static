@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-39626eefcbc6b99b2c296e0ba01c1b51.css' media='all' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/all-54d1fb71cd3237b6091726bb30f3f383.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -114,9 +114,9 @@
 
 <p>An equivalent <code>sum</code> function using the more verbose curried function syntax shows that it is really a set of nested functions.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int) -&gt; (Int) -&gt; (Int) -&gt; Int &#x7b;
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return &#x7b; (B: Int) -&gt; (C: Int) -&gt; Int in
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    return &#x7b; (C: Int) -&gt; Int in
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int) -&gt; (Int -&gt; (Int -&gt; Int)) &#x7b;
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return &#x7b; B in
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    return &#x7b; C in
 </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">      return A + B + C
 </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    &#x7d;
 </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  &#x7d;
