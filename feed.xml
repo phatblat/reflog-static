@@ -6,9 +6,137 @@
 </description>
     <link>http://phatblat.com/</link>
     <atom:link href="http://phatblat.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 May 2016 16:41:30 -0600</pubDate>
-    <lastBuildDate>Thu, 05 May 2016 16:41:30 -0600</lastBuildDate>
+    <pubDate>Tue, 10 May 2016 22:39:22 -0600</pubDate>
+    <lastBuildDate>Tue, 10 May 2016 22:39:22 -0600</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>UISearchController</title>
+        <description>&lt;p&gt;A “search controller” is the thing behind a &lt;code&gt;UISearchBar&lt;/code&gt; on iOS that is responsible for showing and hiding the “search results” screen (typically a table view) and updating the results in response to changes to the search term, character by character.&lt;/p&gt;
+
+&lt;p&gt;Let’s go through the setup of a very simple search controller for an iOS app. It will display a list of Swift keywords in a table and filter them in response to text entered into the search bar.&lt;/p&gt;
+
+&lt;h2 id=&quot;search-bar&quot;&gt;Search Bar&lt;/h2&gt;
+
+&lt;p&gt;What’s unexpected about &lt;code&gt;UISearchController&lt;/code&gt; is that you have to &lt;em&gt;install&lt;/em&gt; its &lt;code&gt;searchBar&lt;/code&gt; into the view hierarchy. You can’t connect it to an existing &lt;code&gt;UISearchBar&lt;/code&gt; defined in a storyboard.&lt;sup id=&quot;fnref:searchbar-storyboard&quot;&gt;&lt;a href=&quot;#fn:searchbar-storyboard&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; If you’re just adding the search bar to the top of a table, like in Apple’s sample code&lt;sup id=&quot;fnref:apple-sample-code&quot;&gt;&lt;a href=&quot;#fn:apple-sample-code&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, you can just make it the &lt;code&gt;tableHeaderView&lt;/code&gt;. But just about any other situation is going to have to deal with auto layout.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;kr&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewDidLoad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;#x7b;&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;viewDidLoad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;autoresizingMask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FlexibleWidth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FlexibleHeight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;searchBarContainerView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addSubview&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;&amp;#x7d;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;We’re going to reserve some space in the UI using a “container” view&lt;sup id=&quot;fnref:container-view&quot;&gt;&lt;a href=&quot;#fn:container-view&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;img src=&quot;/images/uisearchcontroller-main-scene.png&quot; width=&quot;300&quot; alt=&quot;&#39;Main scene showing search bar container view&#39;&quot; title=&quot;Main scene&quot; /&gt;
+&lt;/center&gt;
+
+&lt;h2 id=&quot;search-results-controller&quot;&gt;Search Results Controller&lt;/h2&gt;
+
+&lt;p&gt;The search results controller is just a simple &lt;code&gt;UITableViewController&lt;/code&gt; with each cell displaying a single Swift keyword.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;img src=&quot;/images/uisearchcontroller-search-results.png&quot; width=&quot;300&quot; alt=&quot;&#39;Search results table showing a list of swift keywords&#39;&quot; title=&quot;Search results&quot; /&gt;
+&lt;/center&gt;
+
+&lt;h2 id=&quot;search-controller&quot;&gt;Search Controller&lt;/h2&gt;
+
+&lt;p&gt;A &lt;code&gt;UISearchController&lt;/code&gt; must be set up in code and it’s constructor takes a single argument - a &lt;code&gt;UIViewController&lt;/code&gt; which is going to display the search results. Here we pass in a reference to our &lt;code&gt;searchResultsController&lt;/code&gt; stored in a property.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;UISearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;searchResultsController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchResultsController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchResultsUpdater&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hidesNavigationBarDuringPresentation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dimsBackgroundDuringPresentation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;There is little interaction with &lt;code&gt;UISearchController&lt;/code&gt; beyond creating one, configuring it and connecting it to the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;the search results controller&lt;/li&gt;
+  &lt;li&gt;a &lt;code&gt;UISearchResultsUpdating&lt;/code&gt; (the &lt;code&gt;searchResultsUpdater&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;a &lt;code&gt;UISearchControllerDelegate&lt;/code&gt; (optional)&lt;/li&gt;
+  &lt;li&gt;a &lt;code&gt;UISearchBarDelegate&lt;/code&gt; (optional)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;search-results-updater&quot;&gt;Search Results Updater&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;UISearchResultsUpdating&lt;/code&gt; protocol is very simple, but it’s where all the fun happens:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updateSearchResultsForSearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UISearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchTerm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;#x7b;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;#x7d;&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;c1&quot;&gt;// use searchTerm to filter search results&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;This method is called whenever the text changes in the search bar. The current text can be accessed through the &lt;code&gt;searchController&lt;/code&gt; parameter. Any object can handle these updates.&lt;/p&gt;
+
+&lt;p&gt;It’s common to also make the search results controller the &lt;code&gt;searchResultsUpdater&lt;/code&gt; and have it conform to the &lt;code&gt;UISearchResultsUpdating&lt;/code&gt; protocol. That configuration causes the search results controller to update itself with each change to the search term. However, we’re not going that route because of a special case we want to handle: a custom “empty results” view. Attempting to add a subview to a &lt;code&gt;UITableView&lt;/code&gt; is fraught with peril, so we’re not going to do that.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;img src=&quot;/images/uisearchcontroller-no-results.png&quot; width=&quot;300&quot; alt=&quot;&#39;Empty search results screen&#39;&quot; title=&quot;Empty search results&quot; /&gt;
+&lt;/center&gt;
+
+&lt;p&gt;Instead the “main” view controller will be the &lt;code&gt;searchResultsUpdater&lt;/code&gt; and it will pass the current &lt;code&gt;searchTerm&lt;/code&gt; into the search results controller. The search results controller will take care of filtering and return the number of results displayed.&lt;/p&gt;
+
+&lt;p&gt;The “main” view controller will use the number of results displayed to determine when to show and hide the “no results” view.&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;displayedResultCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchResultsController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filterData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchTerm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;handleEmptyResults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;displayedResultCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;&amp;#x7d;&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;handleEmptyResults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;displayedResults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;#x7b;&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;showEmptyResultsView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;displayedResults&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &lt;span class=&quot;n&quot;&gt;emptyResultsView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hidden&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;showEmptyResultsView&lt;/span&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&lt;span class=&quot;p&quot;&gt;&amp;#x7d;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;This &lt;code&gt;emptyResultsView&lt;/code&gt; is defined in the storyboard and initially hidden.&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;That’s pretty much it. I wanted to provide a simple example because there’s a lot of confusing information out there on how this API works. Web searches are tainted with the old API since the type names are so similar.&lt;sup id=&quot;fnref:search-display-controller&quot;&gt;&lt;a href=&quot;#fn:search-display-controller&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;You can find the complete project on GitHub at the URL below:&lt;br /&gt;
+&lt;strong&gt;&lt;a href=&quot;https://github.com/phatblat/SearchController&quot;&gt;https://github.com/phatblat/SearchController&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The only other interesting aspect of this sample project is how the &lt;a href=&quot;https://github.com/phatblat/SearchController/blob/master/SearchController/SwiftKeyword.swift&quot;&gt;Swift keywords are escaped&lt;/a&gt; to serve as enum member values. Sure, it’s easier to store them as strings but where’s the fun in that?&lt;/p&gt;
+
+&lt;h2 id=&quot;other-types-of-search-results&quot;&gt;Other Types of Search Results&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;UISearchController&lt;/code&gt; is not coupled with the presentation of the search results, so we are free to use any kind of view controller to handle it. At &lt;a href=&quot;http://360idev.com&quot;&gt;360|iDev 2015&lt;/a&gt;, &lt;a href=&quot;https://twitter.com/jeremiahgage&quot; class=&quot;user-mention&quot;&gt;@jeremiahgage&lt;/a&gt; presented using a &lt;a href=&quot;https://github.com/phatblat/360iDev-Slides/blob/master/2015-Slides.md#uisearchcontroller-with-a-uicollectionview&quot;&gt;UISearchController with a UICollectionView&lt;/a&gt; which is a fabulous example especially since &lt;code&gt;UICollectionView&lt;/code&gt; is so highly customizable.&lt;/p&gt;
+
+&lt;h3 id=&quot;footnotes&quot;&gt;Footnotes&lt;/h3&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:searchbar-storyboard&quot;&gt;
+      &lt;p&gt;This was how the old, deprecated &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchDisplayController_Class/&quot;&gt;&lt;code&gt;UISearchDisplayController&lt;/code&gt;&lt;/a&gt; was often set up. There is even still a template for it in the Interface Builder Object library. &lt;img src=&quot;/images/uisearchcontroller-search-bar-and-search-display-controller.png&quot; alt=&quot;Search Bar and Search Display Controller in Interface Builder Object library pane&quot; /&gt; &lt;a href=&quot;#fnref:searchbar-storyboard&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:apple-sample-code&quot;&gt;
+      &lt;p&gt;The &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchController/#//apple_ref/doc/uid/TP40014432-CH1-SW8&quot;&gt;UISearchController&lt;/a&gt; reference documentation contains a minimal code sample. &lt;a href=&quot;#fnref:apple-sample-code&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:container-view&quot;&gt;
+      &lt;p&gt;Nothing as fancy as &lt;a href=&quot;https://www.objc.io/issues/1-view-controllers/containment-view-controller/&quot;&gt;View Controller Containment&lt;/a&gt;. Just a simple &lt;code&gt;UIView&lt;/code&gt; which we’ll be using as the parent view for the &lt;code&gt;UISearchBar&lt;/code&gt;. &lt;a href=&quot;#fnref:container-view&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:search-display-controller&quot;&gt;
+      &lt;p&gt;Do yourself a favor and never look at the API for &lt;code&gt;UISearchDisplayController&lt;/code&gt; - it’s deprecated anyway. I’m constantly confusing the two. &lt;a href=&quot;#fnref:search-display-controller&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 10 May 2016 22:31:31 -0600</pubDate>
+        <link>http://phatblat.com/2016/05/10/uisearchcontroller.html</link>
+        <guid isPermaLink="true">http://phatblat.com/2016/05/10/uisearchcontroller.html</guid>
+        
+        <category>swift,</category>
+        
+        <category>ios,</category>
+        
+        <category>tableview</category>
+        
+        
+      </item>
     
       <item>
         <title>Outlets Pod</title>
@@ -903,26 +1031,6 @@ Removing these from your account first greatly simplifies the cancellation proce
         
         <category>paypal</category>
         
-        
-      </item>
-    
-      <item>
-        <title>Radar: Support 32GB of RAM in the Mac Mini</title>
-        <description>&lt;h1 id=&quot;rdar24027356httpopenradarme24027356&quot;&gt;&lt;a href=&quot;http://openradar.me/24027356&quot;&gt;rdar://24027356&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/meme-more-ram.png&quot; alt=&quot;Christopher Walken more cowbell SNL skit&quot; title=&quot;Needs more RAM&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 01 Jan 2016 18:43:52 -0700</pubDate>
-        <link>http://phatblat.com/radars/2016/01/01/radar-support-32gb-of-ram-in-the-mac-mini.html</link>
-        <guid isPermaLink="true">http://phatblat.com/radars/2016/01/01/radar-support-32gb-of-ram-in-the-mac-mini.html</guid>
-        
-        <category>radars,</category>
-        
-        <category>mac</category>
-        
-        
-        <category>radars</category>
         
       </item>
     
