@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-2ead5b47404ca75eabf75f405953b0f6.css' media='all' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,8 +14,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatblat.com/git/tricks/2014/09/14/git-sparse-checkout.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatblat.com/feed.xml" />
+  <link rel="canonical" href="http://phatbl.at/git/tricks/2014/09/14/git-sparse-checkout.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
 
   <body>
@@ -51,6 +51,12 @@
         
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -78,85 +84,93 @@
 
 <h2 id="the-code">The Code</h2>
 
-<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">sparse_checkout.sh</span><a class="code-highlight-caption-link" href="https://gist.github.com/a5caa3bb3a3784f03000">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">tmpdir=/tmp/phatblat-images
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">subdir=images/
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">remote_git=git://github.com/phatblat/phatblat.github.io.git
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">remote_https=https://github.com/phatblat/phatblat.github.io.git
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">mkdir $tmpdir
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">cd $tmpdir
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">sparse_checkout.sh</span><a class="code-highlight-caption-link" href="https://gist.github.com/a5caa3bb3a3784f03000">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">tmpdir</span><span class="o">=</span>/tmp/phatblat-images
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">subdir</span><span class="o">=</span>images/
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">remote_git</span><span class="o">=</span>git://github.com/phatblat/phatblat.github.io.git
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">remote_https</span><span class="o">=</span>https://github.com/phatblat/phatblat.github.io.git
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">mkdir</span> <span class="nv">$tmpdir</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">cd</span> <span class="nv">$tmpdir</span>
 </div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">git init
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">git remote add -f origin $remote_git || \
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	git remote set-url origin $remote_https &amp;&amp; \
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">git remote add <span class="nt">-f</span> origin <span class="nv">$remote_git</span> <span class="o">||</span> <span class="se">\</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	git remote set-url origin <span class="nv">$remote_https</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
 </div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">	git fetch origin
-</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">git config core.sparseCheckout true
-</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">echo "$subdir" &gt; .git/info/sparse-checkout
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">git config core.sparseCheckout <span class="nb">true
+&lt;/div&gt;&lt;/div&gt;<div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">echo&lt;/span&gt; <span class="s2">"</span><span class="nv">$subdir</span><span class="s2">"</span> <span class="o">&gt;</span> .git/info/sparse-checkout
 </div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">git checkout master
-</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">open $subdir</div></div></pre></div></figure>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">open <span class="nv">$subdir</span></div></div>&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
 
-<p>I’m going to walk through this script with the lines a bit out of order; variables will be interspersed with the code that uses them. I generally build scripts with all the variables at the top to make it easy to see what can be tweaked, but having them inline makes the logic easier to follow.</p>
+I'm going to walk through this script with the lines a bit out of order; variables will be interspersed with the code that uses them. I generally build scripts with all the variables at the top to make it easy to see what can be tweaked, but having them inline makes the logic easier to follow.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">tmpdir=/tmp/phatblat-images
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">mkdir $tmpdir
 </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">cd $tmpdir
 </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">git init</div></div></pre></div></figure>
 
-<p>This sets up a fresh, empty repository in a temporary directory.</p>
+
+This sets up a fresh, empty repository in a temporary directory.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">remote_git=git://github.com/phatblat/phatblat.github.io.git
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">git remote add -f origin $remote_git</div></div></pre></div></figure>
 
-<p>The <strong>-f</strong> flag to the <code>git remote add</code> command causes git to immediately fetch from the remote when it is added. This is where this approach is less than idea. All objects in the repo are fetched from the remote, even though only a subset of the files will be checked out. However, this keeps the repo functional as I’ll talk about at the end.</p>
 
-<h2 id="git-protocol">Git Protocol</h2>
+The **-f** flag to the `git remote add` command causes git to immediately fetch from the remote when it is added. This is where this approach is less than idea. All objects in the repo are fetched from the remote, even though only a subset of the files will be checked out. However, this keeps the repo functional as I'll talk about at the end.
 
-<p>The reason for the <code>git://</code> protocol is because this is the <a href="http://git-scm.com/book/en/Git-on-the-Server-The-Protocols#The-Git-Protocol">fastest transfer protocol available</a>. This is the best approach for fast, read-only access to a repo, but could fail from inside a corporate firewall.</p>
+## Git Protocol
+
+The reason for the `git://` protocol is because this is the [fastest transfer protocol available](http://git-scm.com/book/en/Git-on-the-Server-The-Protocols#The-Git-Protocol). This is the best approach for fast, read-only access to a repo, but could fail from inside a corporate firewall.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">remote_https=https://github.com/phatblat/phatblat.github.io.git
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">git remote add -f origin $remote_git || \
 </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	git remote set-url origin $remote_https &amp;&amp; \
 </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	git fetch origin</div></div></pre></div></figure>
 
-<p>If the fetch fails due to the <code>git://</code> protocol being blocked (port 9418), the indented commands will execute and change the origin remote’s url to one that uses https and try fetching again. There is a significant delay before the fetch fails. I haven’t figured out how to shorten the timeout that git uses.</p>
+
+If the fetch fails due to the `git://` protocol being blocked (port 9418), the indented commands will execute and change the origin remote's url to one that uses https and try fetching again. There is a significant delay before the fetch fails. I haven't figured out how to shorten the timeout that git uses.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">git config core.sparseCheckout true
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">subdir=images/
 </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">echo "$subdir" &gt; .git/info/sparse-checkout</div></div></pre></div></figure>
 
-<p>The new repo is configured to with sparse checkout enabled for only the “images” folder. No other folders will be checked out.</p>
+
+The new repo is configured to with sparse checkout enabled for only the "images" folder. No other folders will be checked out.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">git checkout master</div></div></pre></div></figure>
 
-<p>The checkout is where the filtering happens. Here the <code>master</code> branch is being checked out, but only the images folder is actually being copied into the work tree.</p>
+
+The checkout is where the filtering happens. Here the `master` branch is being checked out, but only the images folder is actually being copied into the work tree.
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">subdir=images/
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">open $subdir</div></div></pre></div></figure>
 
-<p>This <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/open.1.html">open</a> command on OS X is very handy for opening a folder in the Finder.</p>
 
-<h2 id="use-cases">Use Cases</h2>
+This [open](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/open.1.html) command on OS X is very handy for opening a folder in the Finder.
 
-<h3 id="designer-managed-images">Designer-Managed Images</h3>
+## Use Cases
 
-<p>Beyond effectively downloading a subfolder, this sparse checkout has other uses. The resulting local repo is a fully functional git repo. You can browse the history and create new commits. This makes it especially handy for designers to manage images without fear of accidentally changing any other files. By checking out only the images folder, finding the existing images is also easier due to less noise from files and folders unrelated to the designers tasks.</p>
+### Designer-Managed Images
 
-<h3 id="octopress-zen-mode">Octopress Zen Mode</h3>
+Beyond effectively downloading a subfolder, this sparse checkout has other uses. The resulting local repo is a fully functional git repo. You can browse the history and create new commits. This makes it especially handy for designers to manage images without fear of accidentally changing any other files. By checking out only the images folder, finding the existing images is also easier due to less noise from files and folders unrelated to the designers tasks.
 
-<p>The <code>sparse-checkout</code> file uses the same syntax as <code>.gitignore</code>. The following lines tell git to only checkout markdown files:</p>
+### Octopress Zen Mode
+
+The `sparse-checkout` file uses the same syntax as `.gitignore`. The following lines tell git to only checkout markdown files:
 
 <figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">*.md
 </div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">*.markdown</div></div></pre></div></figure>
 
-<p>After changing the <code>.git/info/sparse-checkout</code> file, do a <code>checkout &lt;branch&gt;</code> (<code>checkout source</code> in the case of Octopress) in order to update the work tree with this new “view” of files.</p>
 
-<p><img class="center" src="/images/git-sparse-checkout-markdown.png" alt="'an image from OS X Terminal showing a tree of only markdown files'" title="Sparse checkout of only markdown files" /></p>
+After changing the `.git/info/sparse-checkout` file, do a `checkout <branch>` (`checkout source` in the case of Octopress) in order to update the work tree with this new "view" of files.
 
-<p>After getting this far into this feature of git, I may end up using it to help reduce the filesystem noise from Octopress. It always takes me a few minutes to remember where everything goes.</p>
+<img class="center" src="/images/git-sparse-checkout-markdown.png" alt="'an image from OS X Terminal showing a tree of only markdown files'" title="Sparse checkout of only markdown files" />
 
-<h2 id="caveats">Caveats</h2>
+After getting this far into this feature of git, I may end up using it to help reduce the filesystem noise from Octopress. It always takes me a few minutes to remember where everything goes.
 
-<p>Note that if you plan to use a repo with sparse checkout for creating new commits and pushing these back to a central remote, you’ll need to ditch the <code>git://</code> protocol since it can only be used for read-only access. Either HTTPS or <a href="https://help.github.com/articles/which-remote-url-should-i-use#cloning-with-ssh">SSH</a> style URLs can be used for pushing changes up. Also, if you’ve already cloned a repo using the <code>git://</code> protocol, you don’t need to re-clone it to change this protocol. Just use the <a href="https://help.github.com/articles/changing-a-remote-s-url"><code>git remote set-url</code></a> command to change the remote URL.</p>
+## Caveats
 
-<p>For more details around what you can do with it, check out the docs on <a href="http://git-scm.com/docs/git-read-tree#_sparse_checkout">sparse checkout</a>.</p>
+Note that if you plan to use a repo with sparse checkout for creating new commits and pushing these back to a central remote, you'll need to ditch the `git://` protocol since it can only be used for read-only access. Either HTTPS or [SSH](https://help.github.com/articles/which-remote-url-should-i-use#cloning-with-ssh) style URLs can be used for pushing changes up. Also, if you've already cloned a repo using the `git://` protocol, you don't need to re-clone it to change this protocol. Just use the [`git remote set-url`](https://help.github.com/articles/changing-a-remote-s-url) command to change the remote URL.
+
+For more details around what you can do with it, check out the docs on [sparse checkout](http://git-scm.com/docs/git-read-tree#_sparse_checkout).
+</branch></span></div></div></pre></div></figure>
 
   </article>
 

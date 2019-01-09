@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-2ead5b47404ca75eabf75f405953b0f6.css' media='all' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,8 +14,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatblat.com/2014/02/20/delta-service.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatblat.com/feed.xml" />
+  <link rel="canonical" href="http://phatbl.at/2014/02/20/delta-service.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
 
   <body>
@@ -43,6 +43,12 @@
         
           
           <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
           
         
           
@@ -90,7 +96,7 @@
 
 <h3 id="option-3---pre-install">Option #3 - Pre-install</h3>
 
-<p>Pre-installing the data on the client has the biggest UX benefit: immediate availablility of the data. Note that this benefit is only realized after the mobile app has been downloaded and installed from the app store. The initial download takes longer since the app bundle is larger due to the included data. A big issue with packaging the data in the app is that you have to release an update to the app in order to get updated data into the hands of your users. This is a big delay as development, testing and Apple’s review all have to complete before the update is available. The upside to this delay is that during the entire release process users have a copy of the data and can continue using it, but it’s growing stale. Additionally, users have to actually install the update. There are always some users that don’t update their apps. Depending on how critical the data is, this can be a showstopper for some apps.<br />
+<p>Pre-installing the data on the client has the biggest UX benefit: immediate availablility of the data. Note that this benefit is only realized after the mobile app has been downloaded and installed from the app store. The initial download takes longer since the app bundle is larger due to the included data. A big issue with packaging the data in the app is that you have to release an update to the app in order to get updated data into the hands of your users. This is a big delay as development, testing and Apple’s review all have to complete before the update is available. The upside to this delay is that during the entire release process users have a copy of the data and can continue using it, but it’s growing stale. Additionally, users have to actually install the update. There are always some users that don’t update their apps. Depending on how critical the data is, this can be a showstopper for some apps.
 Both RESTful and search APIs have the downside of requiring a network connection in order to get any data. Previously requested data can be served up from a cache, but that doesn’t help if the user is asking for data that hasn’t been cached. While the “download everything” and pre-installed data options require network connections to get the data into the app, once that is complete the network is no longer required. Thus, these latter options provide the best offline experience.</p>
 
 <p>So, it would seem that we have to choose between the following experiences:</p>
