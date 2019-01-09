@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +16,7 @@
   <link rel="canonical" href="http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
+
 
   <body>
 
@@ -64,6 +64,7 @@
 
 </header>
 
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
@@ -90,9 +91,9 @@
 
 <p>Syntax:</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">{%</span><span class="w"> </span><span class="nt">tweet</span><span class="w"> </span><span class="na">https</span><span class="o">:</span>//twitter.com/DEVOPS_BORAT/statuses/<span class="mi">159849628819402752</span><span class="w"> </span><span class="p">%}</span>
-</div></div></pre></div></figure>
+<!-- https://stackoverflow.com/a/5866429/39207 -->
+<pre><code class="language-liquid">{% tweet https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
+</code></pre>
 
 <h2 id="jekyll-twitter-plugin">jekyll-twitter-plugin</h2>
 
@@ -100,9 +101,8 @@
 
 <p>The syntax is very similar:</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">{%</span><span class="w"> </span><span class="nt">twitter</span><span class="w"> </span>oembed<span class="w"> </span><span class="na">https</span><span class="o">:</span>//twitter.com/DepressedDarth/status/<span class="mi">683671063855759360</span><span class="w"> </span><span class="p">%}</span>
-</div></div></pre></div></figure>
+<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/683671063855759360 %}
+</code></pre>
 
 <div class="jekyll-twitter-plugin">
 <blockquote class="twitter-tweet">
@@ -121,9 +121,8 @@
 
 <p>There are a few formatting options, such as <code>align</code> and <code>width</code>:</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">{%</span><span class="w"> </span><span class="nt">twitter</span><span class="w"> </span>oembed<span class="w"> </span><span class="na">https</span><span class="o">:</span>//twitter.com/DepressedDarth/status/<span class="mi">684318431227727872</span><span class="w"> </span><span class="na">align</span><span class="o">=</span><span class="s1">'center'</span><span class="w"> </span><span class="na">width</span><span class="o">=</span><span class="s1">'220'</span><span class="w"> </span><span class="p">%}</span>
-</div></div></pre></div></figure>
+<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 align='center' width='220' %}
+</code></pre>
 
 <div class="jekyll-twitter-plugin">
 <blockquote class="twitter-tweet" align="center">
@@ -138,9 +137,8 @@
 
 <p>This plugin will pass along any extra parameters like <code>hide_media</code> to the <a href="https://dev.twitter.com/rest/reference/get/statuses/oembed">oembed API</a> for further customization.</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">{%</span><span class="w"> </span><span class="nt">twitter</span><span class="w"> </span>oembed<span class="w"> </span><span class="na">https</span><span class="o">:</span>//twitter.com/DepressedDarth/status/<span class="mi">684318431227727872</span><span class="w"> </span><span class="na">hide_media</span><span class="o">=</span><span class="s1">'true'</span><span class="w"> </span><span class="p">%}</span>
-</div></div></pre></div></figure>
+<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 hide_media='true' %}
+</code></pre>
 
 <div class="jekyll-twitter-plugin">
 <blockquote class="twitter-tweet" data-cards="hidden">
@@ -169,19 +167,16 @@
 
 <p>Here is a very simple untracked file based solution. I created an <code>.env</code> file containing each environment variable on a separate line like so:</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nv">TWITTER_CONSUMER_KEY</span><span class="o">=</span>...
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nv">TWITTER_CONSUMER_SECRET</span><span class="o">=</span>...
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nv">TWITTER_ACCESS_TOKEN</span><span class="o">=</span>...
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nv">TWITTER_ACCESS_TOKEN_SECRET</span><span class="o">=</span>...</div></div></pre></div></figure>
+<pre><code class="language-bash">TWITTER_CONSUMER_KEY=...
+TWITTER_CONSUMER_SECRET=...
+TWITTER_ACCESS_TOKEN=...
+TWITTER_ACCESS_TOKEN_SECRET=...
+</code></pre>
 
 <p>The values in this file are then loaded into the environment for the Jekyll process on the fly using the <code>env</code> command.</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nb">env</span> <span class="k">$(</span><span class="nb">cat</span> .env | xargs<span class="k">)</span> bundle <span class="nb">exec </span>jekyll serve</div></div></pre></div></figure>
+<pre><code class="language-bash">env $(cat .env | xargs) bundle exec jekyll serve
+</code></pre>
 
 <p>This is wrapped up neatly in a <a href="https://github.com/phatblat/dotfiles/blob/89dace6e7f9230e0b7f3ded261172f6bf7af2317/.dotfiles/www/octopress.zsh#L28"><code>serve</code></a> alias so I don’t have to type (or remember) all that each time.</p>
 
@@ -191,9 +186,8 @@
 
 <p>Note that the above environment variables can be loaded into the shell using the builtin <code>export</code> command instead of <code>env</code>. That is fine for testing, but leaves them defined in the environment for any other process to read.</p>
 
-<figure class="code-highlight-figure wrap"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nb">echo</span> <span class="nv">$TWITTER_CONSUMER_KEY</span>
-</div></div></pre></div></figure>
+<pre><code class="language-bash">echo $TWITTER_CONSUMER_KEY
+</code></pre>
 
 <p>I tend to forget about this sort of thing (it works, <img class="emoji" title=":shipit:" alt=":shipit:" src="https://assets-cdn.github.com/images/icons/emoji/shipit.png" height="20" width="20">!) and would rather limit the exposure of sensitive values to the exact scope that they are needed.</p>
 
@@ -268,6 +262,7 @@
   </div>
 
 </footer>
+
 
   </body>
 

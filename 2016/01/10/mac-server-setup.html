@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +16,7 @@
   <link rel="canonical" href="http://phatbl.at/2016/01/10/mac-server-setup.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
+
 
   <body>
 
@@ -64,6 +64,7 @@
 
 </header>
 
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
@@ -98,35 +99,37 @@
 
 <p>The values behind the Energy Saver preferences pane appear to be stored in User Defaults and can be read with the following command:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement</div></div></pre></div></figure>
+<pre><code>defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
+</code></pre>
 
 <p>The “Automatic Restart On Power Loss” key is the most important.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">{
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    ActivePowerProfiles =      {
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">        "AC Power" = "-1";
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    };
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    "Custom Profile" =     {
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">        "AC Power" =         {
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">            "AutoPowerOff Delay" = 14400;
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">            "AutoPowerOff Enabled" = 1;
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">            "Automatic Restart On Power Loss" = 1;
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">            DarkWakeBackgroundTasks = 0;
-</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">            "Disk Sleep Timer" = 0;
-</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">            "Display Sleep Timer" = 0;
-</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">            "Hibernate File" = "/var/vm/sleepimage";
-</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">            "Hibernate Mode" = 0;
-</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">            PrioritizeNetworkReachabilityOverSleep = 0;
-</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">            "Sleep On Power Button" = 1;
-</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">            "Standby Delay" = 4200;
-</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">            "Standby Enabled" = 1;
-</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line">            "System Sleep Timer" = 0;
-</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">            TTYSPreventSleep = 1;
-</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">            "Wake On LAN" = 1;
-</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">        };
-</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">        Defaults = 1;
-</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line">    };
-</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">}</div></div></pre></div></figure>
+<pre><code>{
+    ActivePowerProfiles =      {
+        "AC Power" = "-1";
+    };
+    "Custom Profile" =     {
+        "AC Power" =         {
+            "AutoPowerOff Delay" = 14400;
+            "AutoPowerOff Enabled" = 1;
+            "Automatic Restart On Power Loss" = 1;
+            DarkWakeBackgroundTasks = 0;
+            "Disk Sleep Timer" = 0;
+            "Display Sleep Timer" = 0;
+            "Hibernate File" = "/var/vm/sleepimage";
+            "Hibernate Mode" = 0;
+            PrioritizeNetworkReachabilityOverSleep = 0;
+            "Sleep On Power Button" = 1;
+            "Standby Delay" = 4200;
+            "Standby Enabled" = 1;
+            "System Sleep Timer" = 0;
+            TTYSPreventSleep = 1;
+            "Wake On LAN" = 1;
+        };
+        Defaults = 1;
+    };
+}
+</code></pre>
 
 <p>Because of the way these settings are stored, they are difficult to set using the <code>defaults</code> command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.</p>
 
@@ -134,33 +137,35 @@
 
 <p>A better approach for manipulating these values from the command line is to use the <code>pmset</code> command. This utility can be used to read the current Energy Saver values (read them all with <code>pmset -g</code>, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">pmset -g
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">Active Profiles:
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">AC Power                -1* Currently in use:
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> standby              1
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> Sleep On Power Button 1
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> womp                 1
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"> autorestart          1
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"> hibernatefile        /var/vm/sleepimage
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> powernap             0
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"> networkoversleep     0
-</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"> disksleep            0
-</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line"> sleep                0
-</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line"> autopoweroffdelay    14400
-</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line"> hibernatemode        0
-</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"> autopoweroff         1
-</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line"> ttyskeepawake        1
-</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line"> displaysleep         0
-</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"> standbydelay         4200</div></div></pre></div></figure>
+<pre><code>pmset -g
+Active Profiles:
+AC Power                -1* Currently in use:
+ standby              1
+ Sleep On Power Button 1
+ womp                 1
+ autorestart          1
+ hibernatefile        /var/vm/sleepimage
+ powernap             0
+ networkoversleep     0
+ disksleep            0
+ sleep                0
+ autopoweroffdelay    14400
+ hibernatemode        0
+ autopoweroff         1
+ ttyskeepawake        1
+ displaysleep         0
+ standbydelay         4200
+</code></pre>
 
 <h3 id="tldr">TL;DR</h3>
 
 <p>These are the values you will always want to change when setting up a Mac server:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">sudo pmset -c sleep 0
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">sudo pmset -c displaysleep 0
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">sudo pmset -c disksleep 0
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">sudo pmset -c autorestart 1</div></div></pre></div></figure>
+<pre><code>sudo pmset -c sleep 0
+sudo pmset -c displaysleep 0
+sudo pmset -c disksleep 0
+sudo pmset -c autorestart 1
+</code></pre>
 
 <h1 id="references">References</h1>
 
@@ -235,6 +240,7 @@
   </div>
 
 </footer>
+
 
   </body>
 

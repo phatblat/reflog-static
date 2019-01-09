@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +16,7 @@
   <link rel="canonical" href="http://phatbl.at/cocoapods/shell/2014/07/30/pod-install.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
+
 
   <body>
 
@@ -64,6 +64,7 @@
 
 </header>
 
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
@@ -78,22 +79,25 @@
 
 <p>Even when the pod version specifiers haven’t changed, CocoaPods reaches out to fetch any updates to the <code>master</code> spec repo, along with any private spec repos that may be configured. During local development of a pod, this slows down the process unnecessarily as the only changes you care about are local to your hard drive.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">$ pod install --verbose
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">Analyzing dependencies
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">Updating spec repositories
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  $ /usr/local/bin/git rev-parse  &gt;/dev/null 2&gt;&amp;1
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">  $ /usr/local/bin/git ls-remote
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  From https://github.com/CocoaPods/Specs.git
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">  f83cbf438a0f80b7df76534ffa08efcb359ce982	HEAD
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">  f83cbf438a0f80b7df76534ffa08efcb359ce982	refs/heads/master
-</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">  fe7df26fe5545072c11abac241d73087a29e87d9	refs/pull/1/head
-</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">  1748dab37fe08120775777a084e0fb9da10c4a63	refs/pull/1/merge
-</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">  ...
-</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">  5a7c7be28f0859865035c324e625c507cf858f4a  refs/pull/9998/head
-</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">  7a19ff8bfbaf00a485ca2274a229205d715dcbf7  refs/pull/9999/head
-</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">Updating spec repo `master`
-</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">  $ /usr/local/bin/git pull --ff-only
-</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">  ...yawn...</div></div></pre></div></figure>
+<pre><code>$ pod install --verbose
+
+Analyzing dependencies
+
+Updating spec repositories
+  $ /usr/local/bin/git rev-parse  &gt;/dev/null 2&gt;&amp;1
+  $ /usr/local/bin/git ls-remote
+  From https://github.com/CocoaPods/Specs.git
+  f83cbf438a0f80b7df76534ffa08efcb359ce982	HEAD
+  f83cbf438a0f80b7df76534ffa08efcb359ce982	refs/heads/master
+  fe7df26fe5545072c11abac241d73087a29e87d9	refs/pull/1/head
+  1748dab37fe08120775777a084e0fb9da10c4a63	refs/pull/1/merge
+  ...
+  5a7c7be28f0859865035c324e625c507cf858f4a  refs/pull/9998/head
+  7a19ff8bfbaf00a485ca2274a229205d715dcbf7  refs/pull/9999/head
+Updating spec repo `master`
+  $ /usr/local/bin/git pull --ff-only
+  ...yawn...
+</code></pre>
 
 <!-- more -->
 
@@ -103,7 +107,8 @@
 
 <p>Since that is way too much to type for such a common command to fly across my terminal, I like to wrap these up in a nice, short <a href="https://github.com/phatblat/dotfiles/blob/master/.dotfiles/shell/alias.zsh#L31">alias</a>.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">alias pi='pod install --no-repo-update'</div></div></pre></div></figure>
+<pre><code>alias pi='pod install --no-repo-update'
+</code></pre>
 
 <p>Another situation where suppressing this automatic spec repo update is helpful is when you have unreliable or no network connection. The spec repo update is going to fail anyway.</p>
 
@@ -172,6 +177,7 @@
   </div>
 
 </footer>
+
 
   </body>
 

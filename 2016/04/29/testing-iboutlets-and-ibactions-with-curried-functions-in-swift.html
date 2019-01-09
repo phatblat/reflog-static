@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +16,7 @@
   <link rel="canonical" href="http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
+
 
   <body>
 
@@ -64,6 +64,7 @@
 
 </header>
 
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
@@ -104,33 +105,38 @@
 
 <p>Swift 2 has syntactic sugar for defining curried functions.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int)(_ B: Int)(_ C: Int) -&gt; Int {
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return A + B + C
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">}</div></div></pre></div></figure>
+<pre><code>func sum(A: Int)(_ B: Int)(_ C: Int) -&gt; Int {
+  return A + B + C
+}
+</code></pre>
 
 <p>This <code>sum</code> function can be called in a number of ways:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">let sumA = sum(1)     // Int -&gt; Int -&gt; Int
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">let sumAB = sumA(2)   // Int -&gt; Int
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">sum(1)(2)(3)          // 6
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">sumA(2)(3)            // 6
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">sumAB(3)              // 6</div></div></pre></div></figure>
+<pre><code>let sumA = sum(1)     // Int -&gt; Int -&gt; Int
+let sumAB = sumA(2)   // Int -&gt; Int
+
+sum(1)(2)(3)          // 6
+sumA(2)(3)            // 6
+sumAB(3)              // 6
+</code></pre>
 
 <p>In this example, the <code>sumA</code> function has captured the value of the <code>A</code> parameter (1), whereas <code>sumAB</code> has captured the values of both the <code>A</code> and <code>B</code> parameters (1 and 2). When the final <code>C</code> parameter is passed to any of these functions the resulting <code>Int</code> value (6) is returned.</p>
 
 <p>An equivalent <code>sum</code> function using the more verbose curried function syntax shows that it is really a set of nested functions.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func sum(A: Int) -&gt; (Int -&gt; (Int -&gt; Int)) {
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  return { B in
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    return { C in
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">      return A + B + C
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    }
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  }
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">}</div></div></pre></div></figure>
+<pre><code>func sum(A: Int) -&gt; (Int -&gt; (Int -&gt; Int)) {
+  return { B in
+    return { C in
+      return A + B + C
+    }
+  }
+}
+</code></pre>
 
 <p>This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which transforms a multi-parameter function into its curried version. <sup id="fnref:curry-func"><a href="#fn:curry-func" class="footnote">1</a></sup></p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">func curry(f: (A,B)-&gt;C) -&gt; A-&gt;B-&gt;C</div></div></pre></div></figure>
+<pre><code>func curry(f: (A,B)-&gt;C) -&gt; A-&gt;B-&gt;C
+</code></pre>
 
 <p>The thoughtbot <a href="https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift">Curry library</a> has all the variations of the <code>curry</code> function up to 19 parameters.</p>
 
@@ -142,10 +148,10 @@
 
 <p>Just look at how beautiful this is!</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nf">it</span><span class="p">(</span><span class="s">"has a leftButton outlet"</span><span class="p">)</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="nf">hasButtonOutlet</span><span class="p">(</span><span class="s">"leftButton"</span><span class="p">)</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">it("has a leftButton outlet") {
+  hasButtonOutlet("leftButton")
+}
+</code></pre>
 
 <blockquote>
   <p>This is a BDD-style test using the <a href="https://github.com/Quick/Quick">Quick</a> framework.</p>
@@ -153,41 +159,41 @@
 
 <p>So, what is that <code>hasButtonOutlet</code> magic? It’s a <a href="https://en.m.wikipedia.org/wiki/Partial_application">partially-applied</a> function saved in a local variable. This is how it is created:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">class</span> <span class="kt">ViewControllerSpec</span><span class="p">:</span> <span class="kt">QuickSpec</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">override</span> <span class="kd">func</span> <span class="nf">spec</span><span class="p">()</span> <span class="p">{</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="o">!</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nv">hasButtonOutlet</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">UIButton</span><span class="p">?)</span><span class="o">!</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="nf">describe</span><span class="p">(</span><span class="s">"view controller"</span><span class="p">)</span> <span class="p">{</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">beforeEach</span> <span class="p">{</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">viewController</span> <span class="o">=</span> <span class="o">...</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">hasButtonOutlet</span> <span class="o">=</span> <span class="nf">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span>
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">}</span>
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="o">...</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">class ViewControllerSpec: QuickSpec {
+  override func spec() {
+    var viewController: UIViewController!
+    var hasButtonOutlet: (String -&gt; UIButton?)!
+    describe("view controller") {
+      beforeEach {
+        viewController = ...
+        hasButtonOutlet = outlet(viewController)
+      }
+      ...
+</code></pre>
 
 <p>The return type in the <code>hasButtonOutlet</code> declaration (<code>UIButton</code> in the above example) is the type used for validation inside the generic <code>outlet</code> function below.</p>
 
 <p>Calling the <code>outlet</code> full function would look like this:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nf">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)(</span><span class="s">"leftDoneButton"</span><span class="p">)</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">outlet(viewController)("leftDoneButton")
+</code></pre>
 
 <p>But, you might as well just have a plain, old multi-parameter function if you want all that. Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.</p>
 
 <p>Here is a condensed definition of the <code>outlet</code> curried function:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="n">outlet</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">{</span> <span class="p">(</span><span class="nv">expectedOutlet</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span> <span class="k">in</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">guard</span> <span class="k">let</span> <span class="nv">object</span> <span class="o">=</span> <span class="n">viewController</span><span class="o">.</span><span class="nf">valueForKey</span><span class="p">(</span><span class="n">expectedOutlet</span><span class="p">)</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">else</span> <span class="p">{</span> <span class="nf">fail</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">expectedOutlet</span><span class="se">)</span><span class="s"> outlet was nil"</span><span class="p">);</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">guard</span> <span class="k">let</span> <span class="nv">objectOfType</span> <span class="o">=</span> <span class="n">object</span> <span class="k">as?</span> <span class="kt">T</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">else</span> <span class="p">{</span> <span class="nf">fail</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">object</span><span class="se">)</span><span class="s"> outlet was not a </span><span class="se">\(</span><span class="kt">T</span><span class="o">.</span><span class="k">self</span><span class="se">)</span><span class="s">"</span><span class="p">);</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">return</span> <span class="n">objectOfType</span>
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">}</span>
-</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">func outlet&lt;T&gt;(viewController: UIViewController) -&gt; (String) -&gt; T? {
+  return { (expectedOutlet: String) -&gt; T? in
+    guard let object = viewController.valueForKey(expectedOutlet)
+      else { fail("\(expectedOutlet) outlet was nil"); return nil }
+
+    guard let objectOfType = object as? T
+      else { fail("\(object) outlet was not a \(T.self)"); return nil }
+
+    return objectOfType
+  }
+}
+</code></pre>
 
 <blockquote>
   <p>The <code>fail</code> function is part of the <a href="https://github.com/Quick/Nimble">Nimble</a> matcher framework</p>
@@ -197,59 +203,62 @@
 
 <p>The action assertion functions are similarly simple.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nf">it</span><span class="p">(</span><span class="s">"receives a didTapLeftButton: action from leftButton"</span><span class="p">)</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="nf">receivesAction</span><span class="p">(</span><span class="s">"didTapLeftButton:"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"leftButton"</span><span class="p">)</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">it("receives a didTapLeftButton: action from leftButton") {
+  receivesAction("didTapLeftButton:", from: "leftButton")
+}
+</code></pre>
 
 <p>One caveat is that they require an outlet on the thing sending the action. A lot of the time an outlet isn’t necessary for an action-sending UI element, but I haven’t found a way to get the actions from the view controller (yet).</p>
 
 <p>Here is the setup for the partially-applied <code>receivesAction</code>:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">class</span> <span class="kt">ViewControllerSpec</span><span class="p">:</span> <span class="kt">QuickSpec</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">override</span> <span class="kd">func</span> <span class="nf">spec</span><span class="p">()</span> <span class="p">{</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nv">receivesAction</span><span class="p">:</span> <span class="p">((</span><span class="kt">String</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span><span class="o">!</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="nf">describe</span><span class="p">(</span><span class="s">"view controller"</span><span class="p">)</span> <span class="p">{</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">beforeEach</span> <span class="p">{</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">viewController</span> <span class="o">=</span> <span class="o">...</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">receivesAction</span> <span class="o">=</span> <span class="nf">action</span><span class="p">(</span><span class="n">viewController</span><span class="p">)</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">}</span>
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="o">...</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">class ViewControllerSpec: QuickSpec {
+    override func spec() {
+    var receivesAction: ((String, from: String) -&gt; Void)!
+    describe("view controller") {
+      beforeEach {
+        viewController = ...
+        receivesAction = action(viewController)
+      }
+      ...
+</code></pre>
 
 <p>Implementation of the <code>action</code> function is more complex as getting to the IBAction differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test"><a href="#fn:action-test" class="footnote">2</a></sup></p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="nf">action</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">{</span> <span class="p">(</span><span class="nv">expectedAction</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">expectedOutlet</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">in</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">let</span> <span class="nv">optionalControl</span> <span class="o">=</span> <span class="nf">outlet</span><span class="p">(</span><span class="n">viewController</span><span class="p">)(</span><span class="n">expectedOutlet</span><span class="p">)</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nv">target</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">var</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">if</span> <span class="k">let</span> <span class="nv">control</span> <span class="o">=</span> <span class="n">optionalControl</span> <span class="p">{</span>
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">switch</span> <span class="n">control</span> <span class="p">{</span>
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">case</span> <span class="k">let</span> <span class="nv">button</span> <span class="k">as</span> <span class="kt">UIBarButtonItem</span><span class="p">:</span>
-</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">target</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">target</span>
-</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">action</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">description</span>
-</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">case</span> <span class="k">let</span> <span class="nv">control</span> <span class="k">as</span> <span class="kt">UIControl</span><span class="p">:</span>
-</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">target</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="nf">allTargets</span><span class="p">()</span><span class="o">.</span><span class="n">first</span><span class="o">!</span>
-</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">var</span> <span class="nv">allActions</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">for</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">UIControlEvents</span> <span class="k">in</span> <span class="p">[</span><span class="o">.</span><span class="kt">TouchUpInside</span><span class="p">,</span> <span class="o">.</span><span class="kt">ValueChanged</span><span class="p">]</span> <span class="p">{</span>
-</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="n">allActions</span> <span class="o">+=</span> <span class="n">control</span><span class="o">.</span><span class="nf">actionsForTarget</span><span class="p">(</span><span class="n">target</span><span class="o">!</span><span class="p">,</span> <span class="nv">forControlEvent</span><span class="p">:</span> <span class="n">event</span><span class="p">)</span> <span class="p">??</span> <span class="p">[]</span>
-</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="p">}</span>
-</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="c1">// Filter down to the expected action</span>
-</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">action</span> <span class="o">=</span> <span class="n">allActions</span><span class="o">.</span><span class="nf">filter</span><span class="p">({</span><span class="nv">$0</span> <span class="o">==</span> <span class="n">expectedAction</span><span class="p">})</span><span class="o">.</span><span class="n">first</span>
-</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">default</span><span class="p">:</span>
-</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="nf">fail</span><span class="p">(</span><span class="s">"Unhandled control type: </span><span class="se">\(</span><span class="n">control</span><span class="o">.</span><span class="k">dynamicType</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">}</span>
-</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="p">}</span>
-</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="nf">expect</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">===</span> <span class="n">viewController</span>
-</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="nf">expect</span><span class="p">(</span><span class="n">action</span><span class="p">)</span><span class="o">.</span><span class="nf">toNot</span><span class="p">(</span><span class="nf">beNil</span><span class="p">())</span>
-</div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">if</span> <span class="k">let</span> <span class="nv">action</span> <span class="o">=</span> <span class="n">action</span> <span class="p">{</span>
-</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="nf">expect</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">==</span> <span class="n">expectedAction</span>
-</div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="p">}</span>
-</div></div><div data-line="32" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">}</span>
-</div></div><div data-line="33" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">func action(viewController: UIViewController) -&gt; (String, from: String) -&gt; Void {
+  return { (expectedAction: String, expectedOutlet: String) in
+    let optionalControl = outlet(viewController)(expectedOutlet)
+
+    var target: AnyObject?
+    var action: String?
+
+    if let control = optionalControl {
+      switch control {
+      case let button as UIBarButtonItem:
+        target = button.target
+        action = button.action.description
+      case let control as UIControl:
+        target = control.allTargets().first!
+        var allActions: [String] = []
+        for event: UIControlEvents in [.TouchUpInside, .ValueChanged] {
+          allActions += control.actionsForTarget(target!, forControlEvent: event) ?? []
+        }
+
+        // Filter down to the expected action
+        action = allActions.filter({$0 == expectedAction}).first
+      default:
+        fail("Unhandled control type: \(control.dynamicType)")
+      }
+    }
+
+    expect(target) === viewController
+    expect(action).toNot(beNil())
+    if let action = action {
+      expect(action) == expectedAction
+    }
+  }
+}
+</code></pre>
 
 <blockquote>
   <p>The <code>expect</code> function is part of the <a href="https://github.com/Quick/Nimble">Nimble</a> matcher framework</p>
@@ -273,27 +282,25 @@
 
 <p>Isn’t this:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="nf">fourChainedFunctions</span><span class="p">(</span><span class="nv">a</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)(</span><span class="nv">b</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)(</span><span class="nv">c</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)(</span><span class="nv">d</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">func fourChainedFunctions(a: Int)(b: Int)(c: Int)(d: Int) -&gt; Int {
+  return a + b + c + d
+}
+</code></pre>
 
 <p>…so much cleaner than this? <sup id="fnref:curried-function-example"><a href="#fn:curried-function-example" class="footnote">5</a></sup></p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="nf">fourChainedFunctions</span><span class="p">(</span><span class="nv">a</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Int</span> <span class="o">-&gt;</span> <span class="kt">Int</span><span class="p">)))</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">return</span> <span class="p">{</span> <span class="n">b</span> <span class="k">in</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">return</span> <span class="p">{</span> <span class="n">c</span> <span class="k">in</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">return</span> <span class="p">{</span> <span class="n">d</span> <span class="k">in</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="p">}</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="p">}</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">}</span>
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">}</span>
-</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="nf">fourChainedFunctions</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">func fourChainedFunctions(a: Int) -&gt; (Int -&gt; (Int -&gt; (Int -&gt; Int))) {
+  return { b in
+    return { c in
+      return { d in
+        return a + b + c + d
+      }
+    }
+  }
+}
+
+fourChainedFunctions(1)(2)(3)(4)
+</code></pre>
 
 <p>Versions of these outlet/action assertion functions using the older, cleaner syntactic-sugary function currying can be reviewed on the <a href="https://github.com/phatblat/CurriedOutletFunctions/blob/deprecated-syntax/CurriedOutletFunctionsTests/SpecFunctions.swift#L47"><code>deprecated-syntax</code></a> tag of the example repo.</p>
 
@@ -389,6 +396,7 @@
   </div>
 
 </footer>
+
 
   </body>
 

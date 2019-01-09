@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-  <link href='/stylesheets/all-90567932d019259f00f955625514a431.css' media='all' rel='stylesheet' type='text/css'>
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +16,7 @@
   <link rel="canonical" href="http://phatbl.at/2016/05/10/uisearchcontroller.html">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
+
 
   <body>
 
@@ -64,6 +64,7 @@
 
 </header>
 
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
@@ -82,13 +83,13 @@
 
 <p>What’s unexpected about <code>UISearchController</code> is that you have to <em>install</em> its <code>searchBar</code> into the view hierarchy. You can’t connect it to an existing <code>UISearchBar</code> defined in a storyboard.<sup id="fnref:searchbar-storyboard"><a href="#fn:searchbar-storyboard" class="footnote">1</a></sup> If you’re just adding the search bar to the top of a table, like in Apple’s sample code<sup id="fnref:apple-sample-code"><a href="#fn:apple-sample-code" class="footnote">2</a></sup>, you can just make it the <code>tableHeaderView</code>. But just about any other situation is going to have to deal with auto layout.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">let</span> <span class="nv">searchBar</span> <span class="o">=</span> <span class="n">searchController</span><span class="o">.</span><span class="n">searchBar</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">searchBar</span><span class="o">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="kt">FlexibleWidth</span><span class="p">,</span> <span class="o">.</span><span class="kt">FlexibleHeight</span><span class="p">]</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">searchBarContainerView</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">searchBar</span><span class="p">)</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">override func viewDidLoad() {
+  super.viewDidLoad()
+  let searchBar = searchController.searchBar
+  searchBar.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+  searchBarContainerView.addSubview(searchBar)
+}
+</code></pre>
 
 <p>We’re going to reserve some space in the UI using a “container” view<sup id="fnref:container-view"><a href="#fn:container-view" class="footnote">3</a></sup>. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.</p>
 
@@ -108,20 +109,15 @@
 
 <p>A <code>UISearchController</code> must be set up in code and it’s constructor takes a single argument - a <code>UIViewController</code> which is going to display the search results. Here we pass in a reference to our <code>searchResultsController</code> stored in a property.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="k">let</span> <span class="nv">searchController</span> <span class="o">=</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="kt">UISearchController</span><span class="p">(</span><span class="nv">searchResultsController</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">searchResultsController</span><span class="p">)</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="n">searchController</span><span class="o">.</span><span class="n">searchResultsUpdater</span> <span class="o">=</span> <span class="k">self</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="n">searchController</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="n">searchController</span><span class="o">.</span><span class="n">searchBar</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="n">searchController</span><span class="o">.</span><span class="n">hidesNavigationBarDuringPresentation</span> <span class="o">=</span> <span class="kc">true</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="n">searchController</span><span class="o">.</span><span class="n">dimsBackgroundDuringPresentation</span> <span class="o">=</span> <span class="kc">false</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">let searchController =
+  UISearchController(searchResultsController: self.searchResultsController)
+searchController.searchResultsUpdater = self
+searchController.delegate = self
+searchController.searchBar.delegate = self
+
+searchController.hidesNavigationBarDuringPresentation = true
+searchController.dimsBackgroundDuringPresentation = false
+</code></pre>
 
 <p>There is little interaction with <code>UISearchController</code> beyond creating one, configuring it and connecting it to the following:</p>
 
@@ -136,12 +132,11 @@
 
 <p>The <code>UISearchResultsUpdating</code> protocol is very simple, but it’s where all the fun happens:</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="nf">updateSearchResultsForSearchController</span><span class="p">(</span><span class="nv">searchController</span><span class="p">:</span> <span class="kt">UISearchController</span><span class="p">)</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">guard</span> <span class="k">let</span> <span class="nv">searchTerm</span> <span class="o">=</span> <span class="n">searchController</span><span class="o">.</span><span class="n">searchBar</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="c1">// use searchTerm to filter search results</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="o">...</span>
-</div></div></pre></div></figure>
+<pre><code class="language-swift">func updateSearchResultsForSearchController(searchController: UISearchController)
+  guard let searchTerm = searchController.searchBar.text else { return }
+  // use searchTerm to filter search results
+  ...
+</code></pre>
 
 <p>This method is called whenever the text changes in the search bar. The current text can be accessed through the <code>searchController</code> parameter. Any object can handle these updates.</p>
 
@@ -155,16 +150,16 @@
 
 <p>The “main” view controller will use the number of results displayed to determine when to show and hide the “no results” view.</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="o">...</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">let</span> <span class="nv">displayedResultCount</span> <span class="o">=</span> <span class="n">searchResultsController</span><span class="o">.</span><span class="nf">filterData</span><span class="p">(</span><span class="n">searchTerm</span><span class="p">)</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="nf">handleEmptyResults</span><span class="p">(</span><span class="n">displayedResultCount</span><span class="p">)</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="p">}</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">
-<span class="kd">func</span> <span class="nf">handleEmptyResults</span><span class="p">(</span><span class="nv">displayedResults</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="p">{</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">let</span> <span class="nv">showEmptyResultsView</span> <span class="o">=</span> <span class="p">(</span><span class="n">searchController</span><span class="o">.</span><span class="n">active</span> <span class="o">&amp;&amp;</span> <span class="n">displayedResults</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">emptyResultsView</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="o">!</span><span class="n">showEmptyResultsView</span>
-</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">}</span></div></div></pre></div></figure>
+<pre><code class="language-swift">  ...
+  let displayedResultCount = searchResultsController.filterData(searchTerm)
+  handleEmptyResults(displayedResultCount)
+}
+
+func handleEmptyResults(displayedResults: Int) {
+  let showEmptyResultsView = (searchController.active &amp;&amp; displayedResults == 0)
+  emptyResultsView.hidden = !showEmptyResultsView
+}
+</code></pre>
 
 <p>This <code>emptyResultsView</code> is defined in the storyboard and initially hidden.</p>
 
@@ -262,6 +257,7 @@
   </div>
 
 </footer>
+
 
   </body>
 
