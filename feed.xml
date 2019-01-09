@@ -6,9 +6,234 @@
 </description>
     <link>http://phatbl.at/</link>
     <atom:link href="http://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 Jan 2019 19:50:33 -0700</pubDate>
-    <lastBuildDate>Tue, 08 Jan 2019 19:50:33 -0700</lastBuildDate>
+    <pubDate>Tue, 08 Jan 2019 22:12:40 -0700</pubDate>
+    <lastBuildDate>Tue, 08 Jan 2019 22:12:40 -0700</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Intercepting stdout in Swift</title>
+        <description>&lt;p&gt;In the process of creating tests for &lt;a href=&quot;https://github.com/mas-cli/mas&quot;&gt;mas&lt;/a&gt;,
+I needed to validate the text that was being output to stdout for the user.
+One way to do this would be to introduce a façade for output.
+This output controller would have a production version that uses the typical &lt;code&gt;print&lt;/code&gt;
+function and the test version stores the strings sent to it so that the values
+can be compared to the expected values. However, I figured I would try to
+intercept character data sent to stdout instead. While this isn’t too difficult,
+restoring the original stdout ended up being rather tricky as there wasn’t a good
+example to copy.&lt;/p&gt;
+
+&lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Store characters written to stdout in a &lt;code&gt;String&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Pass the unmodified data through so it can be viewed in the Xcode console&lt;/li&gt;
+  &lt;li&gt;Only used for unit tests&lt;/li&gt;
+  &lt;li&gt;Don’t break anything&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;research&quot;&gt;Research&lt;/h2&gt;
+
+&lt;p&gt;As the first step in &lt;a href=&quot;https://dzone.com/articles/stack-overflow-driven-development-sodd-its-really&quot;&gt;SODD&lt;/a&gt;,
+I made sure to Google whether anyone had figured this out before.
+@ericasadun has a great post on 
+&lt;a href=&quot;https://ericasadun.com/2015/05/22/swift-logging/&quot;&gt;Swift Logging&lt;/a&gt;,
+but it’s from the Swift 1-2 days and a bit dated now. Plus, I dislike calling C
+functions from Swift and want to minimize the use of C APIs.&lt;/p&gt;
+
+&lt;p&gt;I found a newer post by @thesaadismail on
+&lt;a href=&quot;https://medium.com/@thesaadismail/eavesdropping-on-swifts-print-statements-57f0215efb42&quot;&gt;Eavesdropping on Swift’s Print Statements&lt;/a&gt;
+which served as my starting point. There are a few key points in his post:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;dup2&lt;/code&gt; can be used to connect a &lt;code&gt;Pipe&lt;/code&gt; to an existing file handle like stdout&lt;/li&gt;
+  &lt;li&gt;use both an input &lt;code&gt;Pipe&lt;/code&gt; and an output &lt;code&gt;Pipe&lt;/code&gt; if you want to have output continue to appear in the Xcode console&lt;/li&gt;
+  &lt;li&gt;don’t read from &lt;code&gt;Pipe&lt;/code&gt;s directly as they will block the current thread
+    &lt;ul&gt;
+      &lt;li&gt;instead use &lt;code&gt;readInBackgroundAndNotify()&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;I created a class to hold this funcationality so that it could be reused by different tests.&lt;/p&gt;
+
+&lt;h3 id=&quot;outputlistener&quot;&gt;OutputListener&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;class OutputListener {
+    /// consumes the messages on STDOUT
+    let inputPipe = Pipe()
+
+    /// outputs messages back to STDOUT
+    let outputPipe = Pipe()
+
+    /// Buffers strings written to stdout
+    var contents = &quot;&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here we have the minimal storage for my implementation. &lt;code&gt;inputPipe&lt;/code&gt; will bring input to
+my test listener, &lt;code&gt;outputPipe&lt;/code&gt; will handle sending text back to stdout and &lt;code&gt;contents&lt;/code&gt;
+will build up a string of all the data that passes through.&lt;/p&gt;
+
+&lt;h3 id=&quot;init&quot;&gt;init&lt;/h3&gt;
+
+&lt;p&gt;One-time setup code to wire up the two &lt;code&gt;Pipe&lt;/code&gt;s and capture &lt;code&gt;contents&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;init() {
+    // Set up a read handler which fires when data is written to our inputPipe
+    inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
+        guard let strongSelf = self else { return }
+
+        let data = fileHandle.availableData
+        if let string = String(data: data, encoding: String.Encoding.utf8) {
+            strongSelf.contents += string
+        }
+
+        // Write input back to stdout
+        strongSelf.outputPipe.fileHandleForWriting.write(data)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This uses &lt;code&gt;readabilityHandler&lt;/code&gt; instead of notifications for less code and no need to
+repeatedly call &lt;code&gt;readInBackgroundAndNotify()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;While trying to get this to actually work, I found that calling either &lt;code&gt;readDataToEndOfFile()&lt;/code&gt;
+or &lt;code&gt;readData(ofLength:)&lt;/code&gt; immediately blocks the current thread seemingly forever. This may be
+because my &lt;code&gt;inputPipe&lt;/code&gt; is still open so the file has no “end”.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;availableData&lt;/code&gt; is the property to use as it will have a &lt;code&gt;Data&lt;/code&gt; object of the character data
+write to the pipe’s file handle so far.&lt;/p&gt;
+
+&lt;h3 id=&quot;openconsolepipe&quot;&gt;openConsolePipe&lt;/h3&gt;
+
+&lt;p&gt;This is the code that actually wires up the pipes to intercept stdout. It uses the esoteric
+&lt;code&gt;dup2&lt;/code&gt; C function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;/// Sets up the &quot;tee&quot; of piped output, intercepting stdout then passing it through.
+func openConsolePipe() {
+    // Copy STDOUT file descriptor to outputPipe for writing strings back to STDOUT
+    dup2(stdoutFileDescriptor, outputPipe.fileHandleForWriting.fileDescriptor)
+
+    // Intercept STDOUT with inputPipe
+    dup2(inputPipe.fileHandleForWriting.fileDescriptor, stdoutFileDescriptor)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;stdoutFileDescriptor&lt;/code&gt; is my computed property for &lt;code&gt;FileHandle.standardOutput.fileDescriptor&lt;/code&gt;,
+which is the same value as &lt;code&gt;STDOUT_FILENO&lt;/code&gt;, or simply &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This clearly works, but it’s the one piece of magic from @thesaadismail’s post that I don’t
+fully understand. The calls to &lt;code&gt;dup2&lt;/code&gt; return the 2nd argument’s value indicating success,
+however there was no change to any &lt;code&gt;fileDescriptor&lt;/code&gt; properties as I was expecting.
+&lt;code&gt;FileHandle.fileDescriptor&lt;/code&gt; is read-only so perhaps the Swift Foundation functionality
+doesn’t refresh this value.&lt;/p&gt;
+
+&lt;p&gt;Things went swimmingly at this point when running a single test. However, when I ran the entire
+&lt;code&gt;mas&lt;/code&gt; test suite some calls to &lt;code&gt;print()&lt;/code&gt; would blow up with &lt;code&gt;SIGPIPE&lt;/code&gt; 💥.&lt;/p&gt;
+
+&lt;h3&gt;😕&lt;/h3&gt;
+
+&lt;p&gt;It was clear to me that monkeying with stdout was causing these issues. I attempted to use &lt;code&gt;dup2&lt;/code&gt;
+to restore stdout to no avail.&lt;/p&gt;
+
+&lt;h3 id=&quot;-1&quot;&gt;💡&lt;/h3&gt;
+
+&lt;p&gt;Then I recalled an experimented I did a few years ago to suppress all output to stdout in a little
+project called &lt;a href=&quot;https://github.com/phatblat/nolog/blob/master/NoLog/NoLog/ThisClassLoadsFirst.m#L17&quot;&gt;nolog&lt;/a&gt;.
+it uses &lt;code&gt;freopen()&lt;/code&gt; to reopen stdout, pointing it to a new file path. nolog redirects stdout to
+&lt;code&gt;/dev/null&lt;/code&gt;, a well-known way to ignore output from a terminal command.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;echo &quot;can anyone hear me?&quot; &amp;gt; /dev/null&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Digging around in the &lt;code&gt;/dev&lt;/code&gt; directory revealed that macOS has a &lt;code&gt;/dev/stdout&lt;/code&gt; file, so I gave that a whirl.&lt;/p&gt;
+
+&lt;h3 id=&quot;closeconsolepipe&quot;&gt;closeConsolePipe&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;/// Tears down the &quot;tee&quot; of piped output.
+func closeConsolePipe() {
+    // Restore stdout
+    freopen(&quot;/dev/stdout&quot;, &quot;a&quot;, stdout)
+
+    [inputPipe.fileHandleForReading, outputPipe.fileHandleForWriting].forEach { file in
+        file.closeFile()
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;🎉 This was the missing piece I needed to restore stdout. I don’t know if the &lt;code&gt;closeFile()&lt;/code&gt;
+calls are necessary, especially in a test suite, but I like to clean up after myself 🧹.&lt;/p&gt;
+
+&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;Here’s how it works inside a test.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;let output = OutputListener()
+output.openConsolePipe()
+let expectedOutput = &quot;hi there&quot;
+
+// run code under test that output some text
+print(expectedOutput, terminator: &quot;&quot;)
+
+// output is async so need to wait for contents to be updated
+expect(output.contents).toEventuallyNot(beEmpty())
+expect(output.contents) == expectedOutput
+
+output.closeConsolePipe()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here I’m using the Nimble &lt;a href=&quot;https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148&quot;&gt;&lt;code&gt;noEventuallyNot&lt;/code&gt;&lt;/a&gt;
+function to take care of the asynchroncity of these file handles as they are
+essentially text streams. If you are using XCTest, take a look at 
+&lt;a href=&quot;https://developer.apple.com/documentation/xctest/asynchronous_tests_and_expectations/testing_asynchronous_operations_with_expectations&quot;&gt;Testing Asynchronous Operations with Expectations&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/OutputListener.swift&quot;&gt;&lt;code&gt;OutputListener.swift&lt;/code&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;used in &lt;a href=&quot;https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/Commands/InfoCommandSpec.swift#L55-L68&quot;&gt;&lt;code&gt;info&lt;/code&gt; command tests&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/phatblat/nolog/blob/master/NoLog/NoLog/ThisClassLoadsFirst.m#L17&quot;&gt;nolog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@thesaadismail/eavesdropping-on-swifts-print-statements-57f0215efb42&quot;&gt;Eavesdropping on Swift’s Print Statements&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ericasadun.com/2015/05/22/swift-logging/&quot;&gt;Swift Logging&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/xctest/asynchronous_tests_and_expectations/testing_asynchronous_operations_with_expectations&quot;&gt;Testing Asynchronous Operations with Expectations&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://kelan.io/2015/the-weak-strong-dance-in-swift/&quot;&gt;The Weak/Strong Dance in Swift&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.computerhope.com/jargon/s/stdout.htm&quot;&gt;stdout&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://man7.org/linux/man-pages/man1/tee.1.html&quot;&gt;tee command&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/a/18963142/39207&quot;&gt;&lt;code&gt;SIGPIPE&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;api-docs&quot;&gt;API Docs&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/pipe&quot;&gt;&lt;code&gt;Pipe&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/filehandle&quot;&gt;&lt;code&gt;FileHandle&lt;/code&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/filehandle/1412413-readabilityhandler&quot;&gt;&lt;code&gt;readabilityHandler&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/filehandle/1411463-availabledata&quot;&gt;&lt;code&gt;availableData&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/filehandle/1411490-readdatatoendoffile&quot;&gt;&lt;code&gt;readDataToEndOfFile()&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/foundation/filehandle/1413916-readdata&quot;&gt;&lt;code&gt;readData(ofLength:)&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://linux.die.net/man/2/dup2&quot;&gt;&lt;code&gt;dup2()&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://linux.die.net/man/3/freopen&quot;&gt;&lt;code&gt;freopen()&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/swift/1541053-print&quot;&gt;&lt;code&gt;print(_:separator:terminator:)&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/xctest/xctestexpectation&quot;&gt;&lt;code&gt;XCTestExpectation&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 08 Jan 2019 00:00:00 -0700</pubDate>
+        <link>http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</link>
+        <guid isPermaLink="true">http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>UISearchController</title>
@@ -940,139 +1165,6 @@ TWITTER_ACCESS_TOKEN_SECRET=...
         <category>ipad,</category>
         
         <category>review</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Close Your PayPal Account</title>
-        <description>&lt;h1 id=&quot;wtf&quot;&gt;WTF&lt;/h1&gt;
-
-&lt;p&gt;This post is appalling: &lt;a href=&quot;http://krebsonsecurity.com/2015/12/2016-reality-lazy-authentication-still-the-norm/&quot;&gt;2016 Reality: Lazy Authentication Still the Norm&lt;/a&gt;. The terrorist theme was just a distraction. The fact that his account was hacked a second time, after changing his password and after PayPal was made aware is just pathetic.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;In my second call to PayPal, I insisted on speaking with a supervisor. That person was able to tell me that, as I suspected, my (very long and complex) password was never really compromised. The attacker had merely called in to PayPal’s customer support, pretended to be me and was able to reset my password by providing nothing more than the last four digits of my Social Security number and the last four numbers of an old credit card account.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I’m not willing to trust access to my money to a company this behind in security practices. I’m sure a lot of banks and utility companies are also vulnerable in the same fashion, but PayPal is a big target and one that I can limit my exposure right now by no longer doing business with them.&lt;/p&gt;
-
-&lt;h1 id=&quot;steps-to-close-your-paypal-account&quot;&gt;Steps to Close Your PayPal Account&lt;/h1&gt;
-
-&lt;p&gt;Here are the steps I went through to close my PayPal account on their full desktop website. I was not able to find a close account option in either their iOS app or mobile website. I removed my bank accounts through the mobile website first before moving to my Mac to finish out the cancellation.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-login&quot;&gt;1. Login&lt;/h2&gt;
-
-&lt;p&gt;Make sure to use a computer or switch to the “desktop” version of PayPal’s website, if using a mobile device.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-00-login.png&quot; alt=&quot;PayPal login page&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-transfer-money-out-of-paypal-account&quot;&gt;2. Transfer Money Out of PayPal Account&lt;/h2&gt;
-
-&lt;p&gt;PayPal will send you a check if you have any money in your account when it is closed, but they charge a $1.50 fee for this service. It’s much simpler to just transfer any money out of your account first.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-remove-bank-accounts-and-creditdebit-cards&quot;&gt;3. Remove Bank Accounts and Credit/Debit Cards&lt;/h2&gt;
-
-&lt;p&gt;Click on the “Wallet” tab in the top navigation bar to show any linked bank accounts and credit/debit cards.
-Removing these from your account first greatly simplifies the cancellation process as you will not be asked to confirm their account numbers.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-00-bankcredit.png&quot; alt=&quot;PayPal Wallet page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is how it should look before you proceed.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-profile&quot;&gt;4. Profile&lt;/h2&gt;
-
-&lt;p&gt;Click the gear icon on the far right of the top toolbar.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-01-header.png&quot; alt=&quot;PayPal header showing Profile button (gear icon)&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;5-close-account-link&quot;&gt;5. Close Account Link&lt;/h2&gt;
-
-&lt;p&gt;On the Profile page, find the “Close your account” link near the bottom.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-02-profile.png&quot; alt=&quot;PayPal Profile page with 'Close account' link&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;6a-are-you-sure&quot;&gt;6a. Are you Sure?&lt;/h2&gt;
-
-&lt;p&gt;If you have a newer account with no money on it like one of mine, you might be lucky and get this single confirmation message.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-03b-areyousure.png&quot; alt=&quot;Confirmation message&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Click “Close Account” and you’re done.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;6b-error&quot;&gt;6b. Error&lt;/h2&gt;
-
-&lt;p&gt;Two of my accounts were not so easy to close. I got this message every time I clicked the “Close your account” link.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-03b-error.png&quot; alt=&quot;Error message from clicking 'Close account' link&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If this happens to you, click on the “customer service” link.&lt;/p&gt;
-
-&lt;h2 id=&quot;7-customer-service&quot;&gt;7. Customer Service&lt;/h2&gt;
-
-&lt;p&gt;Click the “Message Center” link.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-04-customerservice.png&quot; alt=&quot;Customer Service page&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;8-message-center&quot;&gt;8. Message Center&lt;/h2&gt;
-
-&lt;p&gt;Click the “Create New Message” button.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-06-messagecenter.png&quot; alt=&quot;Message Center showing now messages and a create button&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;6-contact-form&quot;&gt;6. Contact Form&lt;/h2&gt;
-
-&lt;p&gt;Select the following topic and subtopic, then click the “Close Account” link.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;My Account&lt;/li&gt;
-  &lt;li&gt;Closing a PayPal account&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-06-contact.png&quot; alt=&quot;Request account close from 'Email Us' contact form&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;7-first-confirmation&quot;&gt;7. First confirmation&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-07-confirm.png&quot; alt=&quot;First confirmation&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;8-reasons&quot;&gt;8. Reasons&lt;/h2&gt;
-
-&lt;p&gt;I refrained from comment, figuring the link to the above post was enough.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-08-reason.png&quot; alt=&quot;Reason for closing account&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;9-second-confirmation&quot;&gt;9. Second confirmation&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-09-confirm2.png&quot; alt=&quot;Second confirmation&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;10-third-confirmation&quot;&gt;10. Third confirmation&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-10-confirm3.png&quot; alt=&quot;Third confirmation&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;11-fourth-confirmation&quot;&gt;11. Fourth confirmation&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-11-confirm4.png&quot; alt=&quot;Fourth confirmation&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;12-done&quot;&gt;12. Done&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-12-email.png&quot; alt=&quot;Email confirming account closed&quot; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;two-down-one-to-go&quot;&gt;Two Down, One To Go&lt;/h1&gt;
-
-&lt;p&gt;At this point, I’ve cancelled two of my PayPal accounts. I wasn’t able my close my work account because it has a recurring payment on it that I forgot about. I’ll need to contact the vendor to arrange a different billing arrangement first.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/paypal-13-recurringpayment.png&quot; alt=&quot;Email confirming account closed&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 02 Jan 2016 15:42:37 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/02/closed-paypal-account.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/02/closed-paypal-account.html</guid>
-        
-        <category>security,</category>
-        
-        <category>paypal</category>
         
         
       </item>
