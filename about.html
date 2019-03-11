@@ -6,14 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Mac Server Setup: Step 1</title>
-  <meta name="description" content="By default, Macs are designed to be user machines. While they are very easy to set up as servers, a few of the standard settings are not ideal for hosting se...">
+  <title>About</title>
+  <meta name="description" content="a few SHAs from a journey through code
+">
 
   <!-- Pinterest website verify -->
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatbl.at/2016/01/10/mac-server-setup.html">
+  <link rel="canonical" href="http://phatbl.at/about">
   <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
 </head>
 
@@ -72,112 +73,117 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Mac Server Setup: Step 1</h1>
-    <p class="post-meta">Jan 10, 2016</p>
+    <h1 class="post-title">About</h1>
   </header>
 
   <article class="post-content">
-    <p>By default, Macs are designed to be user machines. While they are very easy to set up as servers, a few of the standard settings are not ideal for hosting services.</p>
+    <p>Hello there. I’m Ben Chatelain and this is my reflog.
+You’ll find me as <a href="https://twitter.com/phatblat"><code>@phatblat</code></a> on all the things.</p>
 
-<p>If you are planning on using a Mac as a server - that is, you expect it to be running services indefinitely - there are some settings you should check on <em>first</em>, before you are remote and having issues.</p>
+<h2 id="apple-wallet-pass">Apple Wallet Pass</h2>
 
-<h2 id="energy-saver">Energy Saver</h2>
+<p>If you bumped into me at a conference or meetup and are looking for my contact info,
+tap or click the button below on an Apple device to install my digital business card.</p>
 
-<p>Launch System Preferences and navigate to the Energy Saver pane. Change these settings:</p>
+<p><a href="/pass"><img src="/images/add-to-apple-wallet.png" alt="Add to Apple Wallet" title="Click to add to Apple Wallet"></a></p>
+
+<p>If you are interested in making your own, greab the source of this pass from my
+<a href="https://github.com/phatblat/phatblat.pass">phatblat.pass</a> repo.</p>
+
+<h2 id="work">Work</h2>
+
+<p>I work for <a href="http://kp.org">Kaiser Permanente</a> in the Mobility Center of Excellence.
+My team maintains a suite of reusable libraries that are used in
+many internal and external iOS and Android apps.
+We provide an internal DevOps solution called the Mobile Delivery Pipeline,
+which includes a custom Gradle plugin (100% Kotlin), a Jenkins Shared Library,
+and tailored macOS VM image.
+I also consult with various development teams across our company on mobile app
+architecture, build and development issues.</p>
+
+<h3 id="work-projects">Work Projects</h3>
 
 <ul>
-  <li>Computer Sleep: Never</li>
-  <li>Display Sleep: Never</li>
-  <li>disable “Put hard disks to sleep when possible”</li>
-  <li>enable <strong>“Start up automatically after a power failure”</strong>
+  <li>
+<a href="https://kpapp.org">Kaiser Permanente app</a>
+    <ul>
+      <li>iOS &amp; Android</li>
+      <li>our “flagship” app used by millions of our members</li>
+    </ul>
+  </li>
+  <li>
+<a href="http://everybodywalk.org">Every Body Walk!</a>
+    <ul>
+      <li>iOS &amp; Android</li>
+      <li>our first Apple Watch app</li>
+      <li>retired in 2017</li>
+    </ul>
+  </li>
+  <li>Firefly
+    <ul>
+      <li>iPad app for nurses and doctors to locate staff and equipment located throughout an ER</li>
+      <li>used ultrasonic and RFID to track people and things, respectively</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="personal-projects">Personal Projects</h3>
+
+<p>I’m a big (phat?) open source contributor and everything I can share is in a public
+repo on <a href="https://github.com/phatblat?tab=repositories">GitHub</a>. There are a lot of
+dead projects, but here are some of the more interesting ones.</p>
+
+<ul>
+  <li>My <a href="https://github.com/phatblat/dotfiles">dotfiles</a>, with a crazy amount of custom Fish Shell <a href="https://github.com/phatblat/dotfiles/tree/master/.config/fish/functions">functions</a>
+</li>
+  <li>
+<a href="https://github.com/phatblat/powerline-xcodeversion#readme">powerline segment</a>
+displaying the currently selected version of Xcode</li>
+  <li>
+<a href="/2016/05/03/outlets-pod.html">Outlets</a> - utility library for validating storyboard/xib connections</li>
+  <li>Gradle Plugins
+    <ul>
+      <li><a href="https://github.com/phatblat/ShellExec#readme">ShellExec</a></li>
+      <li><a href="https://github.com/phatblat/SwiftPM-Plugin#readme">SwiftPM-Plugin</a></li>
+    </ul>
+  </li>
+  <li>
+<a href="https://github.com/phatblat/Tube">Tube</a> - a generic, simple pipeline for Jenkins</li>
+  <li>
+<a href="https://github.com/phatblat/xcode-installer">xcode-installer</a> - obsolete precursor to xcode-install</li>
+</ul>
+
+<h3 id="open-source">Open Source</h3>
+
+<p>I’m a core contributor on some projects you may have heard of.</p>
+
+<ul>
+  <li>
+<a href="https://github.com/mas-cli/mas#readme">mas</a> - Mac App Store command line</li>
+  <li>
+<a href="https://github.com/Quick/Quick#readme">Quick</a> &amp; <a href="https://github.com/Quick/Nimble#readme">Nimble</a> - testing frameworks for Apple platforms</li>
+  <li>
+<a href="https://github.com/libgit2/objective-git#readme">ObjectiveGit</a> - Objective-C bindings to libgit2</li>
+  <li><a href="https://github.com/SwiftGen/SwiftGen#readme">SwiftGen</a></li>
+  <li><a href="https://github.com/Carthage/Commandant#readme">Commandant</a></li>
+  <li><a href="https://github.com/nerdishbynature/octokit.swift#readme">octokit.swift</a></li>
+</ul>
+
+<h2 id="blog">Blog</h2>
+
+<p>This blog is built using <a href="https://jekyllrb.com">Jekyll</a> with the help of a
+<a href="https://github.com/phatblat/reflog/blob/master/Gemfile#L7">handful of plugins</a>.
+If you find typos or dead links, please <a href="https://github.com/phatblat/reflog/issues/new">open an issue</a>
+or, better yet, just use the <a href="https://help.github.com/articles/editing-files-in-your-repository/">GitHub web editor</a> to fix it send me a PR.</p>
+
+<p>Note that the source of this blog is in a different repo than the generated static content.</p>
+
+<ul>
+  <li>Source: <a href="https://github.com/phatblat/reflog">phatblat/reflog</a>
+</li>
+  <li>Content: <a href="https://github.com/phatblat/reflog-static">phatblat/reflog-static</a>
 </li>
 </ul>
-
-<p><img src="/images/mac-server-setup-energysaver.jpg" alt="" title="Energy Saver system preferences pane"></p>
-
-<p>This is a screenshot from my Mac mini which <a href="https://twitter.com/macminicolo" class="user-mention">@macminicolo</a> was kind enough to set up like this for me.</p>
-
-<h2 id="reading-values-from-the-command-line">Reading Values from the Command Line</h2>
-
-<p>The values behind the Energy Saver preferences pane appear to be stored in User Defaults and can be read with the following command:</p>
-
-<pre><code>defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
-</code></pre>
-
-<p>The “Automatic Restart On Power Loss” key is the most important.</p>
-
-<pre><code>{
-    ActivePowerProfiles =      {
-        "AC Power" = "-1";
-    };
-    "Custom Profile" =     {
-        "AC Power" =         {
-            "AutoPowerOff Delay" = 14400;
-            "AutoPowerOff Enabled" = 1;
-            "Automatic Restart On Power Loss" = 1;
-            DarkWakeBackgroundTasks = 0;
-            "Disk Sleep Timer" = 0;
-            "Display Sleep Timer" = 0;
-            "Hibernate File" = "/var/vm/sleepimage";
-            "Hibernate Mode" = 0;
-            PrioritizeNetworkReachabilityOverSleep = 0;
-            "Sleep On Power Button" = 1;
-            "Standby Delay" = 4200;
-            "Standby Enabled" = 1;
-            "System Sleep Timer" = 0;
-            TTYSPreventSleep = 1;
-            "Wake On LAN" = 1;
-        };
-        Defaults = 1;
-    };
-}
-</code></pre>
-
-<p>Because of the way these settings are stored, they are difficult to set using the <code>defaults</code> command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.</p>
-
-<h2 id="changing-values-from-the-command-line">Changing Values from the Command Line</h2>
-
-<p>A better approach for manipulating these values from the command line is to use the <code>pmset</code> command. This utility can be used to read the current Energy Saver values (read them all with <code>pmset -g</code>, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.</p>
-
-<pre><code>pmset -g
-Active Profiles:
-AC Power                -1* Currently in use:
- standby              1
- Sleep On Power Button 1
- womp                 1
- autorestart          1
- hibernatefile        /var/vm/sleepimage
- powernap             0
- networkoversleep     0
- disksleep            0
- sleep                0
- autopoweroffdelay    14400
- hibernatemode        0
- autopoweroff         1
- ttyskeepawake        1
- displaysleep         0
- standbydelay         4200
-</code></pre>
-
-<h3 id="tldr">TL;DR</h3>
-
-<p>These are the values you will always want to change when setting up a Mac server:</p>
-
-<pre><code>sudo pmset -c sleep 0
-sudo pmset -c displaysleep 0
-sudo pmset -c disksleep 0
-sudo pmset -c autorestart 1
-</code></pre>
-
-<h1 id="references">References</h1>
-
-<ul>
-  <li><a href="http://www.neglectedpotential.com/2012/12/mac-mini-servers-a-cautionary-tale/">Mac mini Servers: A Cautionary Tale</a></li>
-  <li><a href="http://www.tekrevue.com/tip/mac-start-up-automatically-after-a-power-failure">How and Why to Tell Your Mac to Start Up Automatically After a Power Failure</a></li>
-  <li><a href="https://support.apple.com/kb/PH21704?viewlocale=en_US&amp;locale=en_US">Energy Saver preferences</a></li>
-  <li><a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/pmset.1.html">pmset(1) Mac OS X Manual Page</a></li>
-</ul>
-
 
   </article>
 
