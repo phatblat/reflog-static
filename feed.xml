@@ -6,8 +6,8 @@
 </description>
     <link>http://phatbl.at/</link>
     <atom:link href="http://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Mar 2019 19:40:58 -0600</pubDate>
-    <lastBuildDate>Sun, 10 Mar 2019 19:40:58 -0600</lastBuildDate>
+    <pubDate>Fri, 15 Mar 2019 07:50:27 -0700</pubDate>
+    <lastBuildDate>Fri, 15 Mar 2019 07:50:27 -0700</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -228,7 +228,7 @@ essentially text streams. If you are using XCTest, take a look at
   &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/xctest/xctestexpectation&quot;&gt;&lt;code&gt;XCTestExpectation&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Tue, 08 Jan 2019 00:00:00 -0700</pubDate>
+        <pubDate>Tue, 08 Jan 2019 00:00:00 -0800</pubDate>
         <link>http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</link>
         <guid isPermaLink="true">http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</guid>
         
@@ -356,7 +356,7 @@ func handleEmptyResults(displayedResults: Int) {
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Tue, 10 May 2016 22:31:31 -0600</pubDate>
+        <pubDate>Tue, 10 May 2016 21:31:31 -0700</pubDate>
         <link>http://phatbl.at/2016/05/10/uisearchcontroller.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/05/10/uisearchcontroller.html</guid>
         
@@ -390,7 +390,7 @@ func handleEmptyResults(displayedResults: Int) {
 &lt;p&gt;Why don’t you give it a good ol’ &lt;code&gt;pod try Outlets&lt;/code&gt;?&lt;/p&gt;
 
 </description>
-        <pubDate>Tue, 03 May 2016 21:06:22 -0600</pubDate>
+        <pubDate>Tue, 03 May 2016 20:06:22 -0700</pubDate>
         <link>http://phatbl.at/2016/05/03/outlets-pod.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/05/03/outlets-pod.html</guid>
         
@@ -664,7 +664,7 @@ fourChainedFunctions(1)(2)(3)(4)
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Fri, 29 Apr 2016 13:39:19 -0600</pubDate>
+        <pubDate>Fri, 29 Apr 2016 12:39:19 -0700</pubDate>
         <link>http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
         
@@ -786,7 +786,7 @@ sudo pmset -c autorestart 1
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Sun, 10 Jan 2016 19:49:36 -0700</pubDate>
+        <pubDate>Sun, 10 Jan 2016 18:49:36 -0800</pubDate>
         <link>http://phatbl.at/2016/01/10/mac-server-setup.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/10/mac-server-setup.html</guid>
         
@@ -889,7 +889,7 @@ sudo pmset -c autorestart 1
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Wed, 06 Jan 2016 23:11:05 -0700</pubDate>
+        <pubDate>Wed, 06 Jan 2016 22:11:05 -0800</pubDate>
         <link>http://phatbl.at/2016/01/06/accident.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/06/accident.html</guid>
         
@@ -1014,7 +1014,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
   &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/19331497/set-environment-variables-from-file&quot;&gt;http://stackoverflow.com/questions/19331497/set-environment-variables-from-file&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Tue, 05 Jan 2016 12:51:55 -0700</pubDate>
+        <pubDate>Tue, 05 Jan 2016 11:51:55 -0800</pubDate>
         <link>http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</guid>
         
@@ -1051,7 +1051,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;p&gt;To see the &lt;strong&gt;:emoji_code:&lt;/strong&gt; for any of the above emoji, check the alt text on the image.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Jan 2016 21:29:17 -0700</pubDate>
+        <pubDate>Sun, 03 Jan 2016 20:29:17 -0800</pubDate>
         <link>http://phatbl.at/2016/01/03/jemoji.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/03/jemoji.html</guid>
         
@@ -1071,7 +1071,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;&lt;img src=&quot;/images/meme-pencil.jpg&quot; alt=&quot;She asked if she could borrow my pencil, so I guess you could say things are getting pretty serious&quot; /&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Sun, 03 Jan 2016 15:05:13 -0700</pubDate>
+        <pubDate>Sun, 03 Jan 2016 14:05:13 -0800</pubDate>
         <link>http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
         <guid isPermaLink="true">http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
         
@@ -1158,7 +1158,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;p&gt;Again, Safari on the left and Mail on the right composing and email, but with the split moved to the right. Mail adapts to more of the UI on the iPhone.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Jan 2016 08:53:53 -0700</pubDate>
+        <pubDate>Sun, 03 Jan 2016 07:53:53 -0800</pubDate>
         <link>http://phatbl.at/2016/01/03/ipro-review.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/03/ipro-review.html</guid>
         
