@@ -101,7 +101,7 @@ example to copy.</p>
 
 <p>As the first step in <a href="https://dzone.com/articles/stack-overflow-driven-development-sodd-its-really">SODD</a>,
 I made sure to Google whether anyone had figured this out before.
-<a href="https://twitter.com/ericasadun" class="user-mention">@ericasadun</a> has a great post on 
+<a href="https://twitter.com/ericasadun" class="user-mention">@ericasadun</a> has a great post on
 <a href="https://ericasadun.com/2015/05/22/swift-logging/">Swift Logging</a>,
 but it’s from the Swift 1-2 days and a bit dated now. Plus, I dislike calling C
 functions from Swift and want to minimize the use of C APIs.</p>
@@ -172,7 +172,7 @@ or <code>readData(ofLength:)</code> immediately blocks the current thread seemin
 because my <code>inputPipe</code> is still open so the file has no “end”.</p>
 
 <p><code>availableData</code> is the property to use as it will have a <code>Data</code> object of the character data
-write to the pipe’s file handle so far.</p>
+written to the pipe’s file handle so far.</p>
 
 <h3 id="openconsolepipe">openConsolePipe</h3>
 
@@ -194,9 +194,9 @@ func openConsolePipe() {
 which is the same value as <code>STDOUT_FILENO</code>, or simply <code>1</code>.</p>
 </blockquote>
 
-<p>This clearly works, but it’s the one piece of magic from <a href="https://twitter.com/thesaadismail" class="user-mention">@thesaadismail</a>’s post that I don’t
+<p>This works, but it’s the one piece of magic from <a href="https://twitter.com/thesaadismail" class="user-mention">@thesaadismail</a>’s post that I don’t
 fully understand. The calls to <code>dup2</code> return the 2nd argument’s value indicating success,
-however there was no change to any <code>fileDescriptor</code> properties as I was expecting.
+however there was no change to any <code>fileDescriptor</code> property values as I was expecting.
 <code>FileHandle.fileDescriptor</code> is read-only so perhaps the Swift Foundation functionality
 doesn’t refresh this value.</p>
 
@@ -210,7 +210,7 @@ to restore stdout to no avail.</p>
 
 <h3 id="-1">💡</h3>
 
-<p>Then I recalled an experimented I did a few years ago to suppress all output to stdout in a little
+<p>Then I recalled an experiment I did a few years ago to suppress all output to stdout in a little
 project called <a href="https://github.com/phatblat/nolog/blob/master/NoLog/NoLog/ThisClassLoadsFirst.m#L17">nolog</a>.
 it uses <code>freopen()</code> to reopen stdout, pointing it to a new file path. nolog redirects stdout to
 <code>/dev/null</code>, a well-known way to ignore output from a terminal command.</p>
@@ -255,18 +255,18 @@ expect(output.contents) == expectedOutput
 output.closeConsolePipe()
 </code></pre>
 
-<p>Here I’m using the Nimble <a href="https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148"><code>noEventuallyNot</code></a>
+<p>Here I’m using the Nimble <a href="https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148"><code>toEventuallyNot</code></a>
 function to take care of the asynchroncity of these file handles as they are
-essentially text streams. If you are using XCTest, take a look at 
+essentially text streams. If you are using XCTest, take a look at
 <a href="https://developer.apple.com/documentation/xctest/asynchronous_tests_and_expectations/testing_asynchronous_operations_with_expectations">Testing Asynchronous Operations with Expectations</a>.</p>
 
 <h2 id="references">References</h2>
 
 <ul>
   <li>
-<a href="https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/OutputListener.swift"><code>OutputListener.swift</code></a>
+<a href="https://github.com/mas-cli/mas/blob/master/MasKitTests/OutputListener.swift"><code>OutputListener.swift</code></a>
     <ul>
-      <li>used in <a href="https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/Commands/InfoCommandSpec.swift#L55-L68"><code>info</code> command tests</a>
+      <li>used in <a href="https://github.com/mas-cli/mas/blob/master/MasKitTests/Commands/InfoCommandSpec.swift#L55-L68"><code>info</code> command tests</a>
 </li>
     </ul>
   </li>

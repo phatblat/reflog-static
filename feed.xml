@@ -6,8 +6,8 @@
 </description>
     <link>http://phatbl.at/</link>
     <atom:link href="http://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 15 Mar 2019 07:56:52 -0700</pubDate>
-    <lastBuildDate>Fri, 15 Mar 2019 07:56:52 -0700</lastBuildDate>
+    <pubDate>Sat, 11 Jan 2020 21:41:09 -0700</pubDate>
+    <lastBuildDate>Sat, 11 Jan 2020 21:41:09 -0700</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -35,7 +35,7 @@ example to copy.&lt;/p&gt;
 
 &lt;p&gt;As the first step in &lt;a href=&quot;https://dzone.com/articles/stack-overflow-driven-development-sodd-its-really&quot;&gt;SODD&lt;/a&gt;,
 I made sure to Google whether anyone had figured this out before.
-@ericasadun has a great post on 
+@ericasadun has a great post on
 &lt;a href=&quot;https://ericasadun.com/2015/05/22/swift-logging/&quot;&gt;Swift Logging&lt;/a&gt;,
 but it’s from the Swift 1-2 days and a bit dated now. Plus, I dislike calling C
 functions from Swift and want to minimize the use of C APIs.&lt;/p&gt;
@@ -104,7 +104,7 @@ or &lt;code&gt;readData(ofLength:)&lt;/code&gt; immediately blocks the current t
 because my &lt;code&gt;inputPipe&lt;/code&gt; is still open so the file has no “end”.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;availableData&lt;/code&gt; is the property to use as it will have a &lt;code&gt;Data&lt;/code&gt; object of the character data
-write to the pipe’s file handle so far.&lt;/p&gt;
+written to the pipe’s file handle so far.&lt;/p&gt;
 
 &lt;h3 id=&quot;openconsolepipe&quot;&gt;openConsolePipe&lt;/h3&gt;
 
@@ -126,9 +126,9 @@ func openConsolePipe() {
 which is the same value as &lt;code&gt;STDOUT_FILENO&lt;/code&gt;, or simply &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;This clearly works, but it’s the one piece of magic from @thesaadismail’s post that I don’t
+&lt;p&gt;This works, but it’s the one piece of magic from @thesaadismail’s post that I don’t
 fully understand. The calls to &lt;code&gt;dup2&lt;/code&gt; return the 2nd argument’s value indicating success,
-however there was no change to any &lt;code&gt;fileDescriptor&lt;/code&gt; properties as I was expecting.
+however there was no change to any &lt;code&gt;fileDescriptor&lt;/code&gt; property values as I was expecting.
 &lt;code&gt;FileHandle.fileDescriptor&lt;/code&gt; is read-only so perhaps the Swift Foundation functionality
 doesn’t refresh this value.&lt;/p&gt;
 
@@ -142,7 +142,7 @@ to restore stdout to no avail.&lt;/p&gt;
 
 &lt;h3 id=&quot;-1&quot;&gt;💡&lt;/h3&gt;
 
-&lt;p&gt;Then I recalled an experimented I did a few years ago to suppress all output to stdout in a little
+&lt;p&gt;Then I recalled an experiment I did a few years ago to suppress all output to stdout in a little
 project called &lt;a href=&quot;https://github.com/phatblat/nolog/blob/master/NoLog/NoLog/ThisClassLoadsFirst.m#L17&quot;&gt;nolog&lt;/a&gt;.
 it uses &lt;code&gt;freopen()&lt;/code&gt; to reopen stdout, pointing it to a new file path. nolog redirects stdout to
 &lt;code&gt;/dev/null&lt;/code&gt;, a well-known way to ignore output from a terminal command.&lt;/p&gt;
@@ -187,17 +187,17 @@ expect(output.contents) == expectedOutput
 output.closeConsolePipe()
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Here I’m using the Nimble &lt;a href=&quot;https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148&quot;&gt;&lt;code&gt;noEventuallyNot&lt;/code&gt;&lt;/a&gt;
+&lt;p&gt;Here I’m using the Nimble &lt;a href=&quot;https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148&quot;&gt;&lt;code&gt;toEventuallyNot&lt;/code&gt;&lt;/a&gt;
 function to take care of the asynchroncity of these file handles as they are
-essentially text streams. If you are using XCTest, take a look at 
+essentially text streams. If you are using XCTest, take a look at
 &lt;a href=&quot;https://developer.apple.com/documentation/xctest/asynchronous_tests_and_expectations/testing_asynchronous_operations_with_expectations&quot;&gt;Testing Asynchronous Operations with Expectations&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/OutputListener.swift&quot;&gt;&lt;code&gt;OutputListener.swift&lt;/code&gt;&lt;/a&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mas-cli/mas/blob/master/MasKitTests/OutputListener.swift&quot;&gt;&lt;code&gt;OutputListener.swift&lt;/code&gt;&lt;/a&gt;
     &lt;ul&gt;
-      &lt;li&gt;used in &lt;a href=&quot;https://github.com/mas-cli/mas/blob/network-refactor/MasKitTests/Commands/InfoCommandSpec.swift#L55-L68&quot;&gt;&lt;code&gt;info&lt;/code&gt; command tests&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;used in &lt;a href=&quot;https://github.com/mas-cli/mas/blob/master/MasKitTests/Commands/InfoCommandSpec.swift#L55-L68&quot;&gt;&lt;code&gt;info&lt;/code&gt; command tests&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/phatblat/nolog/blob/master/NoLog/NoLog/ThisClassLoadsFirst.m#L17&quot;&gt;nolog&lt;/a&gt;&lt;/li&gt;
@@ -228,7 +228,7 @@ essentially text streams. If you are using XCTest, take a look at
   &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/documentation/xctest/xctestexpectation&quot;&gt;&lt;code&gt;XCTestExpectation&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Tue, 08 Jan 2019 00:00:00 -0800</pubDate>
+        <pubDate>Tue, 08 Jan 2019 00:00:00 -0700</pubDate>
         <link>http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</link>
         <guid isPermaLink="true">http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</guid>
         
@@ -356,7 +356,7 @@ func handleEmptyResults(displayedResults: Int) {
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Tue, 10 May 2016 21:31:31 -0700</pubDate>
+        <pubDate>Tue, 10 May 2016 22:31:31 -0600</pubDate>
         <link>http://phatbl.at/2016/05/10/uisearchcontroller.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/05/10/uisearchcontroller.html</guid>
         
@@ -390,7 +390,7 @@ func handleEmptyResults(displayedResults: Int) {
 &lt;p&gt;Why don’t you give it a good ol’ &lt;code&gt;pod try Outlets&lt;/code&gt;?&lt;/p&gt;
 
 </description>
-        <pubDate>Tue, 03 May 2016 20:06:22 -0700</pubDate>
+        <pubDate>Tue, 03 May 2016 21:06:22 -0600</pubDate>
         <link>http://phatbl.at/2016/05/03/outlets-pod.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/05/03/outlets-pod.html</guid>
         
@@ -664,7 +664,7 @@ fourChainedFunctions(1)(2)(3)(4)
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Fri, 29 Apr 2016 12:39:19 -0700</pubDate>
+        <pubDate>Fri, 29 Apr 2016 13:39:19 -0600</pubDate>
         <link>http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
         
@@ -786,7 +786,7 @@ sudo pmset -c autorestart 1
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Sun, 10 Jan 2016 18:49:36 -0800</pubDate>
+        <pubDate>Sun, 10 Jan 2016 19:49:36 -0700</pubDate>
         <link>http://phatbl.at/2016/01/10/mac-server-setup.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/10/mac-server-setup.html</guid>
         
@@ -889,7 +889,7 @@ sudo pmset -c autorestart 1
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Wed, 06 Jan 2016 22:11:05 -0800</pubDate>
+        <pubDate>Wed, 06 Jan 2016 23:11:05 -0700</pubDate>
         <link>http://phatbl.at/2016/01/06/accident.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/06/accident.html</guid>
         
@@ -1014,7 +1014,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
   &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/19331497/set-environment-variables-from-file&quot;&gt;http://stackoverflow.com/questions/19331497/set-environment-variables-from-file&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Tue, 05 Jan 2016 11:51:55 -0800</pubDate>
+        <pubDate>Tue, 05 Jan 2016 12:51:55 -0700</pubDate>
         <link>http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</guid>
         
@@ -1051,7 +1051,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;p&gt;To see the &lt;strong&gt;:emoji_code:&lt;/strong&gt; for any of the above emoji, check the alt text on the image.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Jan 2016 20:29:17 -0800</pubDate>
+        <pubDate>Sun, 03 Jan 2016 21:29:17 -0700</pubDate>
         <link>http://phatbl.at/2016/01/03/jemoji.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/03/jemoji.html</guid>
         
@@ -1071,7 +1071,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;&lt;img src=&quot;/images/meme-pencil.jpg&quot; alt=&quot;She asked if she could borrow my pencil, so I guess you could say things are getting pretty serious&quot; /&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Sun, 03 Jan 2016 14:05:13 -0800</pubDate>
+        <pubDate>Sun, 03 Jan 2016 15:05:13 -0700</pubDate>
         <link>http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
         <guid isPermaLink="true">http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
         
@@ -1158,7 +1158,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;p&gt;Again, Safari on the left and Mail on the right composing and email, but with the split moved to the right. Mail adapts to more of the UI on the iPhone.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Jan 2016 07:53:53 -0800</pubDate>
+        <pubDate>Sun, 03 Jan 2016 08:53:53 -0700</pubDate>
         <link>http://phatbl.at/2016/01/03/ipro-review.html</link>
         <guid isPermaLink="true">http://phatbl.at/2016/01/03/ipro-review.html</guid>
         
