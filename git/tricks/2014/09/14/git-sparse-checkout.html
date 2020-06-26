@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://phatbl.at/git/tricks/2014/09/14/git-sparse-checkout.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://phatbl.at/feed.xml" />
+  <link rel="canonical" href="http://0.0.0.0:4000/git/tricks/2014/09/14/git-sparse-checkout.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
 </head>
 
 
@@ -43,6 +43,10 @@
         
           
           <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/appclip/">AppClip</a>
           
         
           
@@ -87,8 +91,7 @@
 
 <h2 id="the-code">The Code</h2>
 
-<noscript><pre>400: Invalid request
-</pre></noscript>
+<noscript><pre>400: Invalid request</pre></noscript>
 <script src="https://gist.github.com/a5caa3bb3a3784f03000.js?file=sparse_checkout.sh"> </script>
 
 <p>I’m going to walk through this script with the lines a bit out of order; variables will be interspersed with the code that uses them. I generally build scripts with all the variables at the top to make it easy to see what can be tweaked, but having them inline makes the logic easier to follow.</p>

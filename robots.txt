@@ -1,1 +1,1 @@
-Sitemap: http://phatbl.at/sitemap.xml
+Sitemap: http://0.0.0.0:4000/sitemap.xml

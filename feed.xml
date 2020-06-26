@@ -4,11 +4,11 @@
     <title>phatblat's reflog</title>
     <description>a few SHAs from a journey through code
 </description>
-    <link>http://phatbl.at/</link>
-    <atom:link href="http://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 11 Jan 2020 22:00:55 -0700</pubDate>
-    <lastBuildDate>Sat, 11 Jan 2020 22:00:55 -0700</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 26 Jun 2020 12:02:55 -0600</pubDate>
+    <lastBuildDate>Fri, 26 Jun 2020 12:02:55 -0600</lastBuildDate>
+    <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Intercepting stdout in Swift</title>
@@ -229,8 +229,8 @@ essentially text streams. If you are using XCTest, take a look at
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 08 Jan 2019 00:00:00 -0700</pubDate>
-        <link>http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</guid>
+        <link>http://0.0.0.0:4000/2019/01/08/intercepting-stdout-in-swift.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2019/01/08/intercepting-stdout-in-swift.html</guid>
         
         
       </item>
@@ -357,8 +357,8 @@ func handleEmptyResults(displayedResults: Int) {
 &lt;/div&gt;
 </description>
         <pubDate>Tue, 10 May 2016 22:31:31 -0600</pubDate>
-        <link>http://phatbl.at/2016/05/10/uisearchcontroller.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/05/10/uisearchcontroller.html</guid>
+        <link>http://0.0.0.0:4000/2016/05/10/uisearchcontroller.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/05/10/uisearchcontroller.html</guid>
         
         <category>swift,</category>
         
@@ -391,8 +391,8 @@ func handleEmptyResults(displayedResults: Int) {
 
 </description>
         <pubDate>Tue, 03 May 2016 21:06:22 -0600</pubDate>
-        <link>http://phatbl.at/2016/05/03/outlets-pod.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/05/03/outlets-pod.html</guid>
+        <link>http://0.0.0.0:4000/2016/05/03/outlets-pod.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/05/03/outlets-pod.html</guid>
         
         <category>swift,</category>
         
@@ -665,8 +665,8 @@ fourChainedFunctions(1)(2)(3)(4)
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 29 Apr 2016 13:39:19 -0600</pubDate>
-        <link>http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
+        <link>http://0.0.0.0:4000/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
         
         <category>swift,</category>
         
@@ -787,8 +787,8 @@ sudo pmset -c autorestart 1
 
 </description>
         <pubDate>Sun, 10 Jan 2016 19:49:36 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/10/mac-server-setup.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/10/mac-server-setup.html</guid>
+        <link>http://0.0.0.0:4000/2016/01/10/mac-server-setup.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/10/mac-server-setup.html</guid>
         
         <category>server,</category>
         
@@ -890,8 +890,8 @@ sudo pmset -c autorestart 1
 &lt;/div&gt;
 </description>
         <pubDate>Wed, 06 Jan 2016 23:11:05 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/06/accident.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/06/accident.html</guid>
+        <link>http://0.0.0.0:4000/2016/01/06/accident.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/06/accident.html</guid>
         
         <category>personal</category>
         
@@ -929,9 +929,7 @@ sudo pmset -c autorestart 1
 &lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/683671063855759360 %}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;508 days &lt;a href=&quot;https://t.co/Vnu0MsoGmf&quot;&gt;pic.twitter.com/Vnu0MsoGmf&lt;/a&gt;&lt;/p&gt;&amp;mdash; Darth Vader (@DepressedDarth) &lt;a href=&quot;https://twitter.com/DepressedDarth/status/683671063855759360?ref_src=twsrc%5Etfw&quot;&gt;January 3, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/683671063855759360'&lt;/p&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;ad-blockers&quot;&gt;Ad Blockers&lt;/h3&gt;
 
@@ -946,9 +944,7 @@ sudo pmset -c autorestart 1
 &lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 align='center' width='220' %}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;When you have a really funny tweet but it&amp;#39;s too many characters &lt;a href=&quot;https://t.co/FJv89HI6Fo&quot;&gt;https://t.co/FJv89HI6Fo&lt;/a&gt;&lt;/p&gt;&amp;mdash; Darth Vader (@DepressedDarth) &lt;a href=&quot;https://twitter.com/DepressedDarth/status/684318431227727872?ref_src=twsrc%5Etfw&quot;&gt;January 5, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'&lt;/p&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;width&lt;/code&gt; parameter must be between 220 and 550 inclusive and seems to have no effect on the text-only rendering of the tweet.&lt;/p&gt;
 
@@ -959,9 +955,7 @@ sudo pmset -c autorestart 1
 &lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 hide_media='true' %}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-cards=&quot;hidden&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;When you have a really funny tweet but it&amp;#39;s too many characters &lt;a href=&quot;https://t.co/FJv89HI6Fo&quot;&gt;https://t.co/FJv89HI6Fo&lt;/a&gt;&lt;/p&gt;&amp;mdash; Darth Vader (@DepressedDarth) &lt;a href=&quot;https://twitter.com/DepressedDarth/status/684318431227727872?ref_src=twsrc%5Etfw&quot;&gt;January 5, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'&lt;/p&gt;&lt;/div&gt;
 
 &lt;p&gt;Text rendering of the tweet is unaffected by &lt;code&gt;hide_media&lt;/code&gt; because it only includes a link by default.&lt;/p&gt;
 
@@ -1015,8 +1009,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 05 Jan 2016 12:51:55 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</guid>
+        <link>http://0.0.0.0:4000/2016/01/05/jekyll-twitter-plugin.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/05/jekyll-twitter-plugin.html</guid>
         
         
       </item>
@@ -1052,8 +1046,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;To see the &lt;strong&gt;:emoji_code:&lt;/strong&gt; for any of the above emoji, check the alt text on the image.&lt;/p&gt;
 </description>
         <pubDate>Sun, 03 Jan 2016 21:29:17 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/03/jemoji.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/03/jemoji.html</guid>
+        <link>http://0.0.0.0:4000/2016/01/03/jemoji.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/03/jemoji.html</guid>
         
         <category>jekyll,</category>
         
@@ -1072,8 +1066,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 </description>
         <pubDate>Sun, 03 Jan 2016 15:05:13 -0700</pubDate>
-        <link>http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
-        <guid isPermaLink="true">http://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
+        <link>http://0.0.0.0:4000/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
         
         <category>radar,</category>
         
@@ -1159,8 +1153,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;Again, Safari on the left and Mail on the right composing and email, but with the split moved to the right. Mail adapts to more of the UI on the iPhone.&lt;/p&gt;
 </description>
         <pubDate>Sun, 03 Jan 2016 08:53:53 -0700</pubDate>
-        <link>http://phatbl.at/2016/01/03/ipro-review.html</link>
-        <guid isPermaLink="true">http://phatbl.at/2016/01/03/ipro-review.html</guid>
+        <link>http://0.0.0.0:4000/2016/01/03/ipro-review.html</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/03/ipro-review.html</guid>
         
         <category>ipad,</category>
         
