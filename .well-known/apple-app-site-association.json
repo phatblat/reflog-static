@@ -1,0 +1,89 @@
+{
+	"applinks": {
+		"apps": [],
+		"details": [
+			{
+				"appID": "9JA89QQLNQ.developer.apple.wwdc-Debug",
+				"paths": [
+					"/videos/play/app-store-connect*",
+					"/videos/play/developer-stories*",
+					"/videos/play/enterprise*",
+					"/videos/play/insights*",
+					"/videos/play/tech-talks*",
+					"/videos/play/wwdc*",
+					"/fall??/*",
+					"NOT /wwdc??/agreement",
+					"NOT /wwdc??/aow",
+					"NOT /wwdc??/attending",
+					"NOT /wwdc??/childcare",
+					"NOT /wwdc??/consultations",
+					"NOT /wwdc??/events",
+					"NOT /wwdc??/fitness",
+					"NOT /wwdc??/get-togethers",
+					"NOT /wwdc??/guest-speakers",
+					"NOT /wwdc??/index.html",
+					"NOT /wwdc??/more",
+					"NOT /wwdc??/policy",
+					"NOT /wwdc??/register",
+					"NOT /wwdc??/scholarships",
+					"NOT /wwdc??/special-events",
+					"NOT /wwdc??/pro-studio",
+					"NOT /wwdc??/forums",
+					"/wwdc??/*",
+					"/news/*",
+					"/??/news/*"
+				]
+			},
+			{
+				"appID": "9JA89QQLNQ.developer.apple.wwdc-Release",
+				"paths": [
+					"/videos/play/app-store-connect*",
+					"/videos/play/developer-stories*",
+					"/videos/play/enterprise*",
+					"/videos/play/insights*",
+					"/videos/play/tech-talks*",
+					"/videos/play/wwdc*",
+					"/fall??/*",
+					"NOT /wwdc??/agreement",
+					"NOT /wwdc??/aow",
+					"NOT /wwdc??/attending",
+					"NOT /wwdc??/childcare",
+					"NOT /wwdc??/consultations",
+					"NOT /wwdc??/events",
+					"NOT /wwdc??/fitness",
+					"NOT /wwdc??/get-togethers",
+					"NOT /wwdc??/guest-speakers",
+					"NOT /wwdc??/index.html",
+					"NOT /wwdc??/more",
+					"NOT /wwdc??/policy",
+					"NOT /wwdc??/register",
+					"NOT /wwdc??/scholarships",
+					"NOT /wwdc??/special-events",
+					"NOT /wwdc??/pro-studio",
+					"NOT /wwdc??/forums",
+					"/wwdc??/*",
+					"/news/*",
+					"/??/news/*"
+				]
+			},
+			{
+				"appID": "BVNY5T73P8.com.apple.Playgrounds",
+				"paths": [
+					"/ul/sp0/*"
+				]
+			},
+			{
+				"appID": "BVNY5T73P8.com.apple.PlaygroundsMac",
+				"paths": [
+					"/ul/sp0/*"
+				]
+			}
+		]
+	},
+	"activitycontinuation": {
+		"apps": [
+			"9JA89QQLNQ.developer.apple.wwdc-Debug",
+			"9JA89QQLNQ.developer.apple.wwdc-Release"
+		]
+	}
+}
