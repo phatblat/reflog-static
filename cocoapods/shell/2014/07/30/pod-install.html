@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/cocoapods/shell/2014/07/30/pod-install.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/cocoapods/shell/2014/07/30/pod-install.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -85,7 +85,8 @@
 
 <p>Even when the pod version specifiers haven’t changed, CocoaPods reaches out to fetch any updates to the <code>master</code> spec repo, along with any private spec repos that may be configured. During local development of a pod, this slows down the process unnecessarily as the only changes you care about are local to your hard drive.</p>
 
-<pre><code>$ pod install --verbose
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>$ pod install --verbose
 
 Analyzing dependencies
 
@@ -93,17 +94,19 @@ Updating spec repositories
   $ /usr/local/bin/git rev-parse  &gt;/dev/null 2&gt;&amp;1
   $ /usr/local/bin/git ls-remote
   From https://github.com/CocoaPods/Specs.git
-  f83cbf438a0f80b7df76534ffa08efcb359ce982	HEAD
-  f83cbf438a0f80b7df76534ffa08efcb359ce982	refs/heads/master
-  fe7df26fe5545072c11abac241d73087a29e87d9	refs/pull/1/head
-  1748dab37fe08120775777a084e0fb9da10c4a63	refs/pull/1/merge
+  f83cbf438a0f80b7df76534ffa08efcb359ce982        HEAD
+  f83cbf438a0f80b7df76534ffa08efcb359ce982        refs/heads/master
+  fe7df26fe5545072c11abac241d73087a29e87d9        refs/pull/1/head
+  1748dab37fe08120775777a084e0fb9da10c4a63        refs/pull/1/merge
   ...
   5a7c7be28f0859865035c324e625c507cf858f4a  refs/pull/9998/head
   7a19ff8bfbaf00a485ca2274a229205d715dcbf7  refs/pull/9999/head
 Updating spec repo `master`
   $ /usr/local/bin/git pull --ff-only
   ...yawn...
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <!-- more -->
 
@@ -113,8 +116,11 @@ Updating spec repo `master`
 
 <p>Since that is way too much to type for such a common command to fly across my terminal, I like to wrap these up in a nice, short <a href="https://github.com/phatblat/dotfiles/blob/master/.dotfiles/shell/alias.zsh#L31">alias</a>.</p>
 
-<pre><code>alias pi='pod install --no-repo-update'
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>alias pi='pod install --no-repo-update'
+</pre></div>
+</div>
+</div>
 
 <p>Another situation where suppressing this automatic spec repo update is helpful is when you have unreliable or no network connection. The spec repo update is going to fail anyway.</p>
 
@@ -175,8 +181,7 @@ Updating spec repo `master`
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

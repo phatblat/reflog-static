@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2016/01/05/jekyll-twitter-plugin.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2016/01/05/jekyll-twitter-plugin.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -98,8 +98,12 @@
 <p>Syntax:</p>
 
 <!-- https://stackoverflow.com/a/5866429/39207 -->
-<pre><code class="language-liquid">{% tweet https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
-</code></pre>
+<div class="language-liquid highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>{% tweet https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
+</pre></div>
+</div>
+</div>
 
 <h2 id="jekyll-twitter-plugin">jekyll-twitter-plugin</h2>
 
@@ -107,14 +111,23 @@
 
 <p>The syntax is very similar:</p>
 
-<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/683671063855759360 %}
-</code></pre>
+<div class="language-liquid highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
+</pre></div>
+</div>
+</div>
 
-<div class="jekyll-twitter-plugin"><p>There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/683671063855759360'</p></div>
+<div class="jekyll-twitter-plugin">
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.</p>— DevOps Borat (<a href="https://twitter.com/DEVOPS_BORAT" class="user-mention">@DEVOPS_BORAT</a>) <a href="https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw">January 19, 2012</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 
 <h3 id="ad-blockers">Ad Blockers</h3>
 
-<p>Note: if you’re blocking the “Twitter Button” tracker with a browser plugin like Ghostery, you won’t see the <a href="https://dev.twitter.com/cards/overview">Twitter Card</a> version of these embedded tweets with images and they will instead fall back to a text-only version.</p>
+<p>Note: if you’re blocking the “Twitter Button” tracker with a browser plugin like Ghostery, you won’t see the <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started">Twitter Card</a> version of these embedded tweets with images and they will instead fall back to a text-only version.</p>
 
 <p><img src="/images/ghostery-twitter-button.png" alt="Ghostery Safari plugin showing Twitter tracker blocked"></p>
 
@@ -122,10 +135,19 @@
 
 <p>There are a few formatting options, such as <code>align</code> and <code>width</code>:</p>
 
-<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 align='center' width='220' %}
-</code></pre>
+<div class="language-liquid highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 align='center' width='220' %}
+</pre></div>
+</div>
+</div>
 
-<div class="jekyll-twitter-plugin"><p>There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'</p></div>
+<div class="jekyll-twitter-plugin">
+<blockquote class="twitter-tweet" align="center">
+<p lang="en" dir="ltr">Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.</p>— DevOps Borat (<a href="https://twitter.com/DEVOPS_BORAT" class="user-mention">@DEVOPS_BORAT</a>) <a href="https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw">January 19, 2012</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 
 <p>The <code>width</code> parameter must be between 220 and 550 inclusive and seems to have no effect on the text-only rendering of the tweet.</p>
 
@@ -133,14 +155,27 @@
 
 <p>This plugin will pass along any extra parameters like <code>hide_media</code> to the <a href="https://dev.twitter.com/rest/reference/get/statuses/oembed">oembed API</a> for further customization.</p>
 
-<pre><code class="language-liquid">{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 hide_media='true' %}
-</code></pre>
+<div class="language-liquid highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 hide_media='true' %}
+</pre></div>
+</div>
+</div>
 
-<div class="jekyll-twitter-plugin"><p>There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'</p></div>
+<div class="jekyll-twitter-plugin">
+<blockquote class="twitter-tweet" data-cards="hidden">
+<p lang="en" dir="ltr">Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.</p>— DevOps Borat (<a href="https://twitter.com/DEVOPS_BORAT" class="user-mention">@DEVOPS_BORAT</a>) <a href="https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw">January 19, 2012</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 
 <p>Text rendering of the tweet is unaffected by <code>hide_media</code> because it only includes a link by default.</p>
 
 <h2 id="configuration">Configuration</h2>
+
+<blockquote>
+  <p>Note: Since version 2.0.0 these Authentication &amp; API keys are no longer needed.</p>
+</blockquote>
 
 <p>There are two options for configuring this Twitter plugin with your authentication keys:</p>
 
@@ -152,24 +187,32 @@
 
 <p>Since I’m tracking my <code>_config.yml</code> in git, shared publicly on GitHub, I’m opting for #2.</p>
 
-<p>The challenge with environment variables is making sure they are defined whenever you need to run the command that depends on them. A simple solution is to add them to your <code>.bash_profile</code> or <code>.zshrc</code>, but since I’m <em>also</em> <a href="https://github.com/phatblat/dotfiles/blob/master/.zshrc">storing that on GitHub</a>, I’m going to look for another option.</p>
+<p>The challenge with environment variables is making sure they are defined whenever you need to run the command that depends on them. A simple solution is to add them to your <code>.bash_profile</code> or <code>.zshrc</code>, but since I’m <em>also</em> <a href="https://github.com/phatblat/dotfiles/blob/main/.zshrc">storing that on GitHub</a>, I’m going to look for another option.</p>
 
 <h2 id="env-file">.env File</h2>
 
 <p>Here is a very simple untracked file based solution. I created an <code>.env</code> file containing each environment variable on a separate line like so:</p>
 
-<pre><code class="language-bash">TWITTER_CONSUMER_KEY=...
+<div class="language-bash highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>TWITTER_CONSUMER_KEY=...
 TWITTER_CONSUMER_SECRET=...
 TWITTER_ACCESS_TOKEN=...
 TWITTER_ACCESS_TOKEN_SECRET=...
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>The values in this file are then loaded into the environment for the Jekyll process on the fly using the <code>env</code> command.</p>
 
-<pre><code class="language-bash">env $(cat .env | xargs) bundle exec jekyll serve
-</code></pre>
+<div class="language-bash highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>env $(cat .env | xargs) bundle exec jekyll serve
+</pre></div>
+</div>
+</div>
 
-<p>This is wrapped up neatly in a <a href="https://github.com/phatblat/dotfiles/blob/89dace6e7f9230e0b7f3ded261172f6bf7af2317/.dotfiles/www/octopress.zsh#L28"><code>serve</code></a> alias so I don’t have to type (or remember) all that each time.</p>
+<p>This is wrapped up neatly in a <a href="https://github.com/phatblat/dotfiles/blob/main/.config/fish/functions/serve.fish#L10"><code>serve</code></a> alias so I don’t have to type (or remember) all that each time.</p>
 
 <p>One caveat is that this command now generates an error if there is not an <code>.env</code> file in the current directory. I like that because I’m frequently in the wrong directory when I type <code>serve</code> and Jekyll is happy to create <code>_site</code> folders wherever I happen to be before blowing up in my face.</p>
 
@@ -177,8 +220,12 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 <p>Note that the above environment variables can be loaded into the shell using the builtin <code>export</code> command instead of <code>env</code>. That is fine for testing, but leaves them defined in the environment for any other process to read.</p>
 
-<pre><code class="language-bash">echo $TWITTER_CONSUMER_KEY
-</code></pre>
+<div class="language-bash highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>echo $TWITTER_CONSUMER_KEY
+</pre></div>
+</div>
+</div>
 
 <p>I tend to forget about this sort of thing (it works, <img class="emoji" title=":shipit:" alt=":shipit:" src="https://github.githubassets.com/images/icons/emoji/shipit.png" height="20" width="20">!) and would rather limit the exposure of sensitive values to the exact scope that they are needed.</p>
 
@@ -245,8 +292,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

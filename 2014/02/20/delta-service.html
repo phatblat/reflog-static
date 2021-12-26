@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2014/02/20/delta-service.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2014/02/20/delta-service.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -148,7 +148,8 @@ Both RESTful and search APIs have the downside of requiring a network connection
 
 <p>Let’s start with the “download everything” call. This is just a service endpoint that a GET request invokes a response which contains the entire dataset in question.</p>
 
-<pre><code>GET /api/widgets
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>GET /api/widgets
 Accept: */*
 
 HTTP/1.1 200 OK
@@ -157,35 +158,38 @@ Last-Modified: Tue, 04 Feb 2014 16:30:30 GMT
 Content-Type: application/json
 
 {
-    "widgets": [
+    &quot;widgets&quot;: [
         {
-            "name": "Widget 1",
-            "color": "blue"
+            &quot;name&quot;: &quot;Widget 1&quot;,
+            &quot;color&quot;: &quot;blue&quot;
         }, {
-            "name": "Widget 2",
-            "color": "yellow"
+            &quot;name&quot;: &quot;Widget 2&quot;,
+            &quot;color&quot;: &quot;yellow&quot;
         }, {
-            "name": "Widget 3",
-            "color": "red"
+            &quot;name&quot;: &quot;Widget 3&quot;,
+            &quot;color&quot;: &quot;red&quot;
         }, {
-            "name": "Widget 4",
-            "color": "green"
+            &quot;name&quot;: &quot;Widget 4&quot;,
+            &quot;color&quot;: &quot;green&quot;
         }, {
-            "name": "Widget 5",
-            "color": "gray"
+            &quot;name&quot;: &quot;Widget 5&quot;,
+            &quot;color&quot;: &quot;gray&quot;
         }, {
-            "name": "Widget 6",
-            "color": "white"
+            &quot;name&quot;: &quot;Widget 6&quot;,
+            &quot;color&quot;: &quot;white&quot;
         }
     ]
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This service call will be used by the client whenever there is a problem applying a delta update. It also provides an interface for the build prep process to grab a current copy of the data to be included in the app bundle.</p>
 
 <p>In order to stay as close to the principles of REST, the delta functionality comes into play when the client does a conditional GET and includes an If-Modified-Since header in the request.</p>
 
-<pre><code>GET /api/widgets
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>GET /api/widgets
 Accept: */*
 If-Modified-Since: Wed, 05 Feb 2014 19:08:16 GMT
 
@@ -195,23 +199,26 @@ Last-Modified: Thu, 06 Feb 2014 13:31:30 GMT
 Content-Type: application/json
 
 {
-    "widgets": [
+    &quot;widgets&quot;: [
         {
-            "name": "Widget 2",
-            "color": "yellow"
+            &quot;name&quot;: &quot;Widget 2&quot;,
+            &quot;color&quot;: &quot;yellow&quot;
         }, {
-            "name": "Widget 6",
-            "color": "white"
+            &quot;name&quot;: &quot;Widget 6&quot;,
+            &quot;color&quot;: &quot;white&quot;
         }
     ]
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>The records included in the response body are upserted into the client’s data; any that don’t exist are created, those that do are updated if any of the attributes have changed.</p>
 
 <p>This takes care of creating and updating records, but what about removing records? The simplest approach I’ve been able to come up with is to include a “hidden” attribute with a value of true which instructs the client to stop displaying that record. This approach allows for bringing back records in the future.</p>
 
-<pre><code>GET /api/widgets
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>GET /api/widgets
 Accept: */*
 If-Modified-Since: Thu, 06 Feb 2014 13:31:30 GMT
 
@@ -221,26 +228,31 @@ Last-Modified: Fri, 07 Feb 2014 20:04:06 GMT
 Content-Type: application/json
 
 {
-    "widgets": [
+    &quot;widgets&quot;: [
         {
-            "name": "Widget 1",
-            "color": "blue",
-            "hidden": true
+            &quot;name&quot;: &quot;Widget 1&quot;,
+            &quot;color&quot;: &quot;blue&quot;,
+            &quot;hidden&quot;: true
         }
     ]
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>The last example is when a client asks for changes, but nothing has changed. In this case the response will have a 304 status code and an empty body. This tells the client it is up-to-date.</p>
 
-<pre><code>GET /api/widgets
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>GET /api/widgets
 Accept: */*
 If-Modified-Since: Fri, 07 Feb 2014 20:04:06 GMT
 
 HTTP/1.1 304 Not Modified
 Date: Sat, 08 Feb 2014 12:01:06 GMT
 Last-Modified: Sat, 08 Feb 2014 12:01:06 GMT
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <h2 id="date-handling">Date Handling</h2>
 
@@ -306,8 +318,7 @@ Last-Modified: Sat, 08 Feb 2014 12:01:06 GMT
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

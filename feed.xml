@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>phatblat's reflog</title>
-    <description>a few SHAs from a journey through code
-</description>
-    <link>http://0.0.0.0:4000/</link>
-    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 26 Jun 2020 12:02:55 -0600</pubDate>
-    <lastBuildDate>Fri, 26 Jun 2020 12:02:55 -0600</lastBuildDate>
-    <generator>Jekyll v4.0.0</generator>
+    <title>phatblat&apos;s reflog</title>
+    <description>a few SHAs from a journey through code</description>
+    <link>https://phatbl.at/</link>
+    <atom:link href="https://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 26 Dec 2021 15:22:49 -0700</pubDate>
+    <lastBuildDate>Sun, 26 Dec 2021 15:22:49 -0700</lastBuildDate>
+    <generator>Jekyll v4.2.1</generator>
     
       <item>
         <title>Intercepting stdout in Swift</title>
@@ -60,7 +59,8 @@ which served as my starting point. There are a few key points in his post:&lt;/p
 
 &lt;h3 id=&quot;outputlistener&quot;&gt;OutputListener&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;class OutputListener {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;class OutputListener {
     /// consumes the messages on STDOUT
     let inputPipe = Pipe()
 
@@ -68,9 +68,11 @@ which served as my starting point. There are a few key points in his post:&lt;/p
     let outputPipe = Pipe()
 
     /// Buffers strings written to stdout
-    var contents = &quot;&quot;
+    var contents = &amp;quot;&amp;quot;
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Here we have the minimal storage for my implementation. &lt;code&gt;inputPipe&lt;/code&gt; will bring input to
 my test listener, &lt;code&gt;outputPipe&lt;/code&gt; will handle sending text back to stdout and &lt;code&gt;contents&lt;/code&gt;
@@ -80,7 +82,8 @@ will build up a string of all the data that passes through.&lt;/p&gt;
 
 &lt;p&gt;One-time setup code to wire up the two &lt;code&gt;Pipe&lt;/code&gt;s and capture &lt;code&gt;contents&lt;/code&gt;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;init() {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;init() {
     // Set up a read handler which fires when data is written to our inputPipe
     inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
@@ -94,7 +97,9 @@ will build up a string of all the data that passes through.&lt;/p&gt;
         strongSelf.outputPipe.fileHandleForWriting.write(data)
     }
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;This uses &lt;code&gt;readabilityHandler&lt;/code&gt; instead of notifications for less code and no need to
 repeatedly call &lt;code&gt;readInBackgroundAndNotify()&lt;/code&gt;.&lt;/p&gt;
@@ -111,7 +116,8 @@ written to the pipe’s file handle so far.&lt;/p&gt;
 &lt;p&gt;This is the code that actually wires up the pipes to intercept stdout. It uses the esoteric
 &lt;code&gt;dup2&lt;/code&gt; C function.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;/// Sets up the &quot;tee&quot; of piped output, intercepting stdout then passing it through.
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;/// Sets up the &amp;quot;tee&amp;quot; of piped output, intercepting stdout then passing it through.
 func openConsolePipe() {
     // Copy STDOUT file descriptor to outputPipe for writing strings back to STDOUT
     dup2(stdoutFileDescriptor, outputPipe.fileHandleForWriting.fileDescriptor)
@@ -119,7 +125,9 @@ func openConsolePipe() {
     // Intercept STDOUT with inputPipe
     dup2(inputPipe.fileHandleForWriting.fileDescriptor, stdoutFileDescriptor)
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;&lt;code&gt;stdoutFileDescriptor&lt;/code&gt; is my computed property for &lt;code&gt;FileHandle.standardOutput.fileDescriptor&lt;/code&gt;,
@@ -155,16 +163,19 @@ it uses &lt;code&gt;freopen()&lt;/code&gt; to reopen stdout, pointing it to a ne
 
 &lt;h3 id=&quot;closeconsolepipe&quot;&gt;closeConsolePipe&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;/// Tears down the &quot;tee&quot; of piped output.
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;/// Tears down the &amp;quot;tee&amp;quot; of piped output.
 func closeConsolePipe() {
     // Restore stdout
-    freopen(&quot;/dev/stdout&quot;, &quot;a&quot;, stdout)
+    freopen(&amp;quot;/dev/stdout&amp;quot;, &amp;quot;a&amp;quot;, stdout)
 
     [inputPipe.fileHandleForReading, outputPipe.fileHandleForWriting].forEach { file in
         file.closeFile()
     }
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;🎉 This was the missing piece I needed to restore stdout. I don’t know if the &lt;code&gt;closeFile()&lt;/code&gt;
 calls are necessary, especially in a test suite, but I like to clean up after myself 🧹.&lt;/p&gt;
@@ -173,19 +184,22 @@ calls are necessary, especially in a test suite, but I like to clean up after my
 
 &lt;p&gt;Here’s how it works inside a test.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;let output = OutputListener()
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;let output = OutputListener()
 output.openConsolePipe()
-let expectedOutput = &quot;hi there&quot;
+let expectedOutput = &amp;quot;hi there&amp;quot;
 
 // run code under test that output some text
-print(expectedOutput, terminator: &quot;&quot;)
+print(expectedOutput, terminator: &amp;quot;&amp;quot;)
 
 // output is async so need to wait for contents to be updated
 expect(output.contents).toEventuallyNot(beEmpty())
 expect(output.contents) == expectedOutput
 
 output.closeConsolePipe()
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Here I’m using the Nimble &lt;a href=&quot;https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148&quot;&gt;&lt;code&gt;toEventuallyNot&lt;/code&gt;&lt;/a&gt;
 function to take care of the asynchroncity of these file handles as they are
@@ -229,8 +243,8 @@ essentially text streams. If you are using XCTest, take a look at
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 08 Jan 2019 00:00:00 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2019/01/08/intercepting-stdout-in-swift.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2019/01/08/intercepting-stdout-in-swift.html</guid>
+        <link>https://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html</guid>
         
         
       </item>
@@ -243,20 +257,23 @@ essentially text streams. If you are using XCTest, take a look at
 
 &lt;h2 id=&quot;search-bar&quot;&gt;Search Bar&lt;/h2&gt;
 
-&lt;p&gt;What’s unexpected about &lt;code&gt;UISearchController&lt;/code&gt; is that you have to &lt;em&gt;install&lt;/em&gt; its &lt;code&gt;searchBar&lt;/code&gt; into the view hierarchy. You can’t connect it to an existing &lt;code&gt;UISearchBar&lt;/code&gt; defined in a storyboard.&lt;sup id=&quot;fnref:searchbar-storyboard&quot;&gt;&lt;a href=&quot;#fn:searchbar-storyboard&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; If you’re just adding the search bar to the top of a table, like in Apple’s sample code&lt;sup id=&quot;fnref:apple-sample-code&quot;&gt;&lt;a href=&quot;#fn:apple-sample-code&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, you can just make it the &lt;code&gt;tableHeaderView&lt;/code&gt;. But just about any other situation is going to have to deal with auto layout.&lt;/p&gt;
+&lt;p&gt;What’s unexpected about &lt;code&gt;UISearchController&lt;/code&gt; is that you have to &lt;em&gt;install&lt;/em&gt; its &lt;code&gt;searchBar&lt;/code&gt; into the view hierarchy. You can’t connect it to an existing &lt;code&gt;UISearchBar&lt;/code&gt; defined in a storyboard.&lt;sup id=&quot;fnref:searchbar-storyboard&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:searchbar-storyboard&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; If you’re just adding the search bar to the top of a table, like in Apple’s sample code&lt;sup id=&quot;fnref:apple-sample-code&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:apple-sample-code&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, you can just make it the &lt;code&gt;tableHeaderView&lt;/code&gt;. But just about any other situation is going to have to deal with auto layout.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;override func viewDidLoad() {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;override func viewDidLoad() {
   super.viewDidLoad()
   let searchBar = searchController.searchBar
   searchBar.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
   searchBarContainerView.addSubview(searchBar)
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;We’re going to reserve some space in the UI using a “container” view&lt;sup id=&quot;fnref:container-view&quot;&gt;&lt;a href=&quot;#fn:container-view&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.&lt;/p&gt;
+&lt;p&gt;We’re going to reserve some space in the UI using a “container” view&lt;sup id=&quot;fnref:container-view&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:container-view&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.&lt;/p&gt;
 
 &lt;center&gt;
-&lt;img src=&quot;/images/uisearchcontroller-main-scene.png&quot; width=&quot;300&quot; alt=&quot;'Main scene showing search bar container view'&quot; title=&quot;Main scene&quot; /&gt;
+&lt;img src=&quot;/images/uisearchcontroller-main-scene.png&quot; width=&quot;300&quot; alt=&quot;&apos;Main scene showing search bar container view&apos;&quot; title=&quot;Main scene&quot; /&gt;
 &lt;/center&gt;
 
 &lt;h2 id=&quot;search-results-controller&quot;&gt;Search Results Controller&lt;/h2&gt;
@@ -264,14 +281,15 @@ essentially text streams. If you are using XCTest, take a look at
 &lt;p&gt;The search results controller is just a simple &lt;code&gt;UITableViewController&lt;/code&gt; with each cell displaying a single Swift keyword.&lt;/p&gt;
 
 &lt;center&gt;
-&lt;img src=&quot;/images/uisearchcontroller-search-results.png&quot; width=&quot;300&quot; alt=&quot;'Search results table showing a list of swift keywords'&quot; title=&quot;Search results&quot; /&gt;
+&lt;img src=&quot;/images/uisearchcontroller-search-results.png&quot; width=&quot;300&quot; alt=&quot;&apos;Search results table showing a list of swift keywords&apos;&quot; title=&quot;Search results&quot; /&gt;
 &lt;/center&gt;
 
 &lt;h2 id=&quot;search-controller&quot;&gt;Search Controller&lt;/h2&gt;
 
 &lt;p&gt;A &lt;code&gt;UISearchController&lt;/code&gt; must be set up in code and it’s constructor takes a single argument - a &lt;code&gt;UIViewController&lt;/code&gt; which is going to display the search results. Here we pass in a reference to our &lt;code&gt;searchResultsController&lt;/code&gt; stored in a property.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;let searchController =
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;let searchController =
   UISearchController(searchResultsController: self.searchResultsController)
 searchController.searchResultsUpdater = self
 searchController.delegate = self
@@ -279,7 +297,9 @@ searchController.searchBar.delegate = self
 
 searchController.hidesNavigationBarDuringPresentation = true
 searchController.dimsBackgroundDuringPresentation = false
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;There is little interaction with &lt;code&gt;UISearchController&lt;/code&gt; beyond creating one, configuring it and connecting it to the following:&lt;/p&gt;
 
@@ -294,25 +314,29 @@ searchController.dimsBackgroundDuringPresentation = false
 
 &lt;p&gt;The &lt;code&gt;UISearchResultsUpdating&lt;/code&gt; protocol is very simple, but it’s where all the fun happens:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;func updateSearchResultsForSearchController(searchController: UISearchController)
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func updateSearchResultsForSearchController(searchController: UISearchController)
   guard let searchTerm = searchController.searchBar.text else { return }
   // use searchTerm to filter search results
   ...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;This method is called whenever the text changes in the search bar. The current text can be accessed through the &lt;code&gt;searchController&lt;/code&gt; parameter. Any object can handle these updates.&lt;/p&gt;
 
 &lt;p&gt;It’s common to also make the search results controller the &lt;code&gt;searchResultsUpdater&lt;/code&gt; and have it conform to the &lt;code&gt;UISearchResultsUpdating&lt;/code&gt; protocol. That configuration causes the search results controller to update itself with each change to the search term. However, we’re not going that route because of a special case we want to handle: a custom “empty results” view. Attempting to add a subview to a &lt;code&gt;UITableView&lt;/code&gt; is fraught with peril, so we’re not going to do that.&lt;/p&gt;
 
 &lt;center&gt;
-&lt;img src=&quot;/images/uisearchcontroller-no-results.png&quot; width=&quot;300&quot; alt=&quot;'Empty search results screen'&quot; title=&quot;Empty search results&quot; /&gt;
+&lt;img src=&quot;/images/uisearchcontroller-no-results.png&quot; width=&quot;300&quot; alt=&quot;&apos;Empty search results screen&apos;&quot; title=&quot;Empty search results&quot; /&gt;
 &lt;/center&gt;
 
 &lt;p&gt;Instead the “main” view controller will be the &lt;code&gt;searchResultsUpdater&lt;/code&gt; and it will pass the current &lt;code&gt;searchTerm&lt;/code&gt; into the search results controller. The search results controller will take care of filtering and return the number of results displayed.&lt;/p&gt;
 
 &lt;p&gt;The “main” view controller will use the number of results displayed to determine when to show and hide the “no results” view.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;  ...
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;  ...
   let displayedResultCount = searchResultsController.filterData(searchTerm)
   handleEmptyResults(displayedResultCount)
 }
@@ -321,13 +345,15 @@ func handleEmptyResults(displayedResults: Int) {
   let showEmptyResultsView = (searchController.active &amp;amp;&amp;amp; displayedResults == 0)
   emptyResultsView.hidden = !showEmptyResultsView
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;This &lt;code&gt;emptyResultsView&lt;/code&gt; is defined in the storyboard and initially hidden.&lt;/p&gt;
 
 &lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
 
-&lt;p&gt;That’s pretty much it. I wanted to provide a simple example because there’s a lot of confusing information out there on how this API works. Web searches are tainted with the old API since the type names are so similar.&lt;sup id=&quot;fnref:search-display-controller&quot;&gt;&lt;a href=&quot;#fn:search-display-controller&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;That’s pretty much it. I wanted to provide a simple example because there’s a lot of confusing information out there on how this API works. Web searches are tainted with the old API since the type names are so similar.&lt;sup id=&quot;fnref:search-display-controller&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:search-display-controller&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;You can find the complete project on GitHub at the URL below:
 &lt;strong&gt;&lt;a href=&quot;https://github.com/phatblat/SearchController&quot;&gt;https://github.com/phatblat/SearchController&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -339,26 +365,26 @@ func handleEmptyResults(displayedResults: Int) {
 &lt;p&gt;&lt;code&gt;UISearchController&lt;/code&gt; is not coupled with the presentation of the search results, so we are free to use any kind of view controller to handle it. At &lt;a href=&quot;http://360idev.com&quot;&gt;360|iDev 2015&lt;/a&gt;, @jeremiahgage presented using a &lt;a href=&quot;https://github.com/phatblat/360iDev-Slides/blob/master/2015-Slides.md#uisearchcontroller-with-a-uicollectionview&quot;&gt;UISearchController with a UICollectionView&lt;/a&gt; which is a fabulous example especially since &lt;code&gt;UICollectionView&lt;/code&gt; is so highly customizable.&lt;/p&gt;
 
 &lt;h3 id=&quot;footnotes&quot;&gt;Footnotes&lt;/h3&gt;
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:searchbar-storyboard&quot;&gt;
-      &lt;p&gt;This was how the old, deprecated &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchDisplayController_Class/&quot;&gt;&lt;code&gt;UISearchDisplayController&lt;/code&gt;&lt;/a&gt; was often set up. There is even still a template for it in the Interface Builder Object library. &lt;img src=&quot;/images/uisearchcontroller-search-bar-and-search-display-controller.png&quot; alt=&quot;Search Bar and Search Display Controller in Interface Builder Object library pane&quot; /&gt; &lt;a href=&quot;#fnref:searchbar-storyboard&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:searchbar-storyboard&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;This was how the old, deprecated &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchDisplayController_Class/&quot;&gt;&lt;code&gt;UISearchDisplayController&lt;/code&gt;&lt;/a&gt; was often set up. There is even still a template for it in the Interface Builder Object library. &lt;img src=&quot;/images/uisearchcontroller-search-bar-and-search-display-controller.png&quot; alt=&quot;Search Bar and Search Display Controller in Interface Builder Object library pane&quot; /&gt; &lt;a href=&quot;#fnref:searchbar-storyboard&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:apple-sample-code&quot;&gt;
-      &lt;p&gt;The &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchController/#//apple_ref/doc/uid/TP40014432-CH1-SW8&quot;&gt;UISearchController&lt;/a&gt; reference documentation contains a minimal code sample. &lt;a href=&quot;#fnref:apple-sample-code&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:apple-sample-code&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;The &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchController/#//apple_ref/doc/uid/TP40014432-CH1-SW8&quot;&gt;UISearchController&lt;/a&gt; reference documentation contains a minimal code sample. &lt;a href=&quot;#fnref:apple-sample-code&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:container-view&quot;&gt;
-      &lt;p&gt;Nothing as fancy as &lt;a href=&quot;https://www.objc.io/issues/1-view-controllers/containment-view-controller/&quot;&gt;View Controller Containment&lt;/a&gt;. Just a simple &lt;code&gt;UIView&lt;/code&gt; which we’ll be using as the parent view for the &lt;code&gt;UISearchBar&lt;/code&gt;. &lt;a href=&quot;#fnref:container-view&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:container-view&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Nothing as fancy as &lt;a href=&quot;https://www.objc.io/issues/1-view-controllers/containment-view-controller/&quot;&gt;View Controller Containment&lt;/a&gt;. Just a simple &lt;code&gt;UIView&lt;/code&gt; which we’ll be using as the parent view for the &lt;code&gt;UISearchBar&lt;/code&gt;. &lt;a href=&quot;#fnref:container-view&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:search-display-controller&quot;&gt;
-      &lt;p&gt;Do yourself a favor and never look at the API for &lt;code&gt;UISearchDisplayController&lt;/code&gt; - it’s deprecated anyway. I’m constantly confusing the two. &lt;a href=&quot;#fnref:search-display-controller&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:search-display-controller&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Do yourself a favor and never look at the API for &lt;code&gt;UISearchDisplayController&lt;/code&gt; - it’s deprecated anyway. I’m constantly confusing the two. &lt;a href=&quot;#fnref:search-display-controller&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Tue, 10 May 2016 22:31:31 -0600</pubDate>
-        <link>http://0.0.0.0:4000/2016/05/10/uisearchcontroller.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/05/10/uisearchcontroller.html</guid>
+        <link>https://phatbl.at/2016/05/10/uisearchcontroller.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/05/10/uisearchcontroller.html</guid>
         
         <category>swift,</category>
         
@@ -391,8 +417,8 @@ func handleEmptyResults(displayedResults: Int) {
 
 </description>
         <pubDate>Tue, 03 May 2016 21:06:22 -0600</pubDate>
-        <link>http://0.0.0.0:4000/2016/05/03/outlets-pod.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/05/03/outlets-pod.html</guid>
+        <link>https://phatbl.at/2016/05/03/outlets-pod.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/05/03/outlets-pod.html</guid>
         
         <category>swift,</category>
         
@@ -437,38 +463,50 @@ func handleEmptyResults(displayedResults: Int) {
 
 &lt;p&gt;Swift 2 has syntactic sugar for defining curried functions.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;func sum(A: Int)(_ B: Int)(_ C: Int) -&amp;gt; Int {
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func sum(A: Int)(_ B: Int)(_ C: Int) -&amp;gt; Int {
   return A + B + C
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;This &lt;code&gt;sum&lt;/code&gt; function can be called in a number of ways:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;let sumA = sum(1)     // Int -&amp;gt; Int -&amp;gt; Int
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;let sumA = sum(1)     // Int -&amp;gt; Int -&amp;gt; Int
 let sumAB = sumA(2)   // Int -&amp;gt; Int
 
 sum(1)(2)(3)          // 6
 sumA(2)(3)            // 6
 sumAB(3)              // 6
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;In this example, the &lt;code&gt;sumA&lt;/code&gt; function has captured the value of the &lt;code&gt;A&lt;/code&gt; parameter (1), whereas &lt;code&gt;sumAB&lt;/code&gt; has captured the values of both the &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;B&lt;/code&gt; parameters (1 and 2). When the final &lt;code&gt;C&lt;/code&gt; parameter is passed to any of these functions the resulting &lt;code&gt;Int&lt;/code&gt; value (6) is returned.&lt;/p&gt;
 
 &lt;p&gt;An equivalent &lt;code&gt;sum&lt;/code&gt; function using the more verbose curried function syntax shows that it is really a set of nested functions.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;func sum(A: Int) -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; Int)) {
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func sum(A: Int) -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; Int)) {
   return { B in
     return { C in
       return A + B + C
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a &lt;code&gt;curry&lt;/code&gt; function which transforms a multi-parameter function into its curried version. &lt;sup id=&quot;fnref:curry-func&quot;&gt;&lt;a href=&quot;#fn:curry-func&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a &lt;code&gt;curry&lt;/code&gt; function which transforms a multi-parameter function into its curried version. &lt;sup id=&quot;fnref:curry-func&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:curry-func&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;func curry(f: (A,B)-&amp;gt;C) -&amp;gt; A-&amp;gt;B-&amp;gt;C
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func curry(f: (A,B)-&amp;gt;C) -&amp;gt; A-&amp;gt;B-&amp;gt;C
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The thoughtbot &lt;a href=&quot;https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift&quot;&gt;Curry library&lt;/a&gt; has all the variations of the &lt;code&gt;curry&lt;/code&gt; function up to 19 parameters.&lt;/p&gt;
 
@@ -480,10 +518,13 @@ sumAB(3)              // 6
 
 &lt;p&gt;Just look at how beautiful this is!&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;it(&quot;has a leftButton outlet&quot;) {
-  hasButtonOutlet(&quot;leftButton&quot;)
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;it(&amp;quot;has a leftButton outlet&amp;quot;) {
+  hasButtonOutlet(&amp;quot;leftButton&amp;quot;)
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;This is a BDD-style test using the &lt;a href=&quot;https://github.com/Quick/Quick&quot;&gt;Quick&lt;/a&gt; framework.&lt;/p&gt;
@@ -491,41 +532,50 @@ sumAB(3)              // 6
 
 &lt;p&gt;So, what is that &lt;code&gt;hasButtonOutlet&lt;/code&gt; magic? It’s a &lt;a href=&quot;https://en.m.wikipedia.org/wiki/Partial_application&quot;&gt;partially-applied&lt;/a&gt; function saved in a local variable. This is how it is created:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;class ViewControllerSpec: QuickSpec {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;class ViewControllerSpec: QuickSpec {
   override func spec() {
     var viewController: UIViewController!
     var hasButtonOutlet: (String -&amp;gt; UIButton?)!
-    describe(&quot;view controller&quot;) {
+    describe(&amp;quot;view controller&amp;quot;) {
       beforeEach {
         viewController = ...
         hasButtonOutlet = outlet(viewController)
       }
       ...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The return type in the &lt;code&gt;hasButtonOutlet&lt;/code&gt; declaration (&lt;code&gt;UIButton&lt;/code&gt; in the above example) is the type used for validation inside the generic &lt;code&gt;outlet&lt;/code&gt; function below.&lt;/p&gt;
 
 &lt;p&gt;Calling the &lt;code&gt;outlet&lt;/code&gt; full function would look like this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;outlet(viewController)(&quot;leftDoneButton&quot;)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;outlet(viewController)(&amp;quot;leftDoneButton&amp;quot;)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;But, you might as well just have a plain, old multi-parameter function if you want all that. Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.&lt;/p&gt;
 
 &lt;p&gt;Here is a condensed definition of the &lt;code&gt;outlet&lt;/code&gt; curried function:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;func outlet&amp;lt;T&amp;gt;(viewController: UIViewController) -&amp;gt; (String) -&amp;gt; T? {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func outlet&amp;lt;T&amp;gt;(viewController: UIViewController) -&amp;gt; (String) -&amp;gt; T? {
   return { (expectedOutlet: String) -&amp;gt; T? in
     guard let object = viewController.valueForKey(expectedOutlet)
-      else { fail(&quot;\(expectedOutlet) outlet was nil&quot;); return nil }
+      else { fail(&amp;quot;\(expectedOutlet) outlet was nil&amp;quot;); return nil }
 
     guard let objectOfType = object as? T
-      else { fail(&quot;\(object) outlet was not a \(T.self)&quot;); return nil }
+      else { fail(&amp;quot;\(object) outlet was not a \(T.self)&amp;quot;); return nil }
 
     return objectOfType
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;The &lt;code&gt;fail&lt;/code&gt; function is part of the &lt;a href=&quot;https://github.com/Quick/Nimble&quot;&gt;Nimble&lt;/a&gt; matcher framework&lt;/p&gt;
@@ -535,29 +585,36 @@ sumAB(3)              // 6
 
 &lt;p&gt;The action assertion functions are similarly simple.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;it(&quot;receives a didTapLeftButton: action from leftButton&quot;) {
-  receivesAction(&quot;didTapLeftButton:&quot;, from: &quot;leftButton&quot;)
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;it(&amp;quot;receives a didTapLeftButton: action from leftButton&amp;quot;) {
+  receivesAction(&amp;quot;didTapLeftButton:&amp;quot;, from: &amp;quot;leftButton&amp;quot;)
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;One caveat is that they require an outlet on the thing sending the action. A lot of the time an outlet isn’t necessary for an action-sending UI element, but I haven’t found a way to get the actions from the view controller (yet).&lt;/p&gt;
 
 &lt;p&gt;Here is the setup for the partially-applied &lt;code&gt;receivesAction&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;class ViewControllerSpec: QuickSpec {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;class ViewControllerSpec: QuickSpec {
     override func spec() {
     var receivesAction: ((String, from: String) -&amp;gt; Void)!
-    describe(&quot;view controller&quot;) {
+    describe(&amp;quot;view controller&amp;quot;) {
       beforeEach {
         viewController = ...
         receivesAction = action(viewController)
       }
       ...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Implementation of the &lt;code&gt;action&lt;/code&gt; function is more complex as getting to the IBAction differs depending on whether the UI element is a &lt;code&gt;UIBarButtonItem&lt;/code&gt; or a type of &lt;code&gt;UIControl&lt;/code&gt;. &lt;sup id=&quot;fnref:action-test&quot;&gt;&lt;a href=&quot;#fn:action-test&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Implementation of the &lt;code&gt;action&lt;/code&gt; function is more complex as getting to the IBAction differs depending on whether the UI element is a &lt;code&gt;UIBarButtonItem&lt;/code&gt; or a type of &lt;code&gt;UIControl&lt;/code&gt;. &lt;sup id=&quot;fnref:action-test&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:action-test&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;func action(viewController: UIViewController) -&amp;gt; (String, from: String) -&amp;gt; Void {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func action(viewController: UIViewController) -&amp;gt; (String, from: String) -&amp;gt; Void {
   return { (expectedAction: String, expectedOutlet: String) in
     let optionalControl = outlet(viewController)(expectedOutlet)
 
@@ -579,7 +636,7 @@ sumAB(3)              // 6
         // Filter down to the expected action
         action = allActions.filter({$0 == expectedAction}).first
       default:
-        fail(&quot;Unhandled control type: \(control.dynamicType)&quot;)
+        fail(&amp;quot;Unhandled control type: \(control.dynamicType)&amp;quot;)
       }
     }
 
@@ -590,7 +647,9 @@ sumAB(3)              // 6
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;The &lt;code&gt;expect&lt;/code&gt; function is part of the &lt;a href=&quot;https://github.com/Quick/Nimble&quot;&gt;Nimble&lt;/a&gt; matcher framework&lt;/p&gt;
@@ -603,24 +662,28 @@ sumAB(3)              // 6
 
 &lt;p&gt;The functions in the sample code are much more beautiful due to @esttorhe’s help in simplifying the API.&lt;/p&gt;
 
-&lt;p&gt;Running the tests in the example project gives quick&lt;sup id=&quot;fnref:quick&quot;&gt;&lt;a href=&quot;#fn:quick&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; feedback that all the outlets and actions are properly connected without even launching the app.&lt;/p&gt;
+&lt;p&gt;Running the tests in the example project gives quick&lt;sup id=&quot;fnref:quick&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:quick&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; feedback that all the outlets and actions are properly connected without even launching the app.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/outlet-action-tests-pass.png&quot; alt=&quot;&quot; title=&quot;ViewControllerSpec test status with all green checkmarks&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;deprecated-sob&quot;&gt;Deprecated :sob:&lt;/h2&gt;
 
-&lt;p&gt;Shortly after @allonsykraken posted &lt;a href=&quot;http://krakendev.io/blog/hipster-swift&quot;&gt;Hipster Swift&lt;/a&gt;, I learned that the super-clean syntactic sugar version of curried functions is &lt;a href=&quot;https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md&quot;&gt;going away in Swift 3&lt;/a&gt;&lt;sup id=&quot;fnref:swift3&quot;&gt;&lt;a href=&quot;#fn:swift3&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.&lt;/p&gt;
+&lt;p&gt;Shortly after @allonsykraken posted &lt;a href=&quot;http://krakendev.io/blog/hipster-swift&quot;&gt;Hipster Swift&lt;/a&gt;, I learned that the super-clean syntactic sugar version of curried functions is &lt;a href=&quot;https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md&quot;&gt;going away in Swift 3&lt;/a&gt;&lt;sup id=&quot;fnref:swift3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:swift3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.&lt;/p&gt;
 
 &lt;p&gt;Isn’t this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;func fourChainedFunctions(a: Int)(b: Int)(c: Int)(d: Int) -&amp;gt; Int {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func fourChainedFunctions(a: Int)(b: Int)(c: Int)(d: Int) -&amp;gt; Int {
   return a + b + c + d
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;…so much cleaner than this? &lt;sup id=&quot;fnref:curried-function-example&quot;&gt;&lt;a href=&quot;#fn:curried-function-example&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;…so much cleaner than this? &lt;sup id=&quot;fnref:curried-function-example&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:curried-function-example&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;func fourChainedFunctions(a: Int) -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; Int))) {
+&lt;div class=&quot;language-swift highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;func fourChainedFunctions(a: Int) -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; (Int -&amp;gt; Int))) {
   return { b in
     return { c in
       return { d in
@@ -631,42 +694,44 @@ sumAB(3)              // 6
 }
 
 fourChainedFunctions(1)(2)(3)(4)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Versions of these outlet/action assertion functions using the older, cleaner syntactic-sugary function currying can be reviewed on the &lt;a href=&quot;https://github.com/phatblat/CurriedOutletFunctions/blob/deprecated-syntax/CurriedOutletFunctionsTests/SpecFunctions.swift#L47&quot;&gt;&lt;code&gt;deprecated-syntax&lt;/code&gt;&lt;/a&gt; tag of the example repo.&lt;/p&gt;
 
 &lt;p&gt;Apple, you can take my sweet curry, but you’ll never take my Sriracha.&lt;/p&gt;
 
 &lt;center&gt;
-&lt;img src=&quot;/images/sriracha-clip-on-bag.jpg&quot; width=&quot;400&quot; alt=&quot;'Small Sriracha bottle attached to messenger bag'&quot; title=&quot;Sriracha2Go&quot; /&gt;
+&lt;img src=&quot;/images/sriracha-clip-on-bag.jpg&quot; width=&quot;400&quot; alt=&quot;&apos;Small Sriracha bottle attached to messenger bag&apos;&quot; title=&quot;Sriracha2Go&quot; /&gt;
 &lt;/center&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;footnotes&quot;&gt;Footnotes&lt;/h4&gt;
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:curry-func&quot;&gt;
-      &lt;p&gt;As I’ve learned from @aligatr :crocodile: &lt;a href=&quot;#fnref:curry-func&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:curry-func&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;As I’ve learned from @aligatr :crocodile: &lt;a href=&quot;#fnref:curry-func&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:action-test&quot;&gt;
-      &lt;p&gt;This bit of UIKit magic :sparkles: is from @qcoding’s &lt;a href=&quot;http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction&quot;&gt;post on Stack Overflow&lt;/a&gt; for how to test IBActions. &lt;a href=&quot;#fnref:action-test&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:action-test&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;This bit of UIKit magic :sparkles: is from @qcoding’s &lt;a href=&quot;http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction&quot;&gt;post on Stack Overflow&lt;/a&gt; for how to test IBActions. &lt;a href=&quot;#fnref:action-test&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:quick&quot;&gt;
-      &lt;p&gt;These tests are run using the &lt;a href=&quot;https://github.com/Quick/Quick&quot;&gt;Quick :stuck_out_tongue_winking_eye: testing framework&lt;/a&gt;. &lt;a href=&quot;#fnref:quick&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:quick&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;These tests are run using the &lt;a href=&quot;https://github.com/Quick/Quick&quot;&gt;Quick :stuck_out_tongue_winking_eye: testing framework&lt;/a&gt;. &lt;a href=&quot;#fnref:quick&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:swift3&quot;&gt;
-      &lt;p&gt;Note that function currying isn’t going away, only the nice shorthand (sweet :lollipop:) syntax is. &lt;a href=&quot;#fnref:swift3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:swift3&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Note that function currying isn’t going away, only the nice shorthand (sweet :lollipop:) syntax is. &lt;a href=&quot;#fnref:swift3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:curried-function-example&quot;&gt;
-      &lt;p&gt;Borrowed with :heart: from the &lt;strong&gt;Almighty Kraken&lt;/strong&gt; :octopus: &lt;a href=&quot;http://krakendev.io/blog/hipster-swift#currying&quot;&gt;http://krakendev.io/blog/hipster-swift#currying&lt;/a&gt; &lt;a href=&quot;#fnref:curried-function-example&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:curried-function-example&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Borrowed with :heart: from the &lt;strong&gt;Almighty Kraken&lt;/strong&gt; :octopus: &lt;a href=&quot;http://krakendev.io/blog/hipster-swift#currying&quot;&gt;http://krakendev.io/blog/hipster-swift#currying&lt;/a&gt; &lt;a href=&quot;#fnref:curried-function-example&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 29 Apr 2016 13:39:19 -0600</pubDate>
-        <link>http://0.0.0.0:4000/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
+        <link>https://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html</guid>
         
         <category>swift,</category>
         
@@ -708,37 +773,43 @@ fourChainedFunctions(1)(2)(3)(4)
 
 &lt;p&gt;The values behind the Energy Saver preferences pane appear to be stored in User Defaults and can be read with the following command:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The “Automatic Restart On Power Loss” key is the most important.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;{
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;{
     ActivePowerProfiles =      {
-        &quot;AC Power&quot; = &quot;-1&quot;;
+        &amp;quot;AC Power&amp;quot; = &amp;quot;-1&amp;quot;;
     };
-    &quot;Custom Profile&quot; =     {
-        &quot;AC Power&quot; =         {
-            &quot;AutoPowerOff Delay&quot; = 14400;
-            &quot;AutoPowerOff Enabled&quot; = 1;
-            &quot;Automatic Restart On Power Loss&quot; = 1;
+    &amp;quot;Custom Profile&amp;quot; =     {
+        &amp;quot;AC Power&amp;quot; =         {
+            &amp;quot;AutoPowerOff Delay&amp;quot; = 14400;
+            &amp;quot;AutoPowerOff Enabled&amp;quot; = 1;
+            &amp;quot;Automatic Restart On Power Loss&amp;quot; = 1;
             DarkWakeBackgroundTasks = 0;
-            &quot;Disk Sleep Timer&quot; = 0;
-            &quot;Display Sleep Timer&quot; = 0;
-            &quot;Hibernate File&quot; = &quot;/var/vm/sleepimage&quot;;
-            &quot;Hibernate Mode&quot; = 0;
+            &amp;quot;Disk Sleep Timer&amp;quot; = 0;
+            &amp;quot;Display Sleep Timer&amp;quot; = 0;
+            &amp;quot;Hibernate File&amp;quot; = &amp;quot;/var/vm/sleepimage&amp;quot;;
+            &amp;quot;Hibernate Mode&amp;quot; = 0;
             PrioritizeNetworkReachabilityOverSleep = 0;
-            &quot;Sleep On Power Button&quot; = 1;
-            &quot;Standby Delay&quot; = 4200;
-            &quot;Standby Enabled&quot; = 1;
-            &quot;System Sleep Timer&quot; = 0;
+            &amp;quot;Sleep On Power Button&amp;quot; = 1;
+            &amp;quot;Standby Delay&amp;quot; = 4200;
+            &amp;quot;Standby Enabled&amp;quot; = 1;
+            &amp;quot;System Sleep Timer&amp;quot; = 0;
             TTYSPreventSleep = 1;
-            &quot;Wake On LAN&quot; = 1;
+            &amp;quot;Wake On LAN&amp;quot; = 1;
         };
         Defaults = 1;
     };
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Because of the way these settings are stored, they are difficult to set using the &lt;code&gt;defaults&lt;/code&gt; command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.&lt;/p&gt;
 
@@ -746,7 +817,8 @@ fourChainedFunctions(1)(2)(3)(4)
 
 &lt;p&gt;A better approach for manipulating these values from the command line is to use the &lt;code&gt;pmset&lt;/code&gt; command. This utility can be used to read the current Energy Saver values (read them all with &lt;code&gt;pmset -g&lt;/code&gt;, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;pmset -g
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;pmset -g
 Active Profiles:
 AC Power                -1* Currently in use:
  standby              1
@@ -764,17 +836,22 @@ AC Power                -1* Currently in use:
  ttyskeepawake        1
  displaysleep         0
  standbydelay         4200
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;tldr&quot;&gt;TL;DR&lt;/h3&gt;
 
 &lt;p&gt;These are the values you will always want to change when setting up a Mac server:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo pmset -c sleep 0
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;sudo pmset -c sleep 0
 sudo pmset -c displaysleep 0
 sudo pmset -c disksleep 0
 sudo pmset -c autorestart 1
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
 
@@ -787,8 +864,8 @@ sudo pmset -c autorestart 1
 
 </description>
         <pubDate>Sun, 10 Jan 2016 19:49:36 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2016/01/10/mac-server-setup.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/10/mac-server-setup.html</guid>
+        <link>https://phatbl.at/2016/01/10/mac-server-setup.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/01/10/mac-server-setup.html</guid>
         
         <category>server,</category>
         
@@ -805,7 +882,7 @@ sudo pmset -c autorestart 1
         <title>The Accident</title>
         <description>&lt;p&gt;On Friday, November 20, 2015 I was walking home from work, but I never made it there. It was a cold night here in Colorado, about 20 degrees Fahrenheit (-6 Celsius), and a tiny amount of snow had fallen before I left the office. Not enough to stick, but the ground was wet, as were windshields.&lt;/p&gt;
 
-&lt;p&gt;I left the office about 5:30pm, put on my new H7 headphones, started playing some drum ‘n bass and reset my &lt;a href=&quot;http://www.amazon.com/Komelon-ML1212-Meter-Man-4-Inch-Measuring/dp/B001QTVXVY/ref=lp_3753421_1_3?s=hi&amp;amp;ie=UTF8&amp;amp;qid=1452141522&amp;amp;sr=1-3&quot;&gt;measuring wheel&lt;/a&gt; to get an accurate distance of the trip I was embarking on. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;I left the office about 5:30pm, put on my new H7 headphones, started playing some drum ‘n bass and reset my &lt;a href=&quot;http://www.amazon.com/Komelon-ML1212-Meter-Man-4-Inch-Measuring/dp/B001QTVXVY/ref=lp_3753421_1_3?s=hi&amp;amp;ie=UTF8&amp;amp;qid=1452141522&amp;amp;sr=1-3&quot;&gt;measuring wheel&lt;/a&gt; to get an accurate distance of the trip I was embarking on. &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;Just a block from the office is a major road with 3 lanes of traffic going each way. The street lights are notoriously long and even I get impatient waiting for the walk sign to come on. Pressing the pedestrian cross button gave the familiar beep-boop confirmation sound that it had sensed the touch of my gloved hand, but I pressed it 2 more times anyway for good measure.&lt;/p&gt;
 
@@ -881,17 +958,17 @@ sudo pmset -c autorestart 1
 
 &lt;p&gt;About 10:30pm they rolled me across the hospital in a wheelchair and checked me into a room.&lt;/p&gt;
 
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;I’m working on a walking app which uses either GPS or the device accelerometer (depending on whether the iPhone has a motion co-processor) to measure distance. To gauge accuracy, I’ve been measuring common walking routes to compare with the values the app produces. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;I’m working on a walking app which uses either GPS or the device accelerometer (depending on whether the iPhone has a motion co-processor) to measure distance. To gauge accuracy, I’ve been measuring common walking routes to compare with the values the app produces. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Wed, 06 Jan 2016 23:11:05 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2016/01/06/accident.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/06/accident.html</guid>
+        <link>https://phatbl.at/2016/01/06/accident.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/01/06/accident.html</guid>
         
         <category>personal</category>
         
@@ -917,8 +994,11 @@ sudo pmset -c autorestart 1
 &lt;p&gt;Syntax:&lt;/p&gt;
 
 &lt;!-- https://stackoverflow.com/a/5866429/39207 --&gt;
-&lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% tweet https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-liquid highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;{% tweet https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;jekyll-twitter-plugin&quot;&gt;jekyll-twitter-plugin&lt;/h2&gt;
 
@@ -926,14 +1006,19 @@ sudo pmset -c autorestart 1
 
 &lt;p&gt;The syntax is very similar:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/683671063855759360 %}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-liquid highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 %}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/683671063855759360'&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;ad-blockers&quot;&gt;Ad Blockers&lt;/h3&gt;
 
-&lt;p&gt;Note: if you’re blocking the “Twitter Button” tracker with a browser plugin like Ghostery, you won’t see the &lt;a href=&quot;https://dev.twitter.com/cards/overview&quot;&gt;Twitter Card&lt;/a&gt; version of these embedded tweets with images and they will instead fall back to a text-only version.&lt;/p&gt;
+&lt;p&gt;Note: if you’re blocking the “Twitter Button” tracker with a browser plugin like Ghostery, you won’t see the &lt;a href=&quot;https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started&quot;&gt;Twitter Card&lt;/a&gt; version of these embedded tweets with images and they will instead fall back to a text-only version.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/ghostery-twitter-button.png&quot; alt=&quot;Ghostery Safari plugin showing Twitter tracker blocked&quot; /&gt;&lt;/p&gt;
 
@@ -941,10 +1026,15 @@ sudo pmset -c autorestart 1
 
 &lt;p&gt;There are a few formatting options, such as &lt;code&gt;align&lt;/code&gt; and &lt;code&gt;width&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 align='center' width='220' %}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-liquid highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 align=&apos;center&apos; width=&apos;220&apos; %}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;width&lt;/code&gt; parameter must be between 220 and 550 inclusive and seems to have no effect on the text-only rendering of the tweet.&lt;/p&gt;
 
@@ -952,14 +1042,23 @@ sudo pmset -c autorestart 1
 
 &lt;p&gt;This plugin will pass along any extra parameters like &lt;code&gt;hide_media&lt;/code&gt; to the &lt;a href=&quot;https://dev.twitter.com/rest/reference/get/statuses/oembed&quot;&gt;oembed API&lt;/a&gt; for further customization.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-liquid&quot;&gt;{% twitter https://twitter.com/DepressedDarth/status/684318431227727872 hide_media='true' %}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-liquid highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;{% twitter https://twitter.com/DEVOPS_BORAT/statuses/159849628819402752 hide_media=&apos;true&apos; %}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;p&gt;There was a 'Forbidden' error fetching URL: 'https://twitter.com/DepressedDarth/status/684318431227727872'&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-cards=&quot;hidden&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Text rendering of the tweet is unaffected by &lt;code&gt;hide_media&lt;/code&gt; because it only includes a link by default.&lt;/p&gt;
 
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: Since version 2.0.0 these Authentication &amp;amp; API keys are no longer needed.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;There are two options for configuring this Twitter plugin with your authentication keys:&lt;/p&gt;
 
@@ -970,24 +1069,30 @@ sudo pmset -c autorestart 1
 
 &lt;p&gt;Since I’m tracking my &lt;code&gt;_config.yml&lt;/code&gt; in git, shared publicly on GitHub, I’m opting for #2.&lt;/p&gt;
 
-&lt;p&gt;The challenge with environment variables is making sure they are defined whenever you need to run the command that depends on them. A simple solution is to add them to your &lt;code&gt;.bash_profile&lt;/code&gt; or &lt;code&gt;.zshrc&lt;/code&gt;, but since I’m &lt;em&gt;also&lt;/em&gt; &lt;a href=&quot;https://github.com/phatblat/dotfiles/blob/master/.zshrc&quot;&gt;storing that on GitHub&lt;/a&gt;, I’m going to look for another option.&lt;/p&gt;
+&lt;p&gt;The challenge with environment variables is making sure they are defined whenever you need to run the command that depends on them. A simple solution is to add them to your &lt;code&gt;.bash_profile&lt;/code&gt; or &lt;code&gt;.zshrc&lt;/code&gt;, but since I’m &lt;em&gt;also&lt;/em&gt; &lt;a href=&quot;https://github.com/phatblat/dotfiles/blob/main/.zshrc&quot;&gt;storing that on GitHub&lt;/a&gt;, I’m going to look for another option.&lt;/p&gt;
 
 &lt;h2 id=&quot;env-file&quot;&gt;.env File&lt;/h2&gt;
 
 &lt;p&gt;Here is a very simple untracked file based solution. I created an &lt;code&gt;.env&lt;/code&gt; file containing each environment variable on a separate line like so:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;TWITTER_CONSUMER_KEY=...
+&lt;div class=&quot;language-bash highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;TWITTER_CONSUMER_KEY=...
 TWITTER_CONSUMER_SECRET=...
 TWITTER_ACCESS_TOKEN=...
 TWITTER_ACCESS_TOKEN_SECRET=...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The values in this file are then loaded into the environment for the Jekyll process on the fly using the &lt;code&gt;env&lt;/code&gt; command.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;env $(cat .env | xargs) bundle exec jekyll serve
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-bash highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;env $(cat .env | xargs) bundle exec jekyll serve
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;This is wrapped up neatly in a &lt;a href=&quot;https://github.com/phatblat/dotfiles/blob/89dace6e7f9230e0b7f3ded261172f6bf7af2317/.dotfiles/www/octopress.zsh#L28&quot;&gt;&lt;code&gt;serve&lt;/code&gt;&lt;/a&gt; alias so I don’t have to type (or remember) all that each time.&lt;/p&gt;
+&lt;p&gt;This is wrapped up neatly in a &lt;a href=&quot;https://github.com/phatblat/dotfiles/blob/main/.config/fish/functions/serve.fish#L10&quot;&gt;&lt;code&gt;serve&lt;/code&gt;&lt;/a&gt; alias so I don’t have to type (or remember) all that each time.&lt;/p&gt;
 
 &lt;p&gt;One caveat is that this command now generates an error if there is not an &lt;code&gt;.env&lt;/code&gt; file in the current directory. I like that because I’m frequently in the wrong directory when I type &lt;code&gt;serve&lt;/code&gt; and Jekyll is happy to create &lt;code&gt;_site&lt;/code&gt; folders wherever I happen to be before blowing up in my face.&lt;/p&gt;
 
@@ -995,8 +1100,11 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;p&gt;Note that the above environment variables can be loaded into the shell using the builtin &lt;code&gt;export&lt;/code&gt; command instead of &lt;code&gt;env&lt;/code&gt;. That is fine for testing, but leaves them defined in the environment for any other process to read.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;echo $TWITTER_CONSUMER_KEY
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-bash highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;echo $TWITTER_CONSUMER_KEY
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;I tend to forget about this sort of thing (it works, :shipit:!) and would rather limit the exposure of sensitive values to the exact scope that they are needed.&lt;/p&gt;
 
@@ -1009,8 +1117,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 05 Jan 2016 12:51:55 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2016/01/05/jekyll-twitter-plugin.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/05/jekyll-twitter-plugin.html</guid>
+        <link>https://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/01/05/jekyll-twitter-plugin.html</guid>
         
         
       </item>
@@ -1046,8 +1154,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;To see the &lt;strong&gt;:emoji_code:&lt;/strong&gt; for any of the above emoji, check the alt text on the image.&lt;/p&gt;
 </description>
         <pubDate>Sun, 03 Jan 2016 21:29:17 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2016/01/03/jemoji.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/03/jemoji.html</guid>
+        <link>https://phatbl.at/2016/01/03/jemoji.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/01/03/jemoji.html</guid>
         
         <category>jekyll,</category>
         
@@ -1066,8 +1174,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 </description>
         <pubDate>Sun, 03 Jan 2016 15:05:13 -0700</pubDate>
-        <link>http://0.0.0.0:4000/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
+        <link>https://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</link>
+        <guid isPermaLink="true">https://phatbl.at/radars/2016/01/03/radar-apple-pencil-cannot-be-used-for-any-screen-edge-swipe-gestures.html</guid>
         
         <category>radar,</category>
         
@@ -1153,8 +1261,8 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 &lt;p&gt;Again, Safari on the left and Mail on the right composing and email, but with the split moved to the right. Mail adapts to more of the UI on the iPhone.&lt;/p&gt;
 </description>
         <pubDate>Sun, 03 Jan 2016 08:53:53 -0700</pubDate>
-        <link>http://0.0.0.0:4000/2016/01/03/ipro-review.html</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/01/03/ipro-review.html</guid>
+        <link>https://phatbl.at/2016/01/03/ipro-review.html</link>
+        <guid isPermaLink="true">https://phatbl.at/2016/01/03/ipro-review.html</guid>
         
         <category>ipad,</category>
         

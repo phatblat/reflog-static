@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2016/04/29/testing-iboutlets-and-ibactions-with-curried-functions-in-swift.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -111,38 +111,54 @@
 
 <p>Swift 2 has syntactic sugar for defining curried functions.</p>
 
-<pre><code>func sum(A: Int)(_ B: Int)(_ C: Int) -&gt; Int {
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func sum(A: Int)(_ B: Int)(_ C: Int) -&gt; Int {
   return A + B + C
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This <code>sum</code> function can be called in a number of ways:</p>
 
-<pre><code>let sumA = sum(1)     // Int -&gt; Int -&gt; Int
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>let sumA = sum(1)     // Int -&gt; Int -&gt; Int
 let sumAB = sumA(2)   // Int -&gt; Int
 
 sum(1)(2)(3)          // 6
 sumA(2)(3)            // 6
 sumAB(3)              // 6
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>In this example, the <code>sumA</code> function has captured the value of the <code>A</code> parameter (1), whereas <code>sumAB</code> has captured the values of both the <code>A</code> and <code>B</code> parameters (1 and 2). When the final <code>C</code> parameter is passed to any of these functions the resulting <code>Int</code> value (6) is returned.</p>
 
 <p>An equivalent <code>sum</code> function using the more verbose curried function syntax shows that it is really a set of nested functions.</p>
 
-<pre><code>func sum(A: Int) -&gt; (Int -&gt; (Int -&gt; Int)) {
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func sum(A: Int) -&gt; (Int -&gt; (Int -&gt; Int)) {
   return { B in
     return { C in
       return A + B + C
     }
   }
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
-<p>This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which transforms a multi-parameter function into its curried version. <sup id="fnref:curry-func"><a href="#fn:curry-func" class="footnote">1</a></sup></p>
+<p>This more verbose syntax can get noisy very quickly with many arguments. It’s a common practice to define a <code>curry</code> function which transforms a multi-parameter function into its curried version. <sup id="fnref:curry-func" role="doc-noteref"><a href="#fn:curry-func" class="footnote" rel="footnote">1</a></sup></p>
 
-<pre><code>func curry(f: (A,B)-&gt;C) -&gt; A-&gt;B-&gt;C
-</code></pre>
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func curry(f: (A,B)-&gt;C) -&gt; A-&gt;B-&gt;C
+</pre></div>
+</div>
+</div>
 
 <p>The thoughtbot <a href="https://github.com/thoughtbot/Curry/blob/master/Source/Curry.swift">Curry library</a> has all the variations of the <code>curry</code> function up to 19 parameters.</p>
 
@@ -154,10 +170,14 @@ sumAB(3)              // 6
 
 <p>Just look at how beautiful this is!</p>
 
-<pre><code class="language-swift">it("has a leftButton outlet") {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>it("has a leftButton outlet") {
   hasButtonOutlet("leftButton")
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <blockquote>
   <p>This is a BDD-style test using the <a href="https://github.com/Quick/Quick">Quick</a> framework.</p>
@@ -165,7 +185,9 @@ sumAB(3)              // 6
 
 <p>So, what is that <code>hasButtonOutlet</code> magic? It’s a <a href="https://en.m.wikipedia.org/wiki/Partial_application">partially-applied</a> function saved in a local variable. This is how it is created:</p>
 
-<pre><code class="language-swift">class ViewControllerSpec: QuickSpec {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>class ViewControllerSpec: QuickSpec {
   override func spec() {
     var viewController: UIViewController!
     var hasButtonOutlet: (String -&gt; UIButton?)!
@@ -175,20 +197,28 @@ sumAB(3)              // 6
         hasButtonOutlet = outlet(viewController)
       }
       ...
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>The return type in the <code>hasButtonOutlet</code> declaration (<code>UIButton</code> in the above example) is the type used for validation inside the generic <code>outlet</code> function below.</p>
 
 <p>Calling the <code>outlet</code> full function would look like this:</p>
 
-<pre><code class="language-swift">outlet(viewController)("leftDoneButton")
-</code></pre>
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>outlet(viewController)("leftDoneButton")
+</pre></div>
+</div>
+</div>
 
 <p>But, you might as well just have a plain, old multi-parameter function if you want all that. Currying reduces noise and makes these tests more readable - Handy when you have dozens of outlets and are chasing down which one you mistyped.</p>
 
 <p>Here is a condensed definition of the <code>outlet</code> curried function:</p>
 
-<pre><code class="language-swift">func outlet&lt;T&gt;(viewController: UIViewController) -&gt; (String) -&gt; T? {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func outlet&lt;T&gt;(viewController: UIViewController) -&gt; (String) -&gt; T? {
   return { (expectedOutlet: String) -&gt; T? in
     guard let object = viewController.valueForKey(expectedOutlet)
       else { fail("\(expectedOutlet) outlet was nil"); return nil }
@@ -199,7 +229,9 @@ sumAB(3)              // 6
     return objectOfType
   }
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <blockquote>
   <p>The <code>fail</code> function is part of the <a href="https://github.com/Quick/Nimble">Nimble</a> matcher framework</p>
@@ -209,16 +241,22 @@ sumAB(3)              // 6
 
 <p>The action assertion functions are similarly simple.</p>
 
-<pre><code class="language-swift">it("receives a didTapLeftButton: action from leftButton") {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>it("receives a didTapLeftButton: action from leftButton") {
   receivesAction("didTapLeftButton:", from: "leftButton")
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>One caveat is that they require an outlet on the thing sending the action. A lot of the time an outlet isn’t necessary for an action-sending UI element, but I haven’t found a way to get the actions from the view controller (yet).</p>
 
 <p>Here is the setup for the partially-applied <code>receivesAction</code>:</p>
 
-<pre><code class="language-swift">class ViewControllerSpec: QuickSpec {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>class ViewControllerSpec: QuickSpec {
     override func spec() {
     var receivesAction: ((String, from: String) -&gt; Void)!
     describe("view controller") {
@@ -227,11 +265,15 @@ sumAB(3)              // 6
         receivesAction = action(viewController)
       }
       ...
-</code></pre>
+</pre></div>
+</div>
+</div>
 
-<p>Implementation of the <code>action</code> function is more complex as getting to the IBAction differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test"><a href="#fn:action-test" class="footnote">2</a></sup></p>
+<p>Implementation of the <code>action</code> function is more complex as getting to the IBAction differs depending on whether the UI element is a <code>UIBarButtonItem</code> or a type of <code>UIControl</code>. <sup id="fnref:action-test" role="doc-noteref"><a href="#fn:action-test" class="footnote" rel="footnote">2</a></sup></p>
 
-<pre><code class="language-swift">func action(viewController: UIViewController) -&gt; (String, from: String) -&gt; Void {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func action(viewController: UIViewController) -&gt; (String, from: String) -&gt; Void {
   return { (expectedAction: String, expectedOutlet: String) in
     let optionalControl = outlet(viewController)(expectedOutlet)
 
@@ -264,7 +306,9 @@ sumAB(3)              // 6
     }
   }
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <blockquote>
   <p>The <code>expect</code> function is part of the <a href="https://github.com/Quick/Nimble">Nimble</a> matcher framework</p>
@@ -277,25 +321,31 @@ sumAB(3)              // 6
 
 <p>The functions in the sample code are much more beautiful due to <a href="https://twitter.com/esttorhe" class="user-mention">@esttorhe</a>’s help in simplifying the API.</p>
 
-<p>Running the tests in the example project gives quick<sup id="fnref:quick"><a href="#fn:quick" class="footnote">3</a></sup> feedback that all the outlets and actions are properly connected without even launching the app.</p>
+<p>Running the tests in the example project gives quick<sup id="fnref:quick" role="doc-noteref"><a href="#fn:quick" class="footnote" rel="footnote">3</a></sup> feedback that all the outlets and actions are properly connected without even launching the app.</p>
 
 <p><img src="/images/outlet-action-tests-pass.png" alt="" title="ViewControllerSpec test status with all green checkmarks"></p>
 
 <h2 id="deprecated-sob">Deprecated <img class="emoji" title=":sob:" alt=":sob:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png" height="20" width="20">
 </h2>
 
-<p>Shortly after <a href="https://twitter.com/allonsykraken" class="user-mention">@allonsykraken</a> posted <a href="http://krakendev.io/blog/hipster-swift">Hipster Swift</a>, I learned that the super-clean syntactic sugar version of curried functions is <a href="https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md">going away in Swift 3</a><sup id="fnref:swift3"><a href="#fn:swift3" class="footnote">4</a></sup> and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.</p>
+<p>Shortly after <a href="https://twitter.com/allonsykraken" class="user-mention">@allonsykraken</a> posted <a href="http://krakendev.io/blog/hipster-swift">Hipster Swift</a>, I learned that the super-clean syntactic sugar version of curried functions is <a href="https://github.com/apple/swift-evolution/blob/master/proposals/0002-remove-currying.md">going away in Swift 3</a><sup id="fnref:swift3" role="doc-noteref"><a href="#fn:swift3" class="footnote" rel="footnote">4</a></sup> and it made me sad. While this is a more esoteric language feature, I really like how curried functions can be used to simplify an API. Also, the way Swift implemented curried functions made them so easy to use.</p>
 
 <p>Isn’t this:</p>
 
-<pre><code class="language-swift">func fourChainedFunctions(a: Int)(b: Int)(c: Int)(d: Int) -&gt; Int {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func fourChainedFunctions(a: Int)(b: Int)(c: Int)(d: Int) -&gt; Int {
   return a + b + c + d
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
-<p>…so much cleaner than this? <sup id="fnref:curried-function-example"><a href="#fn:curried-function-example" class="footnote">5</a></sup></p>
+<p>…so much cleaner than this? <sup id="fnref:curried-function-example" role="doc-noteref"><a href="#fn:curried-function-example" class="footnote" rel="footnote">5</a></sup></p>
 
-<pre><code class="language-swift">func fourChainedFunctions(a: Int) -&gt; (Int -&gt; (Int -&gt; (Int -&gt; Int))) {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func fourChainedFunctions(a: Int) -&gt; (Int -&gt; (Int -&gt; (Int -&gt; Int))) {
   return { b in
     return { c in
       return { d in
@@ -306,7 +356,9 @@ sumAB(3)              // 6
 }
 
 fourChainedFunctions(1)(2)(3)(4)
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>Versions of these outlet/action assertion functions using the older, cleaner syntactic-sugary function currying can be reviewed on the <a href="https://github.com/phatblat/CurriedOutletFunctions/blob/deprecated-syntax/CurriedOutletFunctionsTests/SpecFunctions.swift#L47"><code>deprecated-syntax</code></a> tag of the example repo.</p>
 
@@ -319,22 +371,22 @@ fourChainedFunctions(1)(2)(3)(4)
 <p><br></p>
 
 <h4 id="footnotes">Footnotes</h4>
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:curry-func">
-      <p>As I’ve learned from <a href="https://twitter.com/aligatr" class="user-mention">@aligatr</a> <img class="emoji" title=":crocodile:" alt=":crocodile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f40a.png" height="20" width="20"> <a href="#fnref:curry-func" class="reversefootnote">↩</a></p>
+    <li id="fn:curry-func" role="doc-endnote">
+      <p>As I’ve learned from <a href="https://twitter.com/aligatr" class="user-mention">@aligatr</a> <img class="emoji" title=":crocodile:" alt=":crocodile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f40a.png" height="20" width="20"> <a href="#fnref:curry-func" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:action-test">
-      <p>This bit of UIKit magic <img class="emoji" title=":sparkles:" alt=":sparkles:" src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png" height="20" width="20"> is from <a href="https://twitter.com/qcoding" class="user-mention">@qcoding</a>’s <a href="http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction">post on Stack Overflow</a> for how to test IBActions. <a href="#fnref:action-test" class="reversefootnote">↩</a></p>
+    <li id="fn:action-test" role="doc-endnote">
+      <p>This bit of UIKit magic <img class="emoji" title=":sparkles:" alt=":sparkles:" src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png" height="20" width="20"> is from <a href="https://twitter.com/qcoding" class="user-mention">@qcoding</a>’s <a href="http://stackoverflow.com/questions/18699524/is-it-possible-to-test-ibaction">post on Stack Overflow</a> for how to test IBActions. <a href="#fnref:action-test" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:quick">
-      <p>These tests are run using the <a href="https://github.com/Quick/Quick">Quick <img class="emoji" title=":stuck_out_tongue_winking_eye:" alt=":stuck_out_tongue_winking_eye:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61c.png" height="20" width="20"> testing framework</a>. <a href="#fnref:quick" class="reversefootnote">↩</a></p>
+    <li id="fn:quick" role="doc-endnote">
+      <p>These tests are run using the <a href="https://github.com/Quick/Quick">Quick <img class="emoji" title=":stuck_out_tongue_winking_eye:" alt=":stuck_out_tongue_winking_eye:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61c.png" height="20" width="20"> testing framework</a>. <a href="#fnref:quick" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:swift3">
-      <p>Note that function currying isn’t going away, only the nice shorthand (sweet <img class="emoji" title=":lollipop:" alt=":lollipop:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f36d.png" height="20" width="20">) syntax is. <a href="#fnref:swift3" class="reversefootnote">↩</a></p>
+    <li id="fn:swift3" role="doc-endnote">
+      <p>Note that function currying isn’t going away, only the nice shorthand (sweet <img class="emoji" title=":lollipop:" alt=":lollipop:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f36d.png" height="20" width="20">) syntax is. <a href="#fnref:swift3" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:curried-function-example">
-      <p>Borrowed with <img class="emoji" title=":heart:" alt=":heart:" src="https://github.githubassets.com/images/icons/emoji/unicode/2764.png" height="20" width="20"> from the <strong>Almighty Kraken</strong> <img class="emoji" title=":octopus:" alt=":octopus:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f419.png" height="20" width="20"> <a href="http://krakendev.io/blog/hipster-swift#currying">http://krakendev.io/blog/hipster-swift#currying</a> <a href="#fnref:curried-function-example" class="reversefootnote">↩</a></p>
+    <li id="fn:curried-function-example" role="doc-endnote">
+      <p>Borrowed with <img class="emoji" title=":heart:" alt=":heart:" src="https://github.githubassets.com/images/icons/emoji/unicode/2764.png" height="20" width="20"> from the <strong>Almighty Kraken</strong> <img class="emoji" title=":octopus:" alt=":octopus:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f419.png" height="20" width="20"> <a href="http://krakendev.io/blog/hipster-swift#currying">http://krakendev.io/blog/hipster-swift#currying</a> <a href="#fnref:curried-function-example" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
   </ol>
 </div>
@@ -394,8 +446,7 @@ fourChainedFunctions(1)(2)(3)(4)
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

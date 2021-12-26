@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/git/tricks/2014/09/14/git-sparse-checkout.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/git/tricks/2014/09/14/git-sparse-checkout.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -96,17 +96,23 @@
 
 <p>I’m going to walk through this script with the lines a bit out of order; variables will be interspersed with the code that uses them. I generally build scripts with all the variables at the top to make it easy to see what can be tweaked, but having them inline makes the logic easier to follow.</p>
 
-<pre><code>tmpdir=/tmp/phatblat-images
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>tmpdir=/tmp/phatblat-images
 mkdir $tmpdir
 cd $tmpdir
 git init
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This sets up a fresh, empty repository in a temporary directory.</p>
 
-<pre><code>remote_git=git://github.com/phatblat/phatblat.github.io.git
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>remote_git=git://github.com/phatblat/phatblat.github.io.git
 git remote add -f origin $remote_git
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>The <strong>-f</strong> flag to the <code>git remote add</code> command causes git to immediately fetch from the remote when it is added. This is where this approach is less than idea. All objects in the repo are fetched from the remote, even though only a subset of the files will be checked out. However, this keeps the repo functional as I’ll talk about at the end.</p>
 
@@ -114,29 +120,41 @@ git remote add -f origin $remote_git
 
 <p>The reason for the <code>git://</code> protocol is because this is the <a href="http://git-scm.com/book/en/Git-on-the-Server-The-Protocols#The-Git-Protocol">fastest transfer protocol available</a>. This is the best approach for fast, read-only access to a repo, but could fail from inside a corporate firewall.</p>
 
-<pre><code>remote_https=https://github.com/phatblat/phatblat.github.io.git
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>remote_https=https://github.com/phatblat/phatblat.github.io.git
 git remote add -f origin $remote_git || \
-	git remote set-url origin $remote_https &amp;&amp; \
-	git fetch origin
-</code></pre>
+        git remote set-url origin $remote_https &amp;&amp; \
+        git fetch origin
+</pre></div>
+</div>
+</div>
 
 <p>If the fetch fails due to the <code>git://</code> protocol being blocked (port 9418), the indented commands will execute and change the origin remote’s url to one that uses https and try fetching again. There is a significant delay before the fetch fails. I haven’t figured out how to shorten the timeout that git uses.</p>
 
-<pre><code>git config core.sparseCheckout true
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>git config core.sparseCheckout true
 subdir=images/
-echo "$subdir" &gt; .git/info/sparse-checkout
-</code></pre>
+echo &quot;$subdir&quot; &gt; .git/info/sparse-checkout
+</pre></div>
+</div>
+</div>
 
 <p>The new repo is configured to with sparse checkout enabled for only the “images” folder. No other folders will be checked out.</p>
 
-<pre><code>git checkout master
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>git checkout master
+</pre></div>
+</div>
+</div>
 
 <p>The checkout is where the filtering happens. Here the <code>master</code> branch is being checked out, but only the images folder is actually being copied into the work tree.</p>
 
-<pre><code>subdir=images/
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>subdir=images/
 open $subdir
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/open.1.html">open</a> command on OS X is very handy for opening a folder in the Finder.</p>
 
@@ -150,9 +168,12 @@ open $subdir
 
 <p>The <code>sparse-checkout</code> file uses the same syntax as <code>.gitignore</code>. The following lines tell git to only checkout markdown files:</p>
 
-<pre><code>*.md
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>*.md
 *.markdown
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>After changing the <code>.git/info/sparse-checkout</code> file, do a <code>checkout &lt;branch&gt;</code> (<code>checkout source</code> in the case of Octopress) in order to update the work tree with this new “view” of files.</p>
 
@@ -221,8 +242,7 @@ open $subdir
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

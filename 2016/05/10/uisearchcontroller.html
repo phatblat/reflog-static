@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2016/05/10/uisearchcontroller.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2016/05/10/uisearchcontroller.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -87,17 +87,21 @@
 
 <h2 id="search-bar">Search Bar</h2>
 
-<p>What’s unexpected about <code>UISearchController</code> is that you have to <em>install</em> its <code>searchBar</code> into the view hierarchy. You can’t connect it to an existing <code>UISearchBar</code> defined in a storyboard.<sup id="fnref:searchbar-storyboard"><a href="#fn:searchbar-storyboard" class="footnote">1</a></sup> If you’re just adding the search bar to the top of a table, like in Apple’s sample code<sup id="fnref:apple-sample-code"><a href="#fn:apple-sample-code" class="footnote">2</a></sup>, you can just make it the <code>tableHeaderView</code>. But just about any other situation is going to have to deal with auto layout.</p>
+<p>What’s unexpected about <code>UISearchController</code> is that you have to <em>install</em> its <code>searchBar</code> into the view hierarchy. You can’t connect it to an existing <code>UISearchBar</code> defined in a storyboard.<sup id="fnref:searchbar-storyboard" role="doc-noteref"><a href="#fn:searchbar-storyboard" class="footnote" rel="footnote">1</a></sup> If you’re just adding the search bar to the top of a table, like in Apple’s sample code<sup id="fnref:apple-sample-code" role="doc-noteref"><a href="#fn:apple-sample-code" class="footnote" rel="footnote">2</a></sup>, you can just make it the <code>tableHeaderView</code>. But just about any other situation is going to have to deal with auto layout.</p>
 
-<pre><code class="language-swift">override func viewDidLoad() {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>override func viewDidLoad() {
   super.viewDidLoad()
   let searchBar = searchController.searchBar
   searchBar.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
   searchBarContainerView.addSubview(searchBar)
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
-<p>We’re going to reserve some space in the UI using a “container” view<sup id="fnref:container-view"><a href="#fn:container-view" class="footnote">3</a></sup>. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.</p>
+<p>We’re going to reserve some space in the UI using a “container” view<sup id="fnref:container-view" role="doc-noteref"><a href="#fn:container-view" class="footnote" rel="footnote">3</a></sup>. This will show where the search bar will eventually be in the storyboard to give an idea of how it will fit with other UI elements. Also, constraints can be tied to the container view in the storyboard so that none need to be installed in code.</p>
 
 <center>
 <img src="/images/uisearchcontroller-main-scene.png" width="300" alt="'Main scene showing search bar container view'" title="Main scene">
@@ -115,7 +119,9 @@
 
 <p>A <code>UISearchController</code> must be set up in code and it’s constructor takes a single argument - a <code>UIViewController</code> which is going to display the search results. Here we pass in a reference to our <code>searchResultsController</code> stored in a property.</p>
 
-<pre><code class="language-swift">let searchController =
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>let searchController =
   UISearchController(searchResultsController: self.searchResultsController)
 searchController.searchResultsUpdater = self
 searchController.delegate = self
@@ -123,7 +129,9 @@ searchController.searchBar.delegate = self
 
 searchController.hidesNavigationBarDuringPresentation = true
 searchController.dimsBackgroundDuringPresentation = false
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>There is little interaction with <code>UISearchController</code> beyond creating one, configuring it and connecting it to the following:</p>
 
@@ -138,11 +146,15 @@ searchController.dimsBackgroundDuringPresentation = false
 
 <p>The <code>UISearchResultsUpdating</code> protocol is very simple, but it’s where all the fun happens:</p>
 
-<pre><code class="language-swift">func updateSearchResultsForSearchController(searchController: UISearchController)
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>func updateSearchResultsForSearchController(searchController: UISearchController)
   guard let searchTerm = searchController.searchBar.text else { return }
   // use searchTerm to filter search results
   ...
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This method is called whenever the text changes in the search bar. The current text can be accessed through the <code>searchController</code> parameter. Any object can handle these updates.</p>
 
@@ -156,7 +168,9 @@ searchController.dimsBackgroundDuringPresentation = false
 
 <p>The “main” view controller will use the number of results displayed to determine when to show and hide the “no results” view.</p>
 
-<pre><code class="language-swift">  ...
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>  ...
   let displayedResultCount = searchResultsController.filterData(searchTerm)
   handleEmptyResults(displayedResultCount)
 }
@@ -165,13 +179,15 @@ func handleEmptyResults(displayedResults: Int) {
   let showEmptyResultsView = (searchController.active &amp;&amp; displayedResults == 0)
   emptyResultsView.hidden = !showEmptyResultsView
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This <code>emptyResultsView</code> is defined in the storyboard and initially hidden.</p>
 
 <h2 id="code">Code</h2>
 
-<p>That’s pretty much it. I wanted to provide a simple example because there’s a lot of confusing information out there on how this API works. Web searches are tainted with the old API since the type names are so similar.<sup id="fnref:search-display-controller"><a href="#fn:search-display-controller" class="footnote">4</a></sup></p>
+<p>That’s pretty much it. I wanted to provide a simple example because there’s a lot of confusing information out there on how this API works. Web searches are tainted with the old API since the type names are so similar.<sup id="fnref:search-display-controller" role="doc-noteref"><a href="#fn:search-display-controller" class="footnote" rel="footnote">4</a></sup></p>
 
 <p>You can find the complete project on GitHub at the URL below:
 <strong><a href="https://github.com/phatblat/SearchController">https://github.com/phatblat/SearchController</a></strong></p>
@@ -183,19 +199,19 @@ func handleEmptyResults(displayedResults: Int) {
 <p><code>UISearchController</code> is not coupled with the presentation of the search results, so we are free to use any kind of view controller to handle it. At <a href="http://360idev.com">360|iDev 2015</a>, <a href="https://twitter.com/jeremiahgage" class="user-mention">@jeremiahgage</a> presented using a <a href="https://github.com/phatblat/360iDev-Slides/blob/master/2015-Slides.md#uisearchcontroller-with-a-uicollectionview">UISearchController with a UICollectionView</a> which is a fabulous example especially since <code>UICollectionView</code> is so highly customizable.</p>
 
 <h3 id="footnotes">Footnotes</h3>
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:searchbar-storyboard">
-      <p>This was how the old, deprecated <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchDisplayController_Class/"><code>UISearchDisplayController</code></a> was often set up. There is even still a template for it in the Interface Builder Object library. <img src="/images/uisearchcontroller-search-bar-and-search-display-controller.png" alt="Search Bar and Search Display Controller in Interface Builder Object library pane"> <a href="#fnref:searchbar-storyboard" class="reversefootnote">↩</a></p>
+    <li id="fn:searchbar-storyboard" role="doc-endnote">
+      <p>This was how the old, deprecated <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchDisplayController_Class/"><code>UISearchDisplayController</code></a> was often set up. There is even still a template for it in the Interface Builder Object library. <img src="/images/uisearchcontroller-search-bar-and-search-display-controller.png" alt="Search Bar and Search Display Controller in Interface Builder Object library pane"> <a href="#fnref:searchbar-storyboard" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:apple-sample-code">
-      <p>The <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchController/#//apple_ref/doc/uid/TP40014432-CH1-SW8">UISearchController</a> reference documentation contains a minimal code sample. <a href="#fnref:apple-sample-code" class="reversefootnote">↩</a></p>
+    <li id="fn:apple-sample-code" role="doc-endnote">
+      <p>The <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchController/#//apple_ref/doc/uid/TP40014432-CH1-SW8">UISearchController</a> reference documentation contains a minimal code sample. <a href="#fnref:apple-sample-code" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:container-view">
-      <p>Nothing as fancy as <a href="https://www.objc.io/issues/1-view-controllers/containment-view-controller/">View Controller Containment</a>. Just a simple <code>UIView</code> which we’ll be using as the parent view for the <code>UISearchBar</code>. <a href="#fnref:container-view" class="reversefootnote">↩</a></p>
+    <li id="fn:container-view" role="doc-endnote">
+      <p>Nothing as fancy as <a href="https://www.objc.io/issues/1-view-controllers/containment-view-controller/">View Controller Containment</a>. Just a simple <code>UIView</code> which we’ll be using as the parent view for the <code>UISearchBar</code>. <a href="#fnref:container-view" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:search-display-controller">
-      <p>Do yourself a favor and never look at the API for <code>UISearchDisplayController</code> - it’s deprecated anyway. I’m constantly confusing the two. <a href="#fnref:search-display-controller" class="reversefootnote">↩</a></p>
+    <li id="fn:search-display-controller" role="doc-endnote">
+      <p>Do yourself a favor and never look at the API for <code>UISearchDisplayController</code> - it’s deprecated anyway. I’m constantly confusing the two. <a href="#fnref:search-display-controller" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
   </ol>
 </div>
@@ -255,8 +271,7 @@ func handleEmptyResults(displayedResults: Int) {
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

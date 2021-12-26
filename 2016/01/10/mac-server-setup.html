@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2016/01/10/mac-server-setup.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2016/01/10/mac-server-setup.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -105,12 +105,18 @@
 
 <p>The values behind the Energy Saver preferences pane appear to be stored in User Defaults and can be read with the following command:</p>
 
-<pre><code>defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
-</code></pre>
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>defaults read /Library/Preferences/SystemConfiguration/com.apple.PowerManagement
+</pre></div>
+</div>
+</div>
 
 <p>The “Automatic Restart On Power Loss” key is the most important.</p>
 
-<pre><code>{
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>{
     ActivePowerProfiles =      {
         "AC Power" = "-1";
     };
@@ -135,7 +141,9 @@
         Defaults = 1;
     };
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>Because of the way these settings are stored, they are difficult to set using the <code>defaults</code> command, which requires passing a plist file in order to set a tree of key-value pairs such as the above “Custom Profile” entry. The danger with doing this is that many values are set or unset in one step and these values will likely change through the years as OS X evolves.</p>
 
@@ -143,7 +151,9 @@
 
 <p>A better approach for manipulating these values from the command line is to use the <code>pmset</code> command. This utility can be used to read the current Energy Saver values (read them all with <code>pmset -g</code>, but uses shorter key aliases than defaults. The pmset keys are mostly space-free for easier typing on the command line.</p>
 
-<pre><code>pmset -g
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>pmset -g
 Active Profiles:
 AC Power                -1* Currently in use:
  standby              1
@@ -161,17 +171,23 @@ AC Power                -1* Currently in use:
  ttyskeepawake        1
  displaysleep         0
  standbydelay         4200
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <h3 id="tldr">TL;DR</h3>
 
 <p>These are the values you will always want to change when setting up a Mac server:</p>
 
-<pre><code>sudo pmset -c sleep 0
+<div class="language-plaintext highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>sudo pmset -c sleep 0
 sudo pmset -c displaysleep 0
 sudo pmset -c disksleep 0
 sudo pmset -c autorestart 1
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <h1 id="references">References</h1>
 
@@ -238,8 +254,7 @@ sudo pmset -c autorestart 1
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 

@@ -13,8 +13,8 @@
   <meta name="p:domain_verify" content="5cbb342a8c797d163b5acd5baf03971f"/>
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://0.0.0.0:4000/2019/01/08/intercepting-stdout-in-swift.html">
-  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="https://phatbl.at/2019/01/08/intercepting-stdout-in-swift.html">
+  <link rel="alternate" type="application/rss+xml" title="phatblat's reflog" href="https://phatbl.at/feed.xml" />
 </head>
 
 
@@ -132,7 +132,9 @@ which served as my starting point. There are a few key points in his post:</p>
 
 <h3 id="outputlistener">OutputListener</h3>
 
-<pre><code class="language-swift">class OutputListener {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>class OutputListener {
     /// consumes the messages on STDOUT
     let inputPipe = Pipe()
 
@@ -142,7 +144,9 @@ which served as my starting point. There are a few key points in his post:</p>
     /// Buffers strings written to stdout
     var contents = ""
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>Here we have the minimal storage for my implementation. <code>inputPipe</code> will bring input to
 my test listener, <code>outputPipe</code> will handle sending text back to stdout and <code>contents</code>
@@ -152,7 +156,9 @@ will build up a string of all the data that passes through.</p>
 
 <p>One-time setup code to wire up the two <code>Pipe</code>s and capture <code>contents</code>.</p>
 
-<pre><code class="language-swift">init() {
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>init() {
     // Set up a read handler which fires when data is written to our inputPipe
     inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
@@ -166,7 +172,9 @@ will build up a string of all the data that passes through.</p>
         strongSelf.outputPipe.fileHandleForWriting.write(data)
     }
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>This uses <code>readabilityHandler</code> instead of notifications for less code and no need to
 repeatedly call <code>readInBackgroundAndNotify()</code>.</p>
@@ -183,7 +191,9 @@ written to the pipe’s file handle so far.</p>
 <p>This is the code that actually wires up the pipes to intercept stdout. It uses the esoteric
 <code>dup2</code> C function.</p>
 
-<pre><code class="language-swift">/// Sets up the "tee" of piped output, intercepting stdout then passing it through.
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>/// Sets up the "tee" of piped output, intercepting stdout then passing it through.
 func openConsolePipe() {
     // Copy STDOUT file descriptor to outputPipe for writing strings back to STDOUT
     dup2(stdoutFileDescriptor, outputPipe.fileHandleForWriting.fileDescriptor)
@@ -191,7 +201,9 @@ func openConsolePipe() {
     // Intercept STDOUT with inputPipe
     dup2(inputPipe.fileHandleForWriting.fileDescriptor, stdoutFileDescriptor)
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <blockquote>
   <p><code>stdoutFileDescriptor</code> is my computed property for <code>FileHandle.standardOutput.fileDescriptor</code>,
@@ -227,7 +239,9 @@ it uses <code>freopen()</code> to reopen stdout, pointing it to a new file path.
 
 <h3 id="closeconsolepipe">closeConsolePipe</h3>
 
-<pre><code class="language-swift">/// Tears down the "tee" of piped output.
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>/// Tears down the "tee" of piped output.
 func closeConsolePipe() {
     // Restore stdout
     freopen("/dev/stdout", "a", stdout)
@@ -236,7 +250,9 @@ func closeConsolePipe() {
         file.closeFile()
     }
 }
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>🎉 This was the missing piece I needed to restore stdout. I don’t know if the <code>closeFile()</code>
 calls are necessary, especially in a test suite, but I like to clean up after myself 🧹.</p>
@@ -245,7 +261,9 @@ calls are necessary, especially in a test suite, but I like to clean up after my
 
 <p>Here’s how it works inside a test.</p>
 
-<pre><code class="language-swift">let output = OutputListener()
+<div class="language-swift highlighter-coderay">
+<div class="CodeRay">
+  <div class="code"><pre>let output = OutputListener()
 output.openConsolePipe()
 let expectedOutput = "hi there"
 
@@ -257,7 +275,9 @@ expect(output.contents).toEventuallyNot(beEmpty())
 expect(output.contents) == expectedOutput
 
 output.closeConsolePipe()
-</code></pre>
+</pre></div>
+</div>
+</div>
 
 <p>Here I’m using the Nimble <a href="https://github.com/Quick/Nimble/blob/master/Sources/Nimble/Matchers/Async.swift#L142-L148"><code>toEventuallyNot</code></a>
 function to take care of the asynchroncity of these file handles as they are
@@ -358,8 +378,7 @@ essentially text streams. If you are using XCTest, take a look at
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">a few SHAs from a journey through code
-</p>
+        <p class="text">a few SHAs from a journey through code</p>
       </div>
     </div>
 
