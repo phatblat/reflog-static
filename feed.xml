@@ -5,9 +5,9 @@
     <description>a few SHAs from a journey through code</description>
     <link>https://phatbl.at/</link>
     <atom:link href="https://phatbl.at/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Dec 2021 15:47:24 -0700</pubDate>
-    <lastBuildDate>Sun, 26 Dec 2021 15:47:24 -0700</lastBuildDate>
-    <generator>Jekyll v4.2.1</generator>
+    <pubDate>Sat, 04 May 2024 10:53:01 -0600</pubDate>
+    <lastBuildDate>Sat, 04 May 2024 10:53:01 -0600</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
     
       <item>
         <title>Intercepting stdout in Swift</title>
@@ -1014,6 +1014,7 @@ sudo pmset -c autorestart 1
 
 &lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
 &lt;/div&gt;
 
 &lt;h3 id=&quot;ad-blockers&quot;&gt;Ad Blockers&lt;/h3&gt;
@@ -1034,6 +1035,7 @@ sudo pmset -c autorestart 1
 
 &lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
 &lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;width&lt;/code&gt; parameter must be between 220 and 550 inclusive and seems to have no effect on the text-only rendering of the tweet.&lt;/p&gt;
@@ -1050,6 +1052,7 @@ sudo pmset -c autorestart 1
 
 &lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-cards=&quot;hidden&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Best analogy I find so far for explain concept of ScrumMaster to new devops is Tooth Fairy.&lt;/p&gt;&amp;mdash; DevOps Borat (@DEVOPS_BORAT) &lt;a href=&quot;https://twitter.com/DEVOPS_BORAT/status/159849628819402752?ref_src=twsrc%5Etfw&quot;&gt;January 19, 2012&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
 &lt;/div&gt;
 
 &lt;p&gt;Text rendering of the tweet is unaffected by &lt;code&gt;hide_media&lt;/code&gt; because it only includes a link by default.&lt;/p&gt;
@@ -1198,6 +1201,7 @@ TWITTER_ACCESS_TOKEN_SECRET=...
 
 &lt;div class=&quot;jekyll-twitter-plugin&quot;&gt;&lt;blockquote class=&quot;twitter-tweet&quot; align=&quot;center&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;The iPro may be a REALLY BIG iPad, but it&amp;#39;s also a really light laptop, depending on how you look at it&lt;/p&gt;&amp;mdash; Ben Chatelain (@phatblat) &lt;a href=&quot;https://twitter.com/phatblat/status/674332881938833408?ref_src=twsrc%5Etfw&quot;&gt;December 8, 2015&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
 &lt;/div&gt;
 
 &lt;p&gt;So, what’s so great about this? It’s “just” a bigger iPad, right? That’s exactly why!&lt;/p&gt;
